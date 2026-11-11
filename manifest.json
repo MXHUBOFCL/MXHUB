@@ -1,0 +1,340 @@
+{
+ "modules": [
+  {
+   "path": "src/core/bootstrap.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/assets.lua",
+   "bind": "assets"
+  },
+  {
+   "path": "src/themes/base.lua",
+   "bind": "theme"
+  },
+  {
+   "bind": "presets",
+   "items": [
+    "src/themes/presets/mx-hub.lua",
+    "src/themes/presets/emerald.lua",
+    "src/themes/presets/indigo.lua",
+    "src/themes/presets/midnight-purple.lua",
+    "src/themes/presets/crimson.lua",
+    "src/themes/presets/ocean.lua",
+    "src/themes/presets/sakura.lua",
+    "src/themes/presets/sunset.lua",
+    "src/themes/presets/mono.lua",
+    "src/themes/presets/cobalt.lua",
+    "src/themes/presets/ember.lua"
+   ]
+  },
+  {
+   "path": "src/themes/accents.lua",
+   "bind": "accents"
+  },
+  {
+   "path": "src/themes/engine.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/utility/helpers.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/icons/data/aliases.lua",
+   "bind": "iconaliases"
+  },
+  {
+   "path": "src/icons/data/fallback.lua",
+   "bind": "iconfallbackdata"
+  },
+  {
+   "path": "src/icons/data/names.lua",
+   "bind": "iconnames"
+  },
+  {
+   "path": "src/icons/data/sprites.lua",
+   "bind": "bakedsprites"
+  },
+  {
+   "path": "src/icons/data/lucide.lua",
+   "bind": "lucidesprites"
+  },
+  {
+   "path": "src/icons/system.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/single-instance.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/connections.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/fps-meter.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/config-state.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/instance.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/input-state.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/utility/ui-primitives.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/utility/keys.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/config-manager.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/viewport.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/dragging.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/mxhub.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/icons/api.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/notification.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/watermark.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/popup.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/character.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/pages/home.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/tools/anti-afk.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/tools/fps-boost.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/pages/community.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/i18n/dictionary.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/lifecycle.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/window/01-setup.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/window/02-gui-root.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/03-frame.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/04-titlebar.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/05-header-chips.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/06-sidebar.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/07-layers.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/08-user-footer.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/09-destroy.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/10-window-controls.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/11-ui-settings.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/12-toggle-ui.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/13-tabs-state.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/14-feature-panel.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/15-templates.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/16-sizing.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/17-dropdown-popup.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/18-search.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/19-element-helpers.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/20-tab-chrome.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/tab/01-create.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/tab/02-button.lua",
+   "indent": 2
+  },
+  {
+   "path": "src/window/tab/03-sections-api.lua",
+   "indent": 2
+  },
+  {
+   "path": "src/window/tab/04-section.lua",
+   "indent": 2
+  },
+  {
+   "path": "src/window/items/paragraph.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/image.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/character.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/button.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/color-picker.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/keybind.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/toggle.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/slider.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/input.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/dropdown.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/divider.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/sub-section.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/config-panel.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/tab/05-close.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/builtin/community.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/builtin/settings.lua",
+   "indent": 1
+  },
+  {
+   "path": "src/window/99-finish.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/api/languages.lua",
+   "bind": "languagenames"
+  },
+  {
+   "path": "src/api/tab.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/api/window.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/core/exports.lua",
+   "indent": 0
+  }
+ ]
+}
