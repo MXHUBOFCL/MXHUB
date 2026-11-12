@@ -20,7 +20,7 @@ function guifunc:DestroyGui()
 	end
 
 	for _, child in ipairs(sv.coregui:GetChildren()) do
-		if child.Name == "PopupGui" or child.Name == "NotifyGui" then
+		if child.Name == "PopupGui" then
 			pcall(function()
 				child:Destroy()
 			end)

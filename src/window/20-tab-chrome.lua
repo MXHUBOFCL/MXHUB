@@ -206,13 +206,7 @@ function tabs:AddTabLink(linkconfig)
 				warn("Tab link Callback error:", err)
 			end
 		elseif linkconfig.Link then
-			if clipboardwrite(linkconfig.Link) then
-				MXHUB:Notify({
-					Title = tostring(linkconfig.Name or "Link"),
-					Content = "Link copied to clipboard.",
-					Duration = 3,
-				})
-			end
+			clipboardwrite(linkconfig.Link)
 		end
 	end)
 

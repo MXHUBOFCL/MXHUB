@@ -23,8 +23,10 @@ do
 	for _, glass in ipairs({ sidepanel, sidefill }) do
 		local fade = instance.uigradient(glass)
 		fade.Rotation = 90
-		fade.Transparency = NumberSequence.new(0.2, 0.4)
+		fade.Transparency = NumberSequence.new(0.08, 0.2)
 	end
+
+	glassblur(sidepanel)
 
 	if not bgAsset then
 		local contentpanel = instance.frame(main)
@@ -93,12 +95,7 @@ do
 	end)
 	savebutton.Activated:Connect(function()
 		pcall(pesseffect, savebutton)
-		local name = config:savecurrent()
-		if name then
-			mxhub("Config saved: " .. name, 3, theme.Good, "MX HUB", "Config")
-		else
-			mxhub("Could not save the config", 3, theme.Bad, "MX HUB", "Config")
-		end
+		config:savecurrent()
 	end)
 
 	local subbar = instance.frame(top)

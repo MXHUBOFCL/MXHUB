@@ -841,7 +841,6 @@ do
 					return
 				end
 				if reserved[code] then
-					MXHUB:Notify({ Title = "MX HUB", Description = "Menu Key", Content = code.Name .. " is reserved, pick another key.", Duration = 3, Color = theme.Bad })
 					refreshvalues()
 					return
 				end
