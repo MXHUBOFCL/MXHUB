@@ -117,10 +117,6 @@
    "indent": 0
   },
   {
-   "path": "src/components/notification.lua",
-   "indent": 0
-  },
-  {
    "path": "src/components/watermark.lua",
    "indent": 0
   },
@@ -130,6 +126,10 @@
   },
   {
    "path": "src/components/character.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/glass.lua",
    "indent": 0
   },
   {

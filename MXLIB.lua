@@ -23,48 +23,48 @@ local assets = {
 local theme = {
 	Accent = Color3.fromRGB(245, 247, 252),
 	AccentText = Color3.fromRGB(14, 16, 22),
-	Backdrop = Color3.fromRGB(14, 17, 24),
-	Sidebar = Color3.fromRGB(11, 13, 19),
-	Card = Color3.fromRGB(21, 25, 35),
-	Element = Color3.fromRGB(27, 31, 44),
-	ElementHover = Color3.fromRGB(35, 40, 56),
-	Track = Color3.fromRGB(40, 46, 62),
-	Stroke = Color3.fromRGB(45, 51, 69),
-	StrokeSoft = Color3.fromRGB(31, 36, 49),
-	Text = Color3.fromRGB(236, 239, 246),
-	SubText = Color3.fromRGB(140, 147, 164),
+	Backdrop = Color3.fromRGB(20, 22, 27),
+	Sidebar = Color3.fromRGB(14, 16, 21),
+	Card = Color3.fromRGB(25, 27, 33),
+	Element = Color3.fromRGB(27, 30, 38),
+	ElementHover = Color3.fromRGB(34, 37, 47),
+	Track = Color3.fromRGB(44, 48, 62),
+	Stroke = Color3.fromRGB(42, 45, 57),
+	StrokeSoft = Color3.fromRGB(31, 34, 43),
+	Text = Color3.fromRGB(232, 236, 244),
+	SubText = Color3.fromRGB(150, 156, 172),
 	Dim = Color3.fromRGB(112, 119, 138),
 	Good = Color3.fromRGB(72, 205, 141),
 	Bad = Color3.fromRGB(238, 92, 100),
 	Gold = Color3.fromRGB(240, 178, 78),
 	Blue = Color3.fromRGB(96, 165, 250),
-	Row = Color3.fromRGB(20, 24, 34),
-	Header = Color3.fromRGB(24, 28, 39),
-	Inner = Color3.fromRGB(27, 31, 44),
-	InnerHover = Color3.fromRGB(36, 41, 57),
-	Field = Color3.fromRGB(17, 20, 29),
-	Bar = Color3.fromRGB(52, 59, 78),
-	Pill = Color3.fromRGB(20, 23, 32),
-	TabActive = Color3.fromRGB(32, 37, 51),
-	Option = Color3.fromRGB(17, 20, 28),
-	ChatBg = Color3.fromRGB(13, 15, 22),
-	Mine = Color3.fromRGB(28, 33, 46),
+	Row = Color3.fromRGB(24, 26, 32),
+	Header = Color3.fromRGB(23, 25, 31),
+	Inner = Color3.fromRGB(27, 30, 38),
+	InnerHover = Color3.fromRGB(35, 38, 48),
+	Field = Color3.fromRGB(17, 19, 25),
+	Bar = Color3.fromRGB(56, 61, 80),
+	Pill = Color3.fromRGB(22, 24, 30),
+	TabActive = Color3.fromRGB(33, 36, 46),
+	Option = Color3.fromRGB(19, 21, 27),
+	ChatBg = Color3.fromRGB(15, 17, 23),
+	Mine = Color3.fromRGB(29, 32, 42),
 	Mention = Color3.fromRGB(38, 33, 22),
-	Box = Color3.fromRGB(13, 15, 22),
+	Box = Color3.fromRGB(15, 17, 23),
 	Radius = { window = 12, card = 10, control = 8, chip = 6, tile = 7 },
 	Gutter = 14,
 	ToggleOn = Color3.fromRGB(245, 247, 252),
-	ToggleOff = Color3.fromRGB(24, 28, 39),
-	ToggleOffStroke = Color3.fromRGB(48, 55, 74),
-	OffText = Color3.fromRGB(110, 118, 138),
-	KnobOff = Color3.fromRGB(128, 137, 160),
+	ToggleOff = Color3.fromRGB(27, 30, 38),
+	ToggleOffStroke = Color3.fromRGB(50, 56, 74),
+	OffText = Color3.fromRGB(118, 125, 144),
+	KnobOff = Color3.fromRGB(136, 144, 166),
 	SliderFill = Color3.fromRGB(245, 247, 252),
 	KnobOn = Color3.fromRGB(22, 24, 30),
 	Current = "MX HUB",
 }
 
 local presets = {
-	{ "MX HUB", Color3.fromRGB(14, 17, 24), Color3.fromRGB(245, 247, 252), true },
+	{ "MX HUB", Color3.fromRGB(20, 22, 27), Color3.fromRGB(245, 247, 252), true },
 	{ "Emerald", Color3.fromRGB(18, 18, 18), Color3.fromRGB(30, 215, 96) },
 	{ "Indigo", Color3.fromRGB(30, 31, 34), Color3.fromRGB(88, 101, 242) },
 	{ "Midnight Purple", Color3.fromRGB(12, 9, 22), Color3.fromRGB(139, 92, 246) },
@@ -270,7 +270,7 @@ do
 				end
 			end
 		end
-		for _, name in ipairs({ "MXHUBUI", "ToggleUIButton", "NotifyGui", "PopupGui", "MXHUBWatermark" }) do
+		for _, name in ipairs({ "MXHUBUI", "ToggleUIButton", "PopupGui", "MXHUBWatermark" }) do
 			local root = sv.coregui:FindFirstChild(name)
 			if root then
 				for _, d in ipairs(root:GetDescendants()) do
@@ -4243,7 +4243,6 @@ if getgenv().MXHUB_Running then
 			"MXHUBUI",
 			"ToggleUIButton",
 			"PopupGui",
-			"NotifyGui",
 		}) do
 			local old = sv.coregui:FindFirstChild(name)
 			if old then
@@ -5220,7 +5219,7 @@ local function makedraggable(topbar, object)
 end
 
 local MXHUB = {}
-MXHUB.Version = "4.2.0"
+MXHUB.Version = "4.3.0"
 MXHUB.Theme = theme.Api -- Names(), Accents(), ParseHex(text), Set({ Preset, Accent, Mode })
 
 function MXHUB:RegisterIcon(name, asset)
@@ -5284,269 +5283,6 @@ MXHUB.IconAssets = iconnames
 MXHUB.IconAliases = iconaliases
 MXHUB.IconRegistryCount = (function() local n = 0; for _ in pairs(MXHUB.IconAssets) do n += 1 end; return n end)()
 MXHUB.IconRegistryVersion = "lucide-sheet+1457-registry-2026-11-06"
-
-function MXHUB.ToastHolder()
-	local gui = sv.coregui:FindFirstChild("NotifyGui")
-	if not gui then
-		gui = instance.screengui(sv.coregui)
-		gui.Name = "NotifyGui"
-		gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		gui.ResetOnSpawn = false
-		gui.DisplayOrder = 9999
-	end
-
-	local holder = gui:FindFirstChild("NotifyTopLeft")
-	if holder then
-		return holder
-	end
-
-	holder = instance.frame(gui)
-	holder.Name = "NotifyTopLeft"
-	holder.BackgroundTransparency = 1
-	holder.BorderSizePixel = 0
-	holder.AnchorPoint = Vector2.new(0, 0)
-	holder.Position = UDim2.new(0, 14, 0, 14)
-	holder.Size = UDim2.new(0, 250, 1, -28)
-	local layout = instance.uilistlayout(holder)
-	layout.SortOrder = Enum.SortOrder.LayoutOrder
-	layout.FillDirection = Enum.FillDirection.Vertical
-	layout.VerticalAlignment = Enum.VerticalAlignment.Top
-	layout.Padding = UDim.new(0, 6)
-	return holder
-end
-
-MXHUB.ToastState = {
-	Serial = 0,
-	Max = 6,
-	Slide = TweenInfo.new(0.32, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-	Leave = TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
-}
-
-local function buildnotify(cfg, top)
-	elevate()
-	local holder = MXHUB.ToastHolder()
-	local toaststate = MXHUB.ToastState
-	toaststate.Serial = toaststate.Serial + 1
-
-	local width = 250
-	local textsize = tonumber(cfg.TextSize) or 12
-	local titlesize = tonumber(cfg.HeaderSize) or 13
-	local accent = typeof(cfg.Color) == "Color3" and cfg.Color or theme.Accent
-	local content = tostring(cfg.Content or "")
-	local desc = tostring(cfg.Description or "")
-	if desc == "Notification" then
-		desc = ""
-	end
-
-	local toasts = {}
-	for _, child in ipairs(holder:GetChildren()) do
-		if child:IsA("Frame") then
-			toasts[#toasts + 1] = child
-		end
-	end
-	while #toasts >= toaststate.Max do
-		local oldest = table.remove(toasts, 1)
-		pcall(function()
-			oldest:Destroy()
-		end)
-	end
-
-	local hasicon = hasimage(cfg.Icon)
-	local textx = hasicon and 38 or 14
-	local bodyheight = 0
-	if content ~= "" then
-		bodyheight = math.max(textsize, textheight(content, textsize, Enum.Font.Gotham, width - textx - 14, textsize * 8))
-	end
-	local height = 9 + 16 + (bodyheight > 0 and (3 + bodyheight) or 0) + 12
-
-	local wrapper = instance.frame(holder)
-	wrapper.Name = "Toast"
-	wrapper.LayoutOrder = toaststate.Serial
-	wrapper.BackgroundTransparency = 1
-	wrapper.BorderSizePixel = 0
-	wrapper.Size = UDim2.new(1, 0, 0, height)
-
-	local card = instance.frame(wrapper)
-	card.Name = "Card"
-	card.BackgroundColor3 = theme.Card
-	card.BackgroundTransparency = 0.05
-	card.BorderSizePixel = 0
-	card.ClipsDescendants = true
-	card.Position = UDim2.new(-1.25, 0, 0, 0)
-	card.Size = UDim2.new(1, 0, 1, 0)
-	instance.uicorner(card).CornerRadius = UDim.new(0, 6)
-	local cardstroke = instance.uistroke(card)
-	cardstroke.Color = Color3.fromRGB(255, 255, 255)
-	cardstroke.Transparency = 0.92
-	cardstroke.Thickness = 1
-
-	local strip = instance.frame(card)
-	strip.Name = "Accent"
-	strip.BackgroundColor3 = accent
-	strip.BorderSizePixel = 0
-	strip.Size = UDim2.new(0, 3, 1, 0)
-
-	local title = instance.textlabel(card)
-	title.Name = "Title"
-	title.BackgroundTransparency = 1
-	title.BorderSizePixel = 0
-	title.Font = Enum.Font.GothamBold
-	title.RichText = true
-	title.TextSize = titlesize
-	title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	title.TextXAlignment = Enum.TextXAlignment.Left
-	title.TextTruncate = Enum.TextTruncate.AtEnd
-	title.Position = UDim2.new(0, textx, 0, 9)
-	title.Size = UDim2.new(1, -(textx + 10), 0, 16)
-	local titletext = escaperich(cfg.Title or "MX HUB")
-	if desc ~= "" then
-		titletext = titletext .. '  <font color="' .. hexcolor(accent) .. '">' .. escaperich(desc) .. "</font>"
-	end
-	title.Text = titletext
-
-	local body
-	if bodyheight > 0 then
-		body = instance.textlabel(card)
-		body.Name = "Body"
-		body.BackgroundTransparency = 1
-		body.BorderSizePixel = 0
-		body.Font = Enum.Font.Gotham
-		body.Text = content
-		body.TextSize = textsize
-		body.TextColor3 = theme.SubText
-		body.TextWrapped = true
-		body.TextXAlignment = Enum.TextXAlignment.Left
-		body.TextYAlignment = Enum.TextYAlignment.Top
-		body.Position = UDim2.new(0, textx, 0, 28)
-		body.Size = UDim2.new(1, -(textx + 10), 0, bodyheight)
-	end
-
-	local toasticon
-	local function seticon(value)
-		local has = hasimage(value)
-		if has and not toasticon then
-			toasticon = instance.imagelabel(card)
-			toasticon.Name = "Icon"
-			toasticon.BackgroundTransparency = 1
-			toasticon.Position = UDim2.new(0, 14, 0, 9)
-			toasticon.Size = UDim2.new(0, 16, 0, 16)
-			toasticon.ImageColor3 = accent
-		end
-		if toasticon then
-			toasticon.Visible = has
-			if has then
-				applyicon(toasticon, value, 48)
-			end
-		end
-	end
-	seticon(cfg.Icon)
-
-	local barback = instance.frame(card)
-	barback.Name = "TimerTrack"
-	barback.BackgroundColor3 = accent
-	barback.BackgroundTransparency = 0.8
-	barback.BorderSizePixel = 0
-	barback.Position = UDim2.new(0, 0, 1, -2)
-	barback.Size = UDim2.new(1, 0, 0, 2)
-	local bar = instance.frame(barback)
-	bar.Name = "Timer"
-	bar.BackgroundColor3 = accent
-	bar.BorderSizePixel = 0
-	bar.Size = UDim2.new(1, 0, 1, 0)
-
-	local hit = instance.textbutton(card)
-	hit.Name = "Hit"
-	hit.Text = ""
-	hit.BackgroundTransparency = 1
-	hit.BorderSizePixel = 0
-	hit.Size = UDim2.new(1, 0, 1, 0)
-	hit.ZIndex = 5
-
-	local handle = {}
-	local closed = false
-
-	function handle:Close()
-		if closed then
-			return
-		end
-		closed = true
-		pcall(function()
-			sv.ts:Create(card, toaststate.Leave, { Position = UDim2.new(-1.25, 0, 0, 0) }):Play()
-			sv.ts:Create(wrapper, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(1, 0, 0, 0) }):Play()
-		end)
-		task.delay(0.27, function()
-			pcall(function()
-				wrapper:Destroy()
-			end)
-		end)
-	end
-
-	function handle:SetIcon(value)
-		seticon(value)
-	end
-
-	function handle:SetContent(text)
-		if body then
-			body.Text = tostring(text or "")
-		end
-	end
-
-	hit.Activated:Connect(function()
-		handle:Close()
-	end)
-
-	sv.ts:Create(card, toaststate.Slide, { Position = UDim2.new(0, 0, 0, 0) }):Play()
-	local life = math.max(0.5, tonumber(cfg.Delay) or 4)
-	sv.ts:Create(bar, TweenInfo.new(life, Enum.EasingStyle.Linear), { Size = UDim2.new(0, 0, 1, 0) }):Play()
-
-	return handle
-end
-
-function MXHUB:MakeNotify(notifyconfig)
-	notifyconfig = notifyconfig or {}
-	notifyconfig.Title = tostring(notifyconfig.Title or "MX HUB")
-	notifyconfig.Description = tostring(notifyconfig.Description or "Notification")
-	notifyconfig.Content = tostring(notifyconfig.Content or "Content")
-	notifyconfig.Color = notifyconfig.Color or theme.Accent
-	notifyconfig.Time = tonumber(notifyconfig.Time) or 0.5
-	notifyconfig.Delay = tonumber(notifyconfig.Delay) or 5
-
-	if MXHUB.NotificationsEnabled == false and not notifyconfig.Force then
-		return {
-			Close = function() end,
-			SetContent = function() end,
-		}
-	end
-
-	local handle = buildnotify(notifyconfig, false)
-	task.delay(notifyconfig.Delay, function()
-		handle:Close()
-	end)
-	return handle
-end
-
-local function mxhub(msg, delay, color, title, desc)
-	return MXHUB:MakeNotify({
-		Title = title or "MX HUB",
-		Description = desc or "Notification",
-		Content = msg or "Content",
-		Color = color or theme.Accent,
-		Delay = delay or 4,
-	})
-end
-
-function MXHUB:Notify(notifyconfig)
-	notifyconfig = notifyconfig or {}
-	return MXHUB:MakeNotify({
-		Title = notifyconfig.Title or notifyconfig[1] or "MX HUB",
-		Description = notifyconfig.Description or notifyconfig.Desc or "Notification",
-		Content = notifyconfig.Content or notifyconfig.Text or notifyconfig[2] or "",
-		Color = notifyconfig.Color or theme.Accent,
-		Delay = tonumber(notifyconfig.Duration or notifyconfig.Delay or notifyconfig.Time or notifyconfig[3]) or 4,
-		Icon = notifyconfig.Icon,
-		Force = notifyconfig.Force,
-	})
-end
 
 local WatermarkGui
 
@@ -6157,6 +5893,173 @@ local function characterview(frame, options)
 	view:Render()
 	return view
 end
+local glass = { users = 0, effect = nil }
+
+local GLASS_NAME = "MXLIB_Glass"
+local GLASS_DEPTH = 0.15
+
+do
+	local stale = game:GetService("Lighting"):FindFirstChild(GLASS_NAME)
+	if stale then
+		stale:Destroy()
+	end
+	local camera = workspace.CurrentCamera
+	local leftover = camera and camera:FindFirstChild(GLASS_NAME)
+	while leftover do
+		leftover:Destroy()
+		leftover = camera:FindFirstChild(GLASS_NAME)
+	end
+end
+
+local function glassrect(camera, topleft, bottomright, depth)
+	local cframe = camera.CFrame
+	local look = cframe.LookVector
+	local function project(point)
+		local ray = camera:ScreenPointToRay(point.X, point.Y, 0)
+		local reach = (depth - (ray.Origin - cframe.Position):Dot(look)) / ray.Direction:Dot(look)
+		return cframe:PointToObjectSpace(ray.Origin + ray.Direction * reach)
+	end
+	local first, second = project(topleft), project(bottomright)
+	return Vector2.new((first.X + second.X) / 2, (first.Y + second.Y) / 2),
+		Vector2.new(math.abs(second.X - first.X), math.abs(second.Y - first.Y))
+end
+
+local function sharedeffect()
+	if glass.effect and glass.effect.Parent then
+		return glass.effect
+	end
+	local effect = Instance.new("DepthOfFieldEffect")
+	effect.Name = GLASS_NAME
+	effect.FarIntensity = 0
+	effect.NearIntensity = 1
+	effect.FocusDistance = 0
+	effect.InFocusRadius = 1000
+	effect.Parent = game:GetService("Lighting")
+	glass.effect = effect
+	return effect
+end
+
+local function glassblur(frame)
+	if not workspace.CurrentCamera then
+		return nil
+	end
+
+	local part = Instance.new("Part")
+	part.Name = GLASS_NAME
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+	part.Material = Enum.Material.SmoothPlastic
+	part.Color = Color3.new(0, 0, 0)
+	part.Transparency = 1
+	part.Size = Vector3.new(0.01, 0.01, 0.01)
+
+	sharedeffect()
+	glass.users += 1
+
+	local alive = true
+	local connections = {}
+	local cameraconnections = {}
+
+	local function isvisible()
+		if not frame:IsDescendantOf(game) then
+			return false
+		end
+		local node = frame
+		while node do
+			if node:IsA("ScreenGui") then
+				return node.Enabled
+			end
+			if node:IsA("GuiObject") and not node.Visible then
+				return false
+			end
+			node = node.Parent
+		end
+		return false
+	end
+
+	local function update()
+		local camera = workspace.CurrentCamera
+		if not alive or not camera then
+			return
+		end
+		if not isvisible() or frame.AbsoluteSize.X <= 0 or frame.AbsoluteSize.Y <= 0 then
+			part.Transparency = 1
+			return
+		end
+		local topleft = frame.AbsolutePosition
+		local center, size = glassrect(camera, topleft, topleft + frame.AbsoluteSize, GLASS_DEPTH)
+		part.Parent = camera
+		part.Size = Vector3.new(math.max(size.X, 0.001), math.max(size.Y, 0.001), 0.001)
+		part.CFrame = camera.CFrame * CFrame.new(center.X, center.Y, -GLASS_DEPTH)
+		part.Transparency = 0.97
+	end
+
+	local function safeupdate()
+		local ok = pcall(update)
+		if not ok then
+			part.Transparency = 1
+		end
+	end
+
+	local function bindcamera()
+		for _, connection in ipairs(cameraconnections) do
+			connection:Disconnect()
+		end
+		table.clear(cameraconnections)
+		local camera = workspace.CurrentCamera
+		if not camera then
+			return
+		end
+		for _, property in ipairs({ "CFrame", "ViewportSize", "FieldOfView" }) do
+			cameraconnections[#cameraconnections + 1] = camera:GetPropertyChangedSignal(property):Connect(safeupdate)
+		end
+		safeupdate()
+	end
+
+	for _, property in ipairs({ "AbsolutePosition", "AbsoluteSize" }) do
+		connections[#connections + 1] = frame:GetPropertyChangedSignal(property):Connect(safeupdate)
+	end
+	local node = frame
+	while node do
+		if node:IsA("ScreenGui") then
+			connections[#connections + 1] = node:GetPropertyChangedSignal("Enabled"):Connect(safeupdate)
+			break
+		end
+		if node:IsA("GuiObject") then
+			connections[#connections + 1] = node:GetPropertyChangedSignal("Visible"):Connect(safeupdate)
+		end
+		node = node.Parent
+	end
+	connections[#connections + 1] = workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(bindcamera)
+	bindcamera()
+
+	local controller = {}
+	function controller:Destroy()
+		if not alive then
+			return
+		end
+		alive = false
+		for _, connection in ipairs(connections) do
+			connection:Disconnect()
+		end
+		for _, connection in ipairs(cameraconnections) do
+			connection:Disconnect()
+		end
+		part:Destroy()
+		glass.users -= 1
+		if glass.users <= 0 and glass.effect then
+			glass.effect:Destroy()
+			glass.effect = nil
+		end
+	end
+	frame.Destroying:Connect(function()
+		controller:Destroy()
+	end)
+	return controller
+end
 local function buildhomepage(page, ctx)
 	local Players = game:GetService("Players")
 	local lp = Players.LocalPlayer
@@ -6221,15 +6124,8 @@ local function buildhomepage(page, ctx)
 		end)
 	end
 
-	local function notify(title, content)
-		pcall(function()
-			MXHUB:Notify({ Title = title, Content = content, Duration = 4 })
-		end)
-	end
-
-	local function copy(text, done)
-		local ok = clipboardwrite(text)
-		notify("MX HUB", ok and done or "Clipboard is not supported by this executor")
+	local function copy(text)
+		clipboardwrite(text)
 	end
 
 	local gamename = tostring(ctx.Footer or "")
@@ -6407,7 +6303,7 @@ local function buildhomepage(page, ctx)
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, jobid, lp)
 		end)
 		if not ok then
-			notify("MX HUB", "Teleport failed: " .. tostring(err))
+			warn("Teleport failed:", err)
 		end
 	end
 
@@ -6421,7 +6317,7 @@ local function buildhomepage(page, ctx)
 		end
 	end)
 	actionbutton("copy", "Job ID", 2, function()
-		copy(tostring(game.JobId), "Job ID copied")
+		copy(tostring(game.JobId))
 	end)
 
 	local jobid = tostring(game.JobId)
@@ -6455,7 +6351,7 @@ local function buildhomepage(page, ctx)
 		if ctx.OpenCommunity then
 			ctx.OpenCommunity()
 		else
-			copy(discordurl, "Link copied")
+			copy(discordurl)
 		end
 	end)
 	local linedivider = instance.frame(links)
@@ -6744,12 +6640,6 @@ local function buildcommunitypage(page, ctx)
 		return order
 	end
 
-	local function notify(content)
-		pcall(function()
-			MXHUB:Notify({ Title = "MX HUB", Content = content, Duration = 4 })
-		end)
-	end
-
 	local function corner(object, radius)
 		instance.uicorner(object).CornerRadius = UDim.new(0, radius)
 	end
@@ -6905,7 +6795,6 @@ local function buildcommunitypage(page, ctx)
 		local busy = false
 		button.Activated:Connect(function()
 			local copied = clipboardwrite(spec.url)
-			notify(copied and (spec.done .. " link copied") or spec.url)
 			if busy then
 				return
 			end
@@ -6928,7 +6817,6 @@ local function buildcommunitypage(page, ctx)
 		description = "Join to ask questions, get help, talk about scripts, and hear about the latest updates first.",
 		url = ctx.Discord,
 		button = "Copy Discord Invite",
-		done = "Discord",
 		accent = Color3.fromRGB(88, 101, 242),
 		accentText = Color3.fromRGB(255, 255, 255),
 	})
@@ -6939,7 +6827,6 @@ local function buildcommunitypage(page, ctx)
 		description = "Help us keep building and updating quality premium scripts, so they stay free and keyless for everyone.",
 		url = ctx.Donate,
 		button = "Copy Donate Link",
-		done = "Donate",
 		accent = theme.Gold,
 		accentText = Color3.fromRGB(20, 16, 6),
 	})
@@ -6973,7 +6860,6 @@ MXHUB.I18n = {
 			["Interface"] = "Antarmuka",
 			["Lock UI"] = "Kunci UI",
 			["Show Watermark"] = "Tampilkan Watermark",
-			["Notifications"] = "Notifikasi",
 			["Hide Username"] = "Sembunyikan Nama",
 			["FPS Boost"] = "Peningkat FPS",
 			["Mute Game Sound"] = "Bisukan Suara Game",
@@ -7415,8 +7301,10 @@ function MXHUB:Window(guiconfig)
 		for _, glass in ipairs({ sidepanel, sidefill }) do
 			local fade = instance.uigradient(glass)
 			fade.Rotation = 90
-			fade.Transparency = NumberSequence.new(0.2, 0.4)
+			fade.Transparency = NumberSequence.new(0.08, 0.2)
 		end
+
+		glassblur(sidepanel)
 
 		if not bgAsset then
 			local contentpanel = instance.frame(main)
@@ -7485,12 +7373,7 @@ function MXHUB:Window(guiconfig)
 		end)
 		savebutton.Activated:Connect(function()
 			pcall(pesseffect, savebutton)
-			local name = config:savecurrent()
-			if name then
-				mxhub("Config saved: " .. name, 3, theme.Good, "MX HUB", "Config")
-			else
-				mxhub("Could not save the config", 3, theme.Bad, "MX HUB", "Config")
-			end
+			config:savecurrent()
 		end)
 
 		local subbar = instance.frame(top)
@@ -7795,7 +7678,7 @@ function MXHUB:Window(guiconfig)
 		end
 
 		for _, child in ipairs(sv.coregui:GetChildren()) do
-			if child.Name == "PopupGui" or child.Name == "NotifyGui" then
+			if child.Name == "PopupGui" then
 				pcall(function()
 					child:Destroy()
 				end)
@@ -8762,7 +8645,6 @@ function MXHUB:Window(guiconfig)
 						return
 					end
 					if reserved[code] then
-						MXHUB:Notify({ Title = "MX HUB", Description = "Menu Key", Content = code.Name .. " is reserved, pick another key.", Duration = 3, Color = theme.Bad })
 						refreshvalues()
 						return
 					end
@@ -10055,13 +9937,7 @@ function MXHUB:Window(guiconfig)
 					warn("Tab link Callback error:", err)
 				end
 			elseif linkconfig.Link then
-				if clipboardwrite(linkconfig.Link) then
-					MXHUB:Notify({
-						Title = tostring(linkconfig.Name or "Link"),
-						Content = "Link copied to clipboard.",
-						Duration = 3,
-					})
-				end
+				clipboardwrite(linkconfig.Link)
 			end
 		end)
 
@@ -13218,7 +13094,6 @@ function MXHUB:Window(guiconfig)
 						local name = input and input.Value or ""
 
 						if name == "" then
-							mxhub("Config name cannot be empty", 3, theme.Bad)
 							return
 						end
 
@@ -13226,18 +13101,15 @@ function MXHUB:Window(guiconfig)
 							selectedconfigname = name
 							refreshconfiglist()
 							updatestatus()
-							mxhub("Config saved: " .. name, 3, theme.Good)
 						end
 					end,
 					SubCallback = function()
 						if selectedconfigname == "" then
-							mxhub("Select config first", 3, theme.Bad)
 							return
 						end
 
 						if config:load(selectedconfigname) then
 							updatestatus()
-							mxhub("Config loaded: " .. selectedconfigname, 3, theme.Good)
 						end
 					end,
 				})
@@ -13247,7 +13119,6 @@ function MXHUB:Window(guiconfig)
 					SubTitle = "Override Config",
 					Callback = function()
 						if selectedconfigname == "" then
-							mxhub("Select config first", 3, theme.Bad)
 							return
 						end
 
@@ -13258,19 +13129,16 @@ function MXHUB:Window(guiconfig)
 								configdropdown:Refresh(config:getlist(), false)
 							end
 							updatestatus()
-							mxhub("Config deleted", 3, theme.Good)
 						end
 					end,
 					SubCallback = function()
 						if selectedconfigname == "" then
-							mxhub("Select config first", 3, theme.Bad)
 							return
 						end
 
 						if config:save(selectedconfigname) then
 							refreshconfiglist()
 							updatestatus()
-							mxhub("Config overridden: " .. selectedconfigname, 3, theme.Good)
 						end
 					end,
 				})
@@ -13287,19 +13155,16 @@ function MXHUB:Window(guiconfig)
 					SubTitle = "Clear Auto Load",
 					Callback = function()
 						if selectedconfigname == "" then
-							mxhub("Select config first", 3, theme.Bad)
 							return
 						end
 
 						if config:setautoload(selectedconfigname) then
 							autostatus:SetContent("Auto Load: " .. selectedconfigname)
-							mxhub("Auto load set: " .. selectedconfigname, 3, theme.Good)
 						end
 					end,
 					SubCallback = function()
 						if config:clearautoload() then
 							autostatus:SetContent("Auto Load: None")
-							mxhub("Auto load cleared", 3, theme.Good)
 						end
 					end,
 				})
@@ -13312,11 +13177,7 @@ function MXHUB:Window(guiconfig)
 						config.data._version = config.version
 						local json = sv.http:JSONEncode(packconfig(config.data))
 
-						if clipboardwrite(json) then
-							mxhub("Config copied to clipboard", 3, theme.Good)
-						else
-							mxhub("Clipboard is not supported by this executor", 3, theme.Bad)
-						end
+						clipboardwrite(json)
 					end,
 				})
 
@@ -13332,7 +13193,6 @@ function MXHUB:Window(guiconfig)
 						local json = input and input.Value
 
 						if not json or json == "" then
-							mxhub("External config JSON is empty", 3, theme.Bad)
 							return
 						end
 
@@ -13344,10 +13204,8 @@ function MXHUB:Window(guiconfig)
 
 						if ok then
 							updatestatus()
-							mxhub("External config loaded successfully", 3, theme.Good)
 						else
 							warn(err)
-							mxhub("Failed to load external JSON", 3, theme.Bad)
 						end
 					end,
 				})
@@ -13359,7 +13217,6 @@ function MXHUB:Window(guiconfig)
 					Callback = function()
 						config:reset()
 						updatestatus()
-						mxhub("All elements reset to default", 3, theme.Good)
 					end,
 				})
 
@@ -13464,14 +13321,6 @@ function MXHUB:Window(guiconfig)
 					end
 				end,
 			})
-			InterfaceSection:AddToggle({
-				Title = "Notifications",
-				Flag = "NotificationsEnabled",
-				Default = true,
-				Callback = function(state)
-					MXHUB.NotificationsEnabled = state ~= false
-				end,
-			})
 
 			local ToolsSection = ConfigTab:AddSection("Tools", true, "Left", "wrench")
 			ToolsSection:AddToggle({
@@ -13502,10 +13351,7 @@ function MXHUB:Window(guiconfig)
 				if not live then
 					return
 				end
-				local ok, message = theme.Api.Set(patch)
-				if not ok then
-					mxhub(message, 4, theme.Bad, "MX HUB", "Theme")
-				end
+				theme.Api.Set(patch)
 			end
 
 			ThemeSection:AddDropdown({
@@ -13568,8 +13414,6 @@ function MXHUB:Window(guiconfig)
 					local color = theme.Api.ParseHex(text)
 					if color then
 						apply({ Accent = color })
-					else
-						mxhub("Accent needs a hex color like #1ED760", 4, theme.Bad, "MX HUB", "Theme")
 					end
 				end,
 			})
@@ -13577,8 +13421,7 @@ function MXHUB:Window(guiconfig)
 			ThemeSection:AddButton({
 				Title = "Reset Theme",
 				Callback = function()
-					local ok, message = theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
-					mxhub(message, 3, ok and theme.Good or theme.Bad, "MX HUB", "Theme")
+					theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
 				end,
 			})
 		end
@@ -13597,9 +13440,6 @@ function MXHUB:Window(guiconfig)
 
 	buildingsystem = false
 
-	tabs.Notify = function(self, ...)
-		return MXHUB:Notify(...)
-	end
 	tabs.Destroy = function()
 		guifunc:DestroyGui()
 	end
@@ -13886,16 +13726,6 @@ function apiwindow:CreateTab(opts)
 		Category = self._category,
 	})
 	return setmetatable({ _window = self, _tab = tab, _name = name }, apitab)
-end
-
-function apiwindow:Notify(opts)
-	opts = type(opts) == "table" and opts or { content = opts }
-	return MXHUB:Notify({
-		Title = opts.title or "MX HUB",
-		Content = opts.content or "",
-		Duration = opts.duration or 4,
-		Icon = opts.icon,
-	})
 end
 
 function apiwindow:Popup(opts)

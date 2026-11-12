@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.3.0
+
+Breaking
+- Sistem notifikasi dihapus seluruhnya: `window:Notify`, `MXHUB:Notify`, toast, dan semua pesan otomatis (config tersimpan, link tersalin, tema tidak valid, dll.)
+- Contoh dan README tidak lagi memakai `Notify`
+
+Perbaikan
+- URL pada contoh dan README diperbaiki menjadi `MXHUBOFCL/MXHUB`
+
+## 4.2.1
+
+- Sidebar hanya sedikit transparan (gradasi 8% sampai 20%) dan kini mengaburkan game di belakangnya (`DepthOfFieldEffect` plus `Part` tipis di depan kamera, mengikuti posisi dan ukuran sidebar; tanpa loop per frame)
+- Blur mati sendiri saat jendela disembunyikan atau di-unload, dan ikut mati saat FPS Boost aktif
+- Toggle Notifications dihapus dari Settings; notifikasi selalu aktif
+- Palet MX HUB disesuaikan: gelap dingin, kontras teks dan baris lebih jelas
+
 ## 4.2.0
 
 - Lib dinamai MXLIB; hasil build menjadi `MXLIB.lua` dan tipe menjadi `MXLIB.d.luau`; `getgenv().MXLIB` ditambahkan sebagai alias `getgenv().MXHUB`

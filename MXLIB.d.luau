@@ -93,7 +93,6 @@ export type Window = {
 	flags: { [string]: Element },
 	CreateSection: (self: Window, config: { name: string }) -> Window,
 	CreateTab: (self: Window, config: { name: string, icon: Icon? }) -> Tab,
-	Notify: (self: Window, config: { title: string?, content: string?, duration: number?, icon: Icon? }) -> { SetIcon: (self: any, value: Icon?) -> (), Close: (self: any) -> () },
 	Popup: (self: Window, config: PopupConfig) -> { Close: () -> () },
 	ChangeTheme: (self: Window, name: string, accent: (Color3 | string)?) -> (boolean, string),
 	SetLanguage: (self: Window, name: string) -> (),

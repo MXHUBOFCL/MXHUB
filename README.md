@@ -24,7 +24,7 @@ src/
   themes/        base.lua, accents.lua, presets/ (satu file per tema)
   icons/         resolver ikon dan data/
   i18n/          kamus terjemahan
-  components/    notifikasi, popup, watermark
+  components/    popup, watermark, glass blur
   pages/         Community dan Home
   window/        engine jendela, tab/, items/, builtin/
 ```
@@ -61,7 +61,7 @@ local window = MXLIB:CreateWindow({
 | `language` | Bahasa awal, misalnya `"fr"` |
 | `configFolder` | Folder config di `MX HUB/` |
 
-Tab Settings berisi Interface, Tools (Anti AFK, FPS Boost), Theme, dan Config. Handle resize tidak terlihat, tetapi jendela bisa diubah ukurannya dari tepi kanan, tepi bawah, dan pojok kanan bawah.
+Tab Settings berisi Interface (Lock UI, Watermark), Tools (Anti AFK, FPS Boost), Theme, dan Config. Handle resize tidak terlihat, tetapi jendela bisa diubah ukurannya dari tepi kanan, tepi bawah, dan pojok kanan bawah.
 
 Kartu pengguna di sidebar (avatar, nama, `@username`) membuka panel: Language, Menu Scale, Style, Theme, Menu Key, Unload.
 
@@ -89,7 +89,7 @@ icon = "zap"
 
 Angka dan string angka otomatis menjadi `rbxassetid://`. Nama ikon memakai 1.573 ikon Lucide yang sudah tertanam di lib (tanpa unduhan). `MXLIB.Image.Normalize(value)` mengembalikan string asset hasil normalisasi, atau `nil` bila tidak valid.
 
-Ikon didukung pada: tab, section, tombol, toggle, slider, dropdown, input, keybind, color picker, paragraf, notifikasi, dan kotak popup. Semuanya dirender lewat `ImageLabel` pada `.Image`.
+Ikon didukung pada: tab, section, tombol, toggle, slider, dropdown, input, keybind, color picker, paragraf, dan kotak popup. Semuanya dirender lewat `ImageLabel` pada `.Image`.
 
 Gambar yang gagal dimuat diganti ikon `image-off`. Nilai kosong atau tidak valid tidak menimbulkan error.
 
@@ -101,8 +101,6 @@ toggle:SetIcon("rbxassetid://123")
 toggle:SetIconColor(Color3.fromRGB(96, 205, 255))
 tab:SetIcon("settings")
 tab:SetSectionIcon("palette")
-local toast = window:Notify({ title = "Hi", content = "...", icon = "bell" })
-toast:SetIcon("check")
 ```
 
 Catatan: Decal ID biasanya ikut dirender Roblox lewat `rbxassetid://`, tapi jika gambar tampil kosong gunakan Image ID dari decal itu.
@@ -138,10 +136,9 @@ Catatan perilaku:
 - Color picker tidak punya slider alpha, `alpha` selalu `1`.
 - `numeric = true` pada input menolak teks bukan angka dan mengembalikan nilai terakhir.
 
-## Notifikasi, popup, tema, bahasa
+## Popup, tema, bahasa
 
 ```lua
-window:Notify({ title = "Saved", content = "Config tersimpan.", duration = 5 })
 window:Popup({ title = "What's new", subtitle = "2.1", boxes = { { title = "A", description = "B" } }, options = { { text = "Got it", style = "primary" } } })
 window:ChangeTheme("ember")
 window:SetLanguage("fr")
@@ -163,3 +160,7 @@ MXLIB berlisensi MIT (`LICENSE`). Data ikon Lucide dan koordinat sprite dari luc
 ## Aset
 
 Semua id aset Roblox yang dimuat lib ada di `src/core/assets.lua`. Untuk memakai aset milik sendiri, unggah `assets/rounded-slice.png` dan logo Anda ke akun Roblox Anda, lalu ganti id-nya di file itu dan jalankan `python3 build.py`.
+
+## Blur sidebar
+
+Sidebar mengaburkan game di belakangnya lewat `DepthOfFieldEffect` dan satu `Part` tipis di depan kamera. Efek ini ikut mati saat jendela disembunyikan, di-unload, atau FPS Boost aktif. Area blur berbentuk persegi, jadi sudut membulat sidebar bisa menampakkan sedikit tepi kabur.
