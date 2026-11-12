@@ -28,14 +28,6 @@ if guiconfig.Settings then
 				end
 			end,
 		})
-		InterfaceSection:AddToggle({
-			Title = "Notifications",
-			Flag = "NotificationsEnabled",
-			Default = true,
-			Callback = function(state)
-				MXHUB.NotificationsEnabled = state ~= false
-			end,
-		})
 
 		local ToolsSection = ConfigTab:AddSection("Tools", true, "Left", "wrench")
 		ToolsSection:AddToggle({
@@ -66,10 +58,7 @@ if guiconfig.Settings then
 			if not live then
 				return
 			end
-			local ok, message = theme.Api.Set(patch)
-			if not ok then
-				mxhub(message, 4, theme.Bad, "MX HUB", "Theme")
-			end
+			theme.Api.Set(patch)
 		end
 
 		ThemeSection:AddDropdown({
@@ -132,8 +121,6 @@ if guiconfig.Settings then
 				local color = theme.Api.ParseHex(text)
 				if color then
 					apply({ Accent = color })
-				else
-					mxhub("Accent needs a hex color like #1ED760", 4, theme.Bad, "MX HUB", "Theme")
 				end
 			end,
 		})
@@ -141,8 +128,7 @@ if guiconfig.Settings then
 		ThemeSection:AddButton({
 			Title = "Reset Theme",
 			Callback = function()
-				local ok, message = theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
-				mxhub(message, 3, ok and theme.Good or theme.Bad, "MX HUB", "Theme")
+				theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
 			end,
 		})
 	end
