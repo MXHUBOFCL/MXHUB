@@ -33,6 +33,15 @@ local function escaperich(text)
 	return (tostring(text or ""):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
 end
 
+local function stepfromfraction(fraction, min, max, step)
+	return math.floor((min + math.clamp(fraction, 0, 1) * (max - min)) / step + 0.5) * step
+end
+
+local function searchmatch(text, query)
+	query = tostring(query or ""):lower()
+	return query == "" or tostring(text):lower():find(query, 1, true) ~= nil
+end
+
 local function clipboardwrite(text)
 	local fn = setclipboard or toclipboard or set_clipboard or writeclipboard
 	if type(fn) ~= "function" and type(Clipboard) == "table" then
