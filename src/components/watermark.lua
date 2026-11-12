@@ -1,3 +1,5 @@
+local WatermarkGui
+
 function MXHUB:Watermark(wmconfig)
 	wmconfig = wmconfig or {}
 	local title = tostring(wmconfig.Title or "MX HUB")
