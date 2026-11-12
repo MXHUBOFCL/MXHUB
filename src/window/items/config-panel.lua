@@ -49,7 +49,6 @@ function items:AddConfigPanel()
 			local name = input and input.Value or ""
 
 			if name == "" then
-				mxhub("Config name cannot be empty", 3, theme.Bad)
 				return
 			end
 
@@ -57,18 +56,15 @@ function items:AddConfigPanel()
 				selectedconfigname = name
 				refreshconfiglist()
 				updatestatus()
-				mxhub("Config saved: " .. name, 3, theme.Good)
 			end
 		end,
 		SubCallback = function()
 			if selectedconfigname == "" then
-				mxhub("Select config first", 3, theme.Bad)
 				return
 			end
 
 			if config:load(selectedconfigname) then
 				updatestatus()
-				mxhub("Config loaded: " .. selectedconfigname, 3, theme.Good)
 			end
 		end,
 	})
@@ -78,7 +74,6 @@ function items:AddConfigPanel()
 		SubTitle = "Override Config",
 		Callback = function()
 			if selectedconfigname == "" then
-				mxhub("Select config first", 3, theme.Bad)
 				return
 			end
 
@@ -89,19 +84,16 @@ function items:AddConfigPanel()
 					configdropdown:Refresh(config:getlist(), false)
 				end
 				updatestatus()
-				mxhub("Config deleted", 3, theme.Good)
 			end
 		end,
 		SubCallback = function()
 			if selectedconfigname == "" then
-				mxhub("Select config first", 3, theme.Bad)
 				return
 			end
 
 			if config:save(selectedconfigname) then
 				refreshconfiglist()
 				updatestatus()
-				mxhub("Config overridden: " .. selectedconfigname, 3, theme.Good)
 			end
 		end,
 	})
@@ -118,19 +110,16 @@ function items:AddConfigPanel()
 		SubTitle = "Clear Auto Load",
 		Callback = function()
 			if selectedconfigname == "" then
-				mxhub("Select config first", 3, theme.Bad)
 				return
 			end
 
 			if config:setautoload(selectedconfigname) then
 				autostatus:SetContent("Auto Load: " .. selectedconfigname)
-				mxhub("Auto load set: " .. selectedconfigname, 3, theme.Good)
 			end
 		end,
 		SubCallback = function()
 			if config:clearautoload() then
 				autostatus:SetContent("Auto Load: None")
-				mxhub("Auto load cleared", 3, theme.Good)
 			end
 		end,
 	})
@@ -143,11 +132,7 @@ function items:AddConfigPanel()
 			config.data._version = config.version
 			local json = sv.http:JSONEncode(packconfig(config.data))
 
-			if clipboardwrite(json) then
-				mxhub("Config copied to clipboard", 3, theme.Good)
-			else
-				mxhub("Clipboard is not supported by this executor", 3, theme.Bad)
-			end
+			clipboardwrite(json)
 		end,
 	})
 
@@ -163,7 +148,6 @@ function items:AddConfigPanel()
 			local json = input and input.Value
 
 			if not json or json == "" then
-				mxhub("External config JSON is empty", 3, theme.Bad)
 				return
 			end
 
@@ -175,10 +159,8 @@ function items:AddConfigPanel()
 
 			if ok then
 				updatestatus()
-				mxhub("External config loaded successfully", 3, theme.Good)
 			else
 				warn(err)
-				mxhub("Failed to load external JSON", 3, theme.Bad)
 			end
 		end,
 	})
@@ -190,7 +172,6 @@ function items:AddConfigPanel()
 		Callback = function()
 			config:reset()
 			updatestatus()
-			mxhub("All elements reset to default", 3, theme.Good)
 		end,
 	})
 
