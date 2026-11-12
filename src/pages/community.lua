@@ -5,12 +5,6 @@ local function buildcommunitypage(page, ctx)
 		return order
 	end
 
-	local function notify(content)
-		pcall(function()
-			MXHUB:Notify({ Title = "MX HUB", Content = content, Duration = 4 })
-		end)
-	end
-
 	local function corner(object, radius)
 		instance.uicorner(object).CornerRadius = UDim.new(0, radius)
 	end
@@ -166,7 +160,6 @@ local function buildcommunitypage(page, ctx)
 		local busy = false
 		button.Activated:Connect(function()
 			local copied = clipboardwrite(spec.url)
-			notify(copied and (spec.done .. " link copied") or spec.url)
 			if busy then
 				return
 			end
@@ -189,7 +182,6 @@ local function buildcommunitypage(page, ctx)
 		description = "Join to ask questions, get help, talk about scripts, and hear about the latest updates first.",
 		url = ctx.Discord,
 		button = "Copy Discord Invite",
-		done = "Discord",
 		accent = Color3.fromRGB(88, 101, 242),
 		accentText = Color3.fromRGB(255, 255, 255),
 	})
@@ -200,7 +192,6 @@ local function buildcommunitypage(page, ctx)
 		description = "Help us keep building and updating quality premium scripts, so they stay free and keyless for everyone.",
 		url = ctx.Donate,
 		button = "Copy Donate Link",
-		done = "Donate",
 		accent = theme.Gold,
 		accentText = Color3.fromRGB(20, 16, 6),
 	})

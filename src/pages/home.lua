@@ -62,15 +62,8 @@ local function buildhomepage(page, ctx)
 		end)
 	end
 
-	local function notify(title, content)
-		pcall(function()
-			MXHUB:Notify({ Title = title, Content = content, Duration = 4 })
-		end)
-	end
-
-	local function copy(text, done)
-		local ok = clipboardwrite(text)
-		notify("MX HUB", ok and done or "Clipboard is not supported by this executor")
+	local function copy(text)
+		clipboardwrite(text)
 	end
 
 	local gamename = tostring(ctx.Footer or "")
@@ -248,7 +241,7 @@ local function buildhomepage(page, ctx)
 			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, jobid, lp)
 		end)
 		if not ok then
-			notify("MX HUB", "Teleport failed: " .. tostring(err))
+			warn("Teleport failed:", err)
 		end
 	end
 
@@ -262,7 +255,7 @@ local function buildhomepage(page, ctx)
 		end
 	end)
 	actionbutton("copy", "Job ID", 2, function()
-		copy(tostring(game.JobId), "Job ID copied")
+		copy(tostring(game.JobId))
 	end)
 
 	local jobid = tostring(game.JobId)
@@ -296,7 +289,7 @@ local function buildhomepage(page, ctx)
 		if ctx.OpenCommunity then
 			ctx.OpenCommunity()
 		else
-			copy(discordurl, "Link copied")
+			copy(discordurl)
 		end
 	end)
 	local linedivider = instance.frame(links)
