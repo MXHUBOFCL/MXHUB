@@ -184,7 +184,7 @@ do
 				end
 			end
 		end
-		for _, name in ipairs({ "MXHUBUI", "ToggleUIButton", "NotifyGui", "PopupGui", "MXHUBWatermark" }) do
+		for _, name in ipairs({ "MXHUBUI", "ToggleUIButton", "PopupGui", "MXHUBWatermark" }) do
 			local root = sv.coregui:FindFirstChild(name)
 			if root then
 				for _, d in ipairs(root:GetDescendants()) do
