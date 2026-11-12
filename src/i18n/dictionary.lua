@@ -27,7 +27,6 @@ MXHUB.I18n = {
 			["Interface"] = "Antarmuka",
 			["Lock UI"] = "Kunci UI",
 			["Show Watermark"] = "Tampilkan Watermark",
-			["Notifications"] = "Notifikasi",
 			["Hide Username"] = "Sembunyikan Nama",
 			["FPS Boost"] = "Peningkat FPS",
 			["Mute Game Sound"] = "Bisukan Suara Game",
