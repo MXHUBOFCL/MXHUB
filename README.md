@@ -63,7 +63,22 @@ local window = MXLIB:CreateWindow({
 
 Tab Settings berisi Interface (Lock UI, Watermark), Tools (Anti AFK, FPS Boost), Theme, dan Config. Handle resize tidak terlihat, tetapi jendela bisa diubah ukurannya dari tepi kanan, tepi bawah, dan pojok kanan bawah.
 
-Kartu pengguna di sidebar (avatar, nama, `@username`) membuka panel: Language, Menu Scale, Style, Theme, Menu Key, Unload.
+Kartu pengguna di sidebar (avatar, nama, `@username`) membuka panel di sampingnya:
+
+| Baris | Isi |
+| --- | --- |
+| Language | Daftar bahasa dengan kolom pencarian |
+| Menu Scale | Slider 50 sampai 150, diterapkan saat dilepas; chip `AUTO` mengembalikan ke otomatis |
+| Style | Warna aksen |
+| Theme | Daftar preset dengan titik warna |
+| Menu Key | Tombol buka/tutup jendela |
+| Unload | Menutup MXLIB |
+
+Menekan baris yang sedang terbuka menutup sub-menunya.
+
+### Config
+
+Tab Settings, sub-tab Configs: Profile (pilih, simpan, muat, timpa, hapus), Automation (Auto Save menyimpan config aktif 1,5 detik setelah perubahan; Load on Start), Share (salin dan impor JSON), dan Reset.
 
 ## Tab dan grup
 
@@ -145,7 +160,7 @@ window:SetLanguage("fr")
 window:Destroy()
 ```
 
-Tema, aksen, dan mode di tab Settings langsung berlaku saat dipilih, tanpa tombol Apply.
+Tema dan aksen di tab Settings langsung berlaku saat dipilih, tanpa tombol Apply.
 
 Style tombol popup: `primary`, `danger`, atau kosong. Tema bawaan: lihat `MXLIB.Theme.Names()`. Tema baru = satu file di `src/themes/presets/` ditambah ke `manifest.json`.
 

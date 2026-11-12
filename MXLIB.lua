@@ -93,8 +93,6 @@ do
 		end
 	end
 
-	local LIGHTBG = Color3.fromRGB(243, 244, 248)
-
 	local darktext, lighttext = Color3.fromRGB(14, 14, 17), Color3.fromRGB(255, 255, 253)
 
 	local function luminance(color)
@@ -116,86 +114,47 @@ do
 		out.SliderFill = accent
 	end
 
-	local function derive(bg, accent, light)
-		local out
-		if light then
-			local function dn(amount)
-				return bg:Lerp(black, amount)
-			end
-			local card = bg:Lerp(white, 0.6)
-			out = {
-				Backdrop = bg,
-				Sidebar = dn(0.03),
-				Card = card,
-				Row = bg:Lerp(white, 0.5),
-				Header = dn(0.045),
-				Element = dn(0.03),
-				Field = Color3.fromRGB(253, 253, 255),
-				Inner = dn(0.03),
-				Pill = card,
-				TabActive = dn(0.075),
-				Option = dn(0.02),
-				ElementHover = dn(0.07),
-				InnerHover = dn(0.07),
-				Track = dn(0.11),
-				Stroke = dn(0.1),
-				StrokeSoft = dn(0.06),
-				Bar = dn(0.2),
-				ChatBg = card,
-				Box = card,
-				Mine = dn(0.06),
-				Text = Color3.fromRGB(20, 22, 30),
-				SubText = Color3.fromRGB(92, 98, 115),
-				Dim = Color3.fromRGB(108, 114, 130),
-				ToggleOff = dn(0.11),
-				ToggleOffStroke = dn(0.2),
-				OffText = Color3.fromRGB(120, 126, 145),
-				KnobOff = Color3.fromRGB(255, 255, 251),
-				KnobOn = Color3.fromRGB(254, 255, 255),
-				SliderFill = Color3.fromRGB(40, 44, 58),
-			}
-		else
-			local function up(amount)
-				return bg:Lerp(white, amount)
-			end
-			out = {
-				Backdrop = bg,
-				Sidebar = bg:Lerp(black, 0.3),
-				Card = up(0.04),
-				Row = up(0.03),
-				Header = up(0.06),
-				Element = up(0.07),
-				Field = up(0.06),
-				Inner = up(0.07),
-				Pill = up(0.05),
-				TabActive = up(0.09),
-				Option = up(0.05),
-				ElementHover = up(0.11),
-				InnerHover = up(0.12),
-				Track = up(0.14),
-				Stroke = up(0.12),
-				StrokeSoft = up(0.07),
-				Bar = up(0.2),
-				ChatBg = up(0.03),
-				Box = up(0.03),
-				Mine = up(0.1),
-				Text = basetheme.Text,
-				SubText = basetheme.SubText,
-				Dim = basetheme.Dim,
-				ToggleOff = up(0.08),
-				ToggleOffStroke = up(0.17),
-				OffText = bg:Lerp(white, 0.45),
-				KnobOff = bg:Lerp(white, 0.5),
-				KnobOn = basetheme.KnobOn,
-				SliderFill = basetheme.SliderFill,
-			}
+	local function derive(bg, accent)
+		local function up(amount)
+			return bg:Lerp(white, amount)
 		end
+		local out = {
+			Backdrop = bg,
+			Sidebar = bg:Lerp(black, 0.3),
+			Card = up(0.04),
+			Row = up(0.03),
+			Header = up(0.06),
+			Element = up(0.07),
+			Field = up(0.06),
+			Inner = up(0.07),
+			Pill = up(0.05),
+			TabActive = up(0.09),
+			Option = up(0.05),
+			ElementHover = up(0.11),
+			InnerHover = up(0.12),
+			Track = up(0.14),
+			Stroke = up(0.12),
+			StrokeSoft = up(0.07),
+			Bar = up(0.2),
+			ChatBg = up(0.03),
+			Box = up(0.03),
+			Mine = up(0.1),
+			Text = basetheme.Text,
+			SubText = basetheme.SubText,
+			Dim = basetheme.Dim,
+			ToggleOff = up(0.08),
+			ToggleOffStroke = up(0.17),
+			OffText = bg:Lerp(white, 0.45),
+			KnobOff = bg:Lerp(white, 0.5),
+			KnobOn = basetheme.KnobOn,
+			SliderFill = basetheme.SliderFill,
+		}
 		paintaccent(out, accent)
 		return out
 	end
 
 	local themefile = "MX HUB/theme.json"
-	theme.State = { Preset = "MX HUB", Accent = nil, Mode = "Dark" }
+	theme.State = { Preset = "MX HUB", Accent = nil }
 
 	local function find(name)
 		local wanted = tostring(name or ""):lower()
@@ -230,9 +189,6 @@ do
 		local state = theme.State
 		local preset = find(state.Preset) or presets[1]
 		local accent = state.Accent or preset[3]
-		if state.Mode == "Light" then
-			return derive(LIGHTBG, accent, true)
-		end
 		if preset[4] then
 			local out = {}
 			for key, value in pairs(basetheme) do
@@ -241,7 +197,7 @@ do
 			paintaccent(out, accent)
 			return out
 		end
-		return derive(preset[2], accent, false)
+		return derive(preset[2], accent)
 	end
 
 	local function recolor(old)
@@ -308,7 +264,6 @@ do
 			writefile(themefile, sv.http:JSONEncode({
 				preset = state.Preset,
 				accent = state.Accent and hex6(state.Accent) or nil,
-				mode = state.Mode,
 			}))
 		end)
 	end
@@ -323,6 +278,14 @@ do
 		return names
 	end
 
+	function theme.Api.Presets()
+		local list = {}
+		for _, preset in ipairs(presets) do
+			list[#list + 1] = { preset[1], preset[3] }
+		end
+		return list
+	end
+
 	function theme.Api.Accents()
 		return accents
 	end
@@ -331,7 +294,7 @@ do
 		return parsehex(text)
 	end
 
-	-- patch: { Preset = "Emerald", Accent = Color3 | false (clear), Mode = "Dark" | "Light" }
+	-- patch: { Preset = "Emerald", Accent = Color3 | false (clear) }
 	function theme.Api.Set(patch, nosave)
 		patch = patch or {}
 		local state = theme.State
@@ -345,9 +308,6 @@ do
 			state.Accent = nil
 		elseif typeof(patch.Accent) == "Color3" then
 			state.Accent = patch.Accent
-		end
-		if patch.Mode == "Dark" or patch.Mode == "Light" then
-			state.Mode = patch.Mode
 		end
 
 		local old = {}
@@ -367,7 +327,7 @@ do
 		if not nosave then
 			persist()
 		end
-		return true, "Theme applied: " .. tostring(state.Preset) .. " / " .. tostring(state.Mode)
+		return true, "Theme applied: " .. tostring(state.Preset)
 	end
 
 	-- load the saved theme before any UI is built
@@ -382,7 +342,6 @@ do
 		theme.Api.Set({
 			Preset = type(data.preset) == "string" and find(data.preset) and data.preset or nil,
 			Accent = type(data.accent) == "string" and parsehex(data.accent) or nil,
-			Mode = data.mode,
 		}, true)
 	end)
 end
@@ -420,6 +379,15 @@ end
 
 local function escaperich(text)
 	return (tostring(text or ""):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
+end
+
+local function stepfromfraction(fraction, min, max, step)
+	return math.floor((min + math.clamp(fraction, 0, 1) * (max - min)) / step + 0.5) * step
+end
+
+local function searchmatch(text, query)
+	query = tostring(query or ""):lower()
+	return query == "" or tostring(text):lower():find(query, 1, true) ~= nil
 end
 
 local function clipboardwrite(text)
@@ -5219,9 +5187,23 @@ local function makedraggable(topbar, object)
 end
 
 local MXHUB = {}
-MXHUB.Version = "4.3.0"
+MXHUB.Version = "4.4.0"
 MXHUB.Theme = theme.Api -- Names(), Accents(), ParseHex(text), Set({ Preset, Accent, Mode })
 
+local autosave = { enabled = false, delay = 1.5, ticket = 0 }
+
+function autosave.touch()
+	if not autosave.enabled then
+		return
+	end
+	autosave.ticket += 1
+	local ticket = autosave.ticket
+	task.delay(autosave.delay, function()
+		if ticket == autosave.ticket and autosave.enabled and not MXHUB.Unloaded then
+			config:savecurrent()
+		end
+	end)
+end
 function MXHUB:RegisterIcon(name, asset)
 	if type(name) ~= "string" or normalizeiconname(name) == "" or asset == nil then
 		return false
@@ -7805,7 +7787,8 @@ function MXHUB:Window(guiconfig)
 	do
 		local lighting = game:GetService("Lighting")
 		local uipath = "MX HUB/ui.json"
-		local uistate = { language = "English", scale = "Auto", menukey = "F3" }
+		local uistate = { language = "English", scale = "Auto", menukey = "F3", autosave = false }
+		autosave.enabled = false
 		local i18n = MXHUB.I18n
 
 		local staleblur = lighting:FindFirstChild("MXHUB_Blur")
@@ -7825,6 +7808,8 @@ function MXHUB:Window(guiconfig)
 				end
 			end
 		end)
+
+		autosave.enabled = uistate.autosave == true
 
 		local function saveui()
 			pcall(function()
@@ -7956,6 +7941,16 @@ function MXHUB:Window(guiconfig)
 		)
 
 		local refreshvalues
+		MXHUB.SetAutoSave = function(state)
+			autosave.enabled = state == true
+			uistate.autosave = autosave.enabled
+			saveui()
+		end
+
+		MXHUB.GetAutoSave = function()
+			return autosave.enabled
+		end
+
 		MXHUB.SetLanguage = function(name)
 			if not table.find(i18n.Languages, name) then
 				return false
@@ -8151,18 +8146,113 @@ function MXHUB:Window(guiconfig)
 			PaddingRight = UDim.new(0, 4),
 		})
 
+		local scalesub
 		local subrow
-		local function showoptions(row, options, current, onpick)
+		local subitems = {}
+		local subwidth, subtop = 128, 0
+
+		local subheader = make("TextLabel", sub, {
+			Name = "Header",
+			BackgroundTransparency = 1,
+			Font = Enum.Font.GothamBold,
+			TextSize = 10,
+			TextColor3 = theme.Dim,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Position = UDim2.new(0, 12, 0, 8),
+			Size = UDim2.new(1, -24, 0, 12),
+			Visible = false,
+			ZIndex = 23,
+		})
+		local subsearch = make("Frame", sub, {
+			Name = "Search",
+			BackgroundColor3 = theme.Field,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, -12, 0, 26),
+			Visible = false,
+			ZIndex = 23,
+		})
+		make("UICorner", subsearch, { CornerRadius = UDim.new(0, 6) })
+		make("UIStroke", subsearch, { Color = theme.Stroke, Thickness = 1, Transparency = 0.4 })
+		local searchicon = make("ImageLabel", subsearch, {
+			BackgroundTransparency = 1,
+			AnchorPoint = Vector2.new(0, 0.5),
+			Position = UDim2.new(0, 8, 0.5, 0),
+			Size = UDim2.new(0, 12, 0, 12),
+			ImageColor3 = theme.Dim,
+			ZIndex = 24,
+		})
+		applyicon(searchicon, "search", 48)
+		local searchbox = make("TextBox", subsearch, {
+			BackgroundTransparency = 1,
+			Position = UDim2.new(0, 26, 0, 0),
+			Size = UDim2.new(1, -32, 1, 0),
+			Font = Enum.Font.Gotham,
+			TextSize = 12,
+			TextColor3 = theme.Text,
+			PlaceholderText = "Search",
+			PlaceholderColor3 = theme.Dim,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			ClearTextOnFocus = false,
+			Text = "",
+			ZIndex = 24,
+		})
+
+		local function placepanel(panel, width, height)
+			local scale = fitscaleof(main)
+			local mainh = main.AbsoluteSize.Y / scale
+			local mainw = main.AbsoluteSize.X / scale
+			height = math.min(height, mainh - 16)
+			local rowy = (subrow.AbsolutePosition.Y - main.AbsolutePosition.Y) / scale
+			local y = math.clamp(rowy, 8, math.max(mainh - height - 8, 8))
+			local x = math.clamp(SUBX, 8, math.max(mainw - width - 8, 8))
+			panel.Position = UDim2.new(0, x, 0, y)
+			panel.Size = UDim2.new(0, width, 0, height)
+		end
+
+		local function relayout()
+			local shown = 0
+			for _, entry in ipairs(subitems) do
+				if entry.item.Visible then
+					shown += 1
+				end
+			end
+			placepanel(sub, subwidth, subtop + shown * (SUBROW + 1) + 10)
+			subscroll.Position = UDim2.new(0, 0, 0, subtop)
+			subscroll.Size = UDim2.new(1, 0, 1, -subtop)
+		end
+
+		searchbox:GetPropertyChangedSignal("Text"):Connect(function()
+			for _, entry in ipairs(subitems) do
+				entry.item.Visible = searchmatch(entry.label, searchbox.Text)
+			end
+			subscroll.CanvasPosition = Vector2.new(0, 0)
+			if sub.Visible then
+				relayout()
+			end
+		end)
+
+		local function showoptions(row, options, current, onpick, settings)
+			settings = settings or {}
 			if sub.Visible and subrow == row then
 				sub.Visible = false
 				return
 			end
+			scalesub.Visible = false
 			subrow = row
-			for _, child in ipairs(subscroll:GetChildren()) do
-				if child:IsA("TextButton") then
-					child:Destroy()
-				end
+			subwidth = settings.width or 128
+			local titleheight = settings.title and 24 or 0
+			subtop = titleheight + (settings.search and 34 or 0)
+			subheader.Text = settings.title or ""
+			subheader.Visible = settings.title ~= nil
+			subsearch.Position = UDim2.new(0, 6, 0, titleheight + 4)
+			subsearch.Visible = settings.search == true
+			searchbox.Text = ""
+
+			for _, entry in ipairs(subitems) do
+				entry.item:Destroy()
 			end
+			table.clear(subitems)
+
 			for index, option in ipairs(options) do
 				local selected = option.value == current
 				local item = make("TextButton", subscroll, {
@@ -8204,15 +8294,162 @@ function MXHUB:Window(guiconfig)
 					sub.Visible = false
 					onpick(option.value)
 				end)
+				subitems[#subitems + 1] = { item = item, label = option.label }
 			end
-			local scale = fitscaleof(main)
-			local mainh = main.AbsoluteSize.Y / scale
-			local height = math.min(#options * (SUBROW + 1) + 10, mainh - 16)
-			local rowy = (row.AbsolutePosition.Y - main.AbsolutePosition.Y) / scale
-			local y = math.clamp(rowy, 8, math.max(mainh - height - 8, 8))
-			sub.Position = UDim2.new(0, SUBX, 0, y)
-			sub.Size = UDim2.new(0, 128, 0, height)
+			subscroll.CanvasPosition = Vector2.new(0, 0)
+			relayout()
 			sub.Visible = true
+		end
+
+		-- ------------------------------------------------ menu scale slider
+		local SCALE_MIN, SCALE_MAX, SCALE_STEP = 50, 150, 5
+		scalesub = make("Frame", main, {
+			Name = "ProfileScale",
+			BackgroundColor3 = theme.Card,
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, 188, 0, 64),
+			Visible = false,
+			ZIndex = 22,
+		})
+		make("UICorner", scalesub, { CornerRadius = UDim.new(0, 8) })
+		make("UIStroke", scalesub, { Color = theme.Stroke, Thickness = 1, Transparency = 0.2 })
+		make("TextLabel", scalesub, {
+			BackgroundTransparency = 1,
+			Font = Enum.Font.GothamBold,
+			TextSize = 10,
+			TextColor3 = theme.Dim,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Text = "MENU SCALE",
+			Position = UDim2.new(0, 12, 0, 10),
+			Size = UDim2.new(0, 90, 0, 12),
+			ZIndex = 23,
+		})
+		local scalereadout = make("TextLabel", scalesub, {
+			BackgroundTransparency = 1,
+			Font = Enum.Font.GothamBold,
+			TextSize = 11,
+			TextColor3 = theme.Text,
+			TextXAlignment = Enum.TextXAlignment.Right,
+			Position = UDim2.new(1, -48, 0, 9),
+			Size = UDim2.new(0, 36, 0, 14),
+			ZIndex = 23,
+		})
+		local autochip = make("TextButton", scalesub, {
+			BackgroundTransparency = 1,
+			AutoButtonColor = false,
+			Font = Enum.Font.GothamBold,
+			TextSize = 10,
+			Text = "AUTO",
+			Position = UDim2.new(1, -92, 0, 9),
+			Size = UDim2.new(0, 40, 0, 14),
+			ZIndex = 23,
+		})
+		local scaletrack = make("Frame", scalesub, {
+			BackgroundColor3 = theme.Track,
+			BorderSizePixel = 0,
+			Position = UDim2.new(0, 14, 0, 42),
+			Size = UDim2.new(1, -28, 0, 4),
+			ZIndex = 23,
+		})
+		make("UICorner", scaletrack, { CornerRadius = UDim.new(1, 0) })
+		local scalefill = make("Frame", scaletrack, {
+			BackgroundColor3 = theme.Accent,
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, 0, 1, 0),
+			ZIndex = 24,
+		})
+		make("UICorner", scalefill, { CornerRadius = UDim.new(1, 0) })
+		local scaleknob = make("Frame", scaletrack, {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+			BorderSizePixel = 0,
+			Size = UDim2.new(0, 12, 0, 12),
+			ZIndex = 25,
+		})
+		make("UICorner", scaleknob, { CornerRadius = UDim.new(1, 0) })
+		local scalehit = make("TextButton", scalesub, {
+			BackgroundTransparency = 1,
+			Text = "",
+			AutoButtonColor = false,
+			Position = UDim2.new(0, 8, 0, 30),
+			Size = UDim2.new(1, -16, 0, 28),
+			ZIndex = 26,
+		})
+
+		local previewpercent
+		local function currentpercent()
+			local factor = tonumber(uistate.scale)
+			return factor and math.clamp(math.floor(factor * 100 + 0.5), SCALE_MIN, SCALE_MAX) or 100
+		end
+		local function paintscale()
+			local percent = previewpercent or currentpercent()
+			local fraction = (percent - SCALE_MIN) / (SCALE_MAX - SCALE_MIN)
+			scalefill.Size = UDim2.new(fraction, 0, 1, 0)
+			scaleknob.Position = UDim2.new(fraction, 0, 0.5, 0)
+			scalereadout.Text = tostring(percent)
+			autochip.TextColor3 = tonumber(uistate.scale) and theme.Dim or theme.Accent
+		end
+
+		local draggingscale = false
+		local function previewfromx(x)
+			local width = scaletrack.AbsoluteSize.X
+			if width <= 0 then
+				return
+			end
+			local fraction = math.clamp((x - scaletrack.AbsolutePosition.X) / width, 0, 1)
+			previewpercent = stepfromfraction(fraction, SCALE_MIN, SCALE_MAX, SCALE_STEP)
+			paintscale()
+		end
+		local function commitscale()
+			if previewpercent then
+				uistate.scale = tostring(previewpercent / 100)
+				previewpercent = nil
+				saveui()
+				applyscale()
+				refreshvalues()
+				paintscale()
+			end
+		end
+		local function ispointer(input)
+			return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch
+		end
+		scalehit.InputBegan:Connect(function(input)
+			if ispointer(input) then
+				draggingscale = true
+				previewfromx(input.Position.X)
+			end
+		end)
+		trackConnection(sv.uis.InputChanged:Connect(function(input)
+			if draggingscale and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+				previewfromx(input.Position.X)
+			end
+		end), "profile.scale.changed")
+		trackConnection(sv.uis.InputEnded:Connect(function(input)
+			if draggingscale and ispointer(input) then
+				draggingscale = false
+				commitscale()
+			end
+		end), "profile.scale.ended")
+		autochip.Activated:Connect(function()
+			uistate.scale = "Auto"
+			previewpercent = nil
+			saveui()
+			applyscale()
+			refreshvalues()
+			paintscale()
+		end)
+
+		local function showscale(row)
+			if scalesub.Visible and subrow == row then
+				scalesub.Visible = false
+				return
+			end
+			sub.Visible = false
+			subrow = row
+			previewpercent = nil
+			paintscale()
+			placepanel(scalesub, 188, 64)
+			scalesub.Visible = true
 		end
 
 		-- ------------------------------------------------ colour picker (floating, mouse + touch)
@@ -8501,7 +8738,7 @@ function MXHUB:Window(guiconfig)
 		local langrow, langvalue = addrow(10, "globe", "Language")
 		local scalerow, scalevalue = addrow(11, "maximize-2", "Menu Scale")
 		local stylerow, stylevalue = addrow(12, "palette", "Style")
-		local themerow, themevalue = addrow(13, "sun", "Theme")
+		local themerow, themevalue = addrow(13, "layers", "Theme")
 		local keyrow, keyvalue = addrow(14, "keyboard", "Menu Key")
 		local unloadrow = addrow(15, "power", "Unload", true)
 
@@ -8519,7 +8756,7 @@ function MXHUB:Window(guiconfig)
 			local factor = tonumber(uistate.scale)
 			scalevalue.Text = factor and (math.floor(factor * 100 + 0.5) .. "%") or "Auto"
 			stylevalue.Text = ""
-			themevalue.Text = theme.State.Mode
+			themevalue.Text = theme.State.Preset
 			keyvalue.Text = togglekey.Name
 			pname.Text = username.Text
 			prole.Text = handlelabel.Text
@@ -8547,6 +8784,7 @@ function MXHUB:Window(guiconfig)
 			stopcapture()
 			closepicker()
 			sub.Visible = false
+			scalesub.Visible = false
 			catcher.Visible = false
 			if popup.Visible then
 				tw(popup, { Size = UDim2.new(0, PW, 0, 0) }, 0.15)
@@ -8565,29 +8803,11 @@ function MXHUB:Window(guiconfig)
 			end
 			showoptions(langrow, options, i18n.Current, function(value)
 				MXHUB.SetLanguage(value)
-			end)
+			end, { title = "LANGUAGE", search = true, width = 184 })
 		end)
 
 		scalerow.Activated:Connect(function()
-			local options = {
-				{ label = "Auto", value = "Auto" },
-				{ label = "75%", value = "0.75" },
-				{ label = "90%", value = "0.9" },
-				{ label = "100%", value = "1" },
-				{ label = "110%", value = "1.1" },
-				{ label = "125%", value = "1.25" },
-				{ label = "150%", value = "1.5" },
-			}
-			local current = uistate.scale
-			if tonumber(current) then
-				current = tostring(tonumber(current))
-			end
-			showoptions(scalerow, options, current, function(value)
-				uistate.scale = value
-				saveui()
-				applyscale()
-				refreshvalues()
-			end)
+			showscale(scalerow)
 		end)
 
 		stylerow.Activated:Connect(function()
@@ -8610,19 +8830,18 @@ function MXHUB:Window(guiconfig)
 					end
 				end
 				refreshvalues()
-			end)
+			end, { title = "STYLE", width = 140 })
 		end)
 
 		themerow.Activated:Connect(function()
-			showoptions(
-				themerow,
-				{ { label = "Dark", value = "Dark" }, { label = "Light", value = "Light" } },
-				theme.State.Mode,
-				function(value)
-					theme.Api.Set({ Mode = value })
-					refreshvalues()
-				end
-			)
+			local options = {}
+			for _, preset in ipairs(theme.Api.Presets()) do
+				options[#options + 1] = { label = preset[1], value = preset[1], color = preset[2] }
+			end
+			showoptions(themerow, options, theme.State.Preset, function(value)
+				theme.Api.Set({ Preset = value, Accent = false })
+				refreshvalues()
+			end, { title = "THEME", width = 150 })
 		end)
 
 		keyrow.Activated:Connect(function()
@@ -8632,6 +8851,7 @@ function MXHUB:Window(guiconfig)
 				return
 			end
 			sub.Visible = false
+			scalesub.Visible = false
 			keyvalue.Text = "Press a key..."
 			capturing = trackConnection(
 				sv.uis.InputBegan:Connect(function(input)
@@ -11359,6 +11579,7 @@ function MXHUB:Window(guiconfig)
 					colorfunc.Value = Color3.fromHSV(hue, sat, val)
 					if save then
 						config.data[configkey] = tohex(colorfunc.Value)
+						autosave.touch()
 					end
 					render()
 					if notify then
@@ -11640,6 +11861,7 @@ function MXHUB:Window(guiconfig)
 					keybindfunc.State = false
 					if save then
 						config.data[configkey] = key and key.Name or "None"
+						autosave.touch()
 					end
 					render(instant)
 					if notify then
@@ -11792,7 +12014,12 @@ function MXHUB:Window(guiconfig)
 				local configkey = keyfor("Toggle_", toggleconfig)
 				local toggletween = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 				local hubdefault = toggleconfig.Default and true or false
+				local nosave = toggleconfig.NoSave == true
+
 				local function savedpref()
+					if nosave then
+						return hubdefault
+					end
 					local v = config.data[configkey]
 					if v ~= nil then
 						return v == true
@@ -11886,7 +12113,10 @@ function MXHUB:Window(guiconfig)
 					elevate()
 					togglefunc.Value = value
 					if save then
-						config.data[configkey] = value
+						if not nosave then
+							config.data[configkey] = value
+							autosave.touch()
+						end
 					end
 
 					render(value, instant)
@@ -11968,6 +12198,7 @@ function MXHUB:Window(guiconfig)
 					local function bindkey(key)
 						boundkey = key
 						config.data[keycfgkey] = key and key.Name or "None"
+						autosave.touch()
 						renderkey()
 					end
 
@@ -12032,7 +12263,9 @@ function MXHUB:Window(guiconfig)
 
 				countitem = countitem + 1
 				yieldbuild()
-				config.elements[configkey] = togglefunc
+				if not nosave then
+					config.elements[configkey] = togglefunc
+				end
 				registerSearchItem(toggleconfig.Title, toggle, "Toggle")
 				return togglefunc
 			end
@@ -12207,6 +12440,7 @@ function MXHUB:Window(guiconfig)
 					sliderfunc.Value = value
 					if save then
 						config.data[configkey] = value
+						autosave.touch()
 					end
 
 					local percent = getpercent(value)
@@ -12450,6 +12684,7 @@ function MXHUB:Window(guiconfig)
 					suppress = false
 					if save and not nosave then
 						config.data[configkey] = value
+						autosave.touch()
 					end
 					if fire and typeof(inputconfig.Callback) == "function" then
 						elevate()
@@ -12479,6 +12714,7 @@ function MXHUB:Window(guiconfig)
 					inputfunc.Value = inputtextbox.Text
 					if not nosave then
 						config.data[configkey] = inputtextbox.Text
+						autosave.touch()
 					end
 				end)
 
@@ -12542,7 +12778,12 @@ function MXHUB:Window(guiconfig)
 
 				local configkey = keyfor("Dropdown_", dropdownconfig)
 				local hubdefault = normalize(dropdownconfig.Default)
+				local nosave = dropdownconfig.NoSave == true
+
 				local function savedpref()
+					if nosave then
+						return normalize(hubdefault)
+					end
 					local v = config.data[configkey]
 					if v ~= nil then
 						return normalize(v)
@@ -12776,7 +13017,10 @@ function MXHUB:Window(guiconfig)
 					elevate()
 					dropdownfunc.Value = normalize(value)
 					if save then
-						config.data[configkey] = multi and normalize(dropdownfunc.Value) or dropdownfunc.Value
+						if not nosave then
+							config.data[configkey] = multi and normalize(dropdownfunc.Value) or dropdownfunc.Value
+							autosave.touch()
+						end
 					end
 					for _, entry in ipairs(optionlist) do
 						paint(entry, instant)
@@ -12983,7 +13227,9 @@ function MXHUB:Window(guiconfig)
 				countitem = countitem + 1
 				countdropdown = countdropdown + 1
 				yieldbuild()
-				config.elements[configkey] = dropdownfunc
+				if not nosave then
+					config.elements[configkey] = dropdownfunc
+				end
 				registerSearchItem(dropdownconfig.Title, dropdown, "Dropdown")
 				return dropdownfunc
 			end
@@ -13045,187 +13291,194 @@ function MXHUB:Window(guiconfig)
 
 			function items:AddConfigPanel()
 				items:PromoteToFull()
-				local selectedconfigname = config.current or ""
-				local configdropdown
+				local selected = config.current or ""
+				local ready = false
+				task.defer(function()
+					ready = true
+				end)
 
-				local function setdropdownlist(dropdown, list)
-					if dropdown and dropdown.Refresh then
-						dropdown:Refresh(list)
-					elseif dropdown and dropdown.SetValues then
-						dropdown:SetValues(list, dropdown.Value)
+				local status = items:AddParagraph({ Title = "Config Manager", Content = "" })
+				local namebox, picker, loadonstart
+
+				local function describe()
+					local loaded = config:getautoload()
+					status:SetContent(
+						"Game: " .. tostring(config.game or "?")
+							.. "  |  Active: " .. (config.current or "None")
+							.. "  |  Load on start: " .. (loaded or "Off")
+					)
+					if loadonstart then
+						loadonstart:Set(loaded ~= nil)
 					end
 				end
 
-				local function refreshconfiglist()
-					setdropdownlist(configdropdown, config:getlist())
+				local function refreshlist()
+					if picker then
+						picker:Refresh(config:getlist(), false)
+					end
 				end
 
-				local saveparagraph = items:AddParagraph({
-					Title = "Config Manager",
-					Content = "Game: " .. tostring(config.game or "?") .. "  |  Profile: " .. (config.current or "None"),
-				})
-
-				local function updatestatus()
-					saveparagraph:SetContent("Game: " .. tostring(config.game or "?") .. "  |  Profile: " .. (config.current or "None"))
+				local function choose(name)
+					selected = name or ""
+					if selected ~= "" and namebox then
+						namebox:Set(selected)
+					end
 				end
 
-				local confignameinput = items:AddInput({
-					Title = "Config Name",
-					Placeholder = "Write config name here",
-				})
+				items:AddSubSection("Profile")
 
-				configdropdown = items:AddDropdown({
-					Title = "Select Config",
+				picker = items:AddDropdown({
+					Title = "Config",
 					Multi = false,
+					NoSave = true,
 					Options = config:getlist(),
 					Callback = function(value)
-						selectedconfigname = value or ""
-						if selectedconfigname ~= "" then
-							confignameinput:Set(selectedconfigname)
+						if ready then
+							choose(value)
 						end
 					end,
 				})
 
+				namebox = items:AddInput({
+					Title = "Name",
+					Placeholder = "New or existing config",
+					NoSave = true,
+					Default = selected,
+				})
+
 				items:AddButton({
-					Title = "Save Config",
-					SubTitle = "Load Config",
+					Title = "Save",
+					SubTitle = "Load",
 					Callback = function()
-						local input = config.elements["Input_Config Name"]
-						local name = input and input.Value or ""
-
-						if name == "" then
-							return
-						end
-
-						if config:save(name) then
-							selectedconfigname = name
-							refreshconfiglist()
-							updatestatus()
+						local name = namebox.Value or ""
+						if name ~= "" and config:save(name) then
+							selected = name
+							refreshlist()
+							describe()
 						end
 					end,
 					SubCallback = function()
-						if selectedconfigname == "" then
-							return
-						end
-
-						if config:load(selectedconfigname) then
-							updatestatus()
+						if selected ~= "" and config:load(selected) then
+							describe()
 						end
 					end,
 				})
 
 				items:AddButton({
-					Title = "Delete Config",
-					SubTitle = "Override Config",
+					Title = "Overwrite",
+					SubTitle = "Delete",
 					Callback = function()
-						if selectedconfigname == "" then
-							return
-						end
-
-						if config:delete(selectedconfigname) then
-							selectedconfigname = ""
-
-							if configdropdown then
-								configdropdown:Refresh(config:getlist(), false)
-							end
-							updatestatus()
+						if selected ~= "" and config:save(selected) then
+							refreshlist()
+							describe()
 						end
 					end,
 					SubCallback = function()
-						if selectedconfigname == "" then
-							return
-						end
-
-						if config:save(selectedconfigname) then
-							refreshconfiglist()
-							updatestatus()
+						if selected ~= "" and config:delete(selected) then
+							selected = ""
+							refreshlist()
+							describe()
 						end
 					end,
 				})
 
-				items:AddSubSection("Auto-Load Configuration")
+				items:AddSubSection("Automation")
 
-				local autostatus = items:AddParagraph({
-					Title = "Auto Load Status",
-					Content = "Auto Load: " .. (config:getautoload() or "None"),
+				items:AddToggle({
+					Title = "Auto Save",
+					Content = "Saves the active config shortly after any change",
+					NoSave = true,
+					Default = MXHUB.GetAutoSave(),
+					Callback = function(state)
+						if not ready then
+							return
+						end
+						MXHUB.SetAutoSave(state)
+						if state then
+							config:savecurrent()
+							refreshlist()
+							describe()
+						end
+					end,
+				})
+
+				loadonstart = items:AddToggle({
+					Title = "Load on Start",
+					Content = "Loads the selected config automatically next time",
+					NoSave = true,
+					Default = config:getautoload() ~= nil,
+					Callback = function(state)
+						if not ready then
+							return
+						end
+						local active = config:getautoload()
+						if state and active ~= nil and (selected == "" or active == selected) then
+							return
+						end
+						if not state and active == nil then
+							return
+						end
+						if state then
+							local name = selected ~= "" and selected or config.current or "default"
+							config:save(name)
+							config:setautoload(name)
+							selected = name
+							refreshlist()
+						else
+							config:clearautoload()
+						end
+						describe()
+					end,
+				})
+
+				items:AddSubSection("Share")
+
+				local jsonbox = items:AddInput({
+					Title = "Config JSON",
+					Placeholder = "Paste a copied config here",
+					NoSave = true,
 				})
 
 				items:AddButton({
-					Title = "Set Auto Load",
-					SubTitle = "Clear Auto Load",
-					Callback = function()
-						if selectedconfigname == "" then
-							return
-						end
-
-						if config:setautoload(selectedconfigname) then
-							autostatus:SetContent("Auto Load: " .. selectedconfigname)
-						end
-					end,
-					SubCallback = function()
-						if config:clearautoload() then
-							autostatus:SetContent("Auto Load: None")
-						end
-					end,
-				})
-
-				items:AddSubSection("Folder Management")
-
-				items:AddButton({
-					Title = "Export Config",
+					Title = "Copy",
+					SubTitle = "Import",
 					Callback = function()
 						config.data._version = config.version
-						local json = sv.http:JSONEncode(packconfig(config.data))
-
-						clipboardwrite(json)
+						clipboardwrite(sv.http:JSONEncode(packconfig(config.data)))
 					end,
-				})
-
-				items:AddInput({
-					Title = "External Config",
-					Placeholder = "Paste raw JSON config here",
-				})
-
-				items:AddButton({
-					Title = "Import Config",
-					Callback = function()
-						local input = config.elements["Input_External Config"]
-						local json = input and input.Value
-
-						if not json or json == "" then
+					SubCallback = function()
+						local json = jsonbox.Value or ""
+						if json == "" then
 							return
 						end
-
 						config:reset()
-
 						local ok, err = pcall(function()
 							config:loadexternal(json)
 						end)
-
 						if ok then
-							updatestatus()
+							describe()
 						else
 							warn(err)
 						end
 					end,
 				})
 
-				items:AddSubSection("Reset Configuration")
+				items:AddSubSection("Reset")
 
 				items:AddButton({
 					Title = "Reset All To Default",
 					Callback = function()
 						config:reset()
-						updatestatus()
+						describe()
 					end,
 				})
 
+				describe()
 				return {
-					UpdateStatus = updatestatus,
-					RefreshList = refreshconfiglist,
+					UpdateStatus = describe,
+					RefreshList = refreshlist,
 				}
 			end
-
 			return items
 		end
 
@@ -13387,20 +13640,6 @@ function MXHUB:Window(guiconfig)
 				end,
 			})
 
-			ThemeSection:AddDropdown({
-				Title = "Mode",
-				Flag = "ThemeMode",
-				Multi = false,
-				NoSave = true,
-				Options = { "Dark", "Light" },
-				Default = theme.State.Mode or "Dark",
-				Callback = function(value)
-					if value then
-						apply({ Mode = value })
-					end
-				end,
-			})
-
 			ThemeSection:AddInput({
 				Title = "Custom Accent (hex)",
 				Flag = "ThemeCustomAccent",
@@ -13421,7 +13660,7 @@ function MXHUB:Window(guiconfig)
 			ThemeSection:AddButton({
 				Title = "Reset Theme",
 				Callback = function()
-					theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
+					theme.Api.Set({ Preset = "MX HUB", Accent = false })
 				end,
 			})
 		end

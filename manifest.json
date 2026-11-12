@@ -113,6 +113,10 @@
    "indent": 0
   },
   {
+   "path": "src/core/autosave.lua",
+   "indent": 0
+  },
+  {
    "path": "src/icons/api.lua",
    "indent": 0
   },

@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.4.0
+
+Breaking
+- Mode Dark/Light dihapus: `theme.Api.Set` tidak lagi menerima `Mode`, dan baris Mode hilang dari Settings dan panel profil
+
+Panel profil
+- Language: daftar dengan kolom pencarian
+- Menu Scale: slider 50 sampai 150 (diterapkan saat dilepas, chip AUTO)
+- Theme: daftar preset dengan titik warna, berlaku langsung
+- Menekan baris yang sama menutup sub-menu; lebar dan posisi sub-menu menyesuaikan jendela
+
+Config
+- Panel Config disusun ulang: Profile, Automation, Share, Reset
+- Auto Save: menyimpan config aktif 1,5 detik setelah perubahan terakhir (debounce), tersimpan lintas sesi
+- Load on Start menggantikan tombol Set/Clear Auto Load
+- `NoSave` kini berfungsi pada toggle dan dropdown; pilihan tema dan kontrol panel Config tidak lagi ikut tersimpan ke dalam config
+
 ## 4.3.0
 
 Breaking

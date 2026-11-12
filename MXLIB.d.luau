@@ -103,7 +103,7 @@ export type Window = {
 export type MXHUB = {
 	Version: string,
 	Image: { Normalize: (value: Icon?) -> string?, Thumbnail: (kind: string?, id: number, width: number?, height: number?) -> string },
-	Theme: { Names: () -> { string }, Set: (patch: { Preset: string?, Accent: (Color3 | boolean)?, Mode: string? }) -> (boolean, string) },
+	Theme: { Names: () -> { string }, Set: (patch: { Preset: string?, Accent: (Color3 | boolean)? }) -> (boolean, string) },
 	CreateWindow: (self: MXHUB, config: WindowConfig) -> Window,
 }
 
