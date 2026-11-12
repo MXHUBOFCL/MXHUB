@@ -18,16 +18,6 @@ function apiwindow:CreateTab(opts)
 	return setmetatable({ _window = self, _tab = tab, _name = name }, apitab)
 end
 
-function apiwindow:Notify(opts)
-	opts = type(opts) == "table" and opts or { content = opts }
-	return MXHUB:Notify({
-		Title = opts.title or "MX HUB",
-		Content = opts.content or "",
-		Duration = opts.duration or 4,
-		Icon = opts.icon,
-	})
-end
-
 function apiwindow:Popup(opts)
 	opts = opts or {}
 	local boxes = {}
