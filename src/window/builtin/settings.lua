@@ -94,20 +94,6 @@ if guiconfig.Settings then
 			end,
 		})
 
-		ThemeSection:AddDropdown({
-			Title = "Mode",
-			Flag = "ThemeMode",
-			Multi = false,
-			NoSave = true,
-			Options = { "Dark", "Light" },
-			Default = theme.State.Mode or "Dark",
-			Callback = function(value)
-				if value then
-					apply({ Mode = value })
-				end
-			end,
-		})
-
 		ThemeSection:AddInput({
 			Title = "Custom Accent (hex)",
 			Flag = "ThemeCustomAccent",
@@ -128,7 +114,7 @@ if guiconfig.Settings then
 		ThemeSection:AddButton({
 			Title = "Reset Theme",
 			Callback = function()
-				theme.Api.Set({ Preset = "MX HUB", Accent = false, Mode = "Dark" })
+				theme.Api.Set({ Preset = "MX HUB", Accent = false })
 			end,
 		})
 	end
