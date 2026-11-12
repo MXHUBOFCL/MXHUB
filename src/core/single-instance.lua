@@ -50,7 +50,6 @@ if getgenv().MXHUB_Running then
 			"MXHUBUI",
 			"ToggleUIButton",
 			"PopupGui",
-			"NotifyGui",
 		}) do
 			local old = sv.coregui:FindFirstChild(name)
 			if old then
