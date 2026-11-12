@@ -1,4 +1,4 @@
-local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXLIB/refs/heads/main/MXLIB.lua"))()
+local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXHUB/refs/heads/main/MXLIB.lua"))()
 
 local window = MXLIB:CreateWindow({ name = "Example" })
 local tab = window:CreateTab({ name = "Media", icon = 93364949241311 })
@@ -40,8 +40,8 @@ tab:CreateButton({
 
 tab:CreateCharacter({ side = "right", height = 250 })
 
-window:Notify({
-	title = "Avatar",
+tab:CreateParagraph({
+	name = "Avatar",
 	content = "Thumbnail icon.",
 	icon = MXLIB.Image.Thumbnail("AvatarHeadShot", game.Players.LocalPlayer.UserId, 150),
 })

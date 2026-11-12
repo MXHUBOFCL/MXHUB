@@ -1,12 +1,6 @@
-local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXLIB/refs/heads/main/MXLIB.lua"))()
+local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXHUB/refs/heads/main/MXLIB.lua"))()
 
 local window = MXLIB:CreateWindow({ name = "Example" })
-
-window:Notify({
-	title = "Auto-saved",
-	content = "Your configuration was saved.",
-	duration = 5,
-})
 
 window:Popup({
 	title = "What's new",

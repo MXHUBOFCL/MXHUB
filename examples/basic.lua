@@ -1,4 +1,4 @@
-local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXLIB/refs/heads/main/MXLIB.lua"))()
+local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXHUB/refs/heads/main/MXLIB.lua"))()
 
 local window = MXLIB:CreateWindow({
 	name = "Example",
@@ -86,7 +86,7 @@ servers:CreateButton({
 	name = "Alert",
 	icon = getcustomasset("my-icons/alert.png"),
 	callback = function()
-		window:Notify({ title = "Alert", content = "Button with a custom icon.", duration = 4 })
+		print("Alert clicked")
 	end,
 })
 
