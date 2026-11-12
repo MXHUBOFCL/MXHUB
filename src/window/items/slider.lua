@@ -168,6 +168,7 @@ function items:AddSlider(sliderconfig)
 		sliderfunc.Value = value
 		if save then
 			config.data[configkey] = value
+			autosave.touch()
 		end
 
 		local percent = getpercent(value)

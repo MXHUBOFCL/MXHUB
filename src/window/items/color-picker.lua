@@ -233,6 +233,7 @@ function items:AddColorPicker(colorconfig)
 		colorfunc.Value = Color3.fromHSV(hue, sat, val)
 		if save then
 			config.data[configkey] = tohex(colorfunc.Value)
+			autosave.touch()
 		end
 		render()
 		if notify then

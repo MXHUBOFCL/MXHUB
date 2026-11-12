@@ -92,6 +92,7 @@ function items:AddInput(inputconfig)
 		suppress = false
 		if save and not nosave then
 			config.data[configkey] = value
+			autosave.touch()
 		end
 		if fire and typeof(inputconfig.Callback) == "function" then
 			elevate()
@@ -121,6 +122,7 @@ function items:AddInput(inputconfig)
 		inputfunc.Value = inputtextbox.Text
 		if not nosave then
 			config.data[configkey] = inputtextbox.Text
+			autosave.touch()
 		end
 	end)
 

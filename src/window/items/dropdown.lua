@@ -43,7 +43,12 @@ function items:AddDropdown(dropdownconfig)
 
 	local configkey = keyfor("Dropdown_", dropdownconfig)
 	local hubdefault = normalize(dropdownconfig.Default)
+	local nosave = dropdownconfig.NoSave == true
+
 	local function savedpref()
+		if nosave then
+			return normalize(hubdefault)
+		end
 		local v = config.data[configkey]
 		if v ~= nil then
 			return normalize(v)
@@ -277,7 +282,10 @@ function items:AddDropdown(dropdownconfig)
 		elevate()
 		dropdownfunc.Value = normalize(value)
 		if save then
-			config.data[configkey] = multi and normalize(dropdownfunc.Value) or dropdownfunc.Value
+			if not nosave then
+				config.data[configkey] = multi and normalize(dropdownfunc.Value) or dropdownfunc.Value
+				autosave.touch()
+			end
 		end
 		for _, entry in ipairs(optionlist) do
 			paint(entry, instant)
@@ -484,7 +492,9 @@ function items:AddDropdown(dropdownconfig)
 	countitem = countitem + 1
 	countdropdown = countdropdown + 1
 	yieldbuild()
-	config.elements[configkey] = dropdownfunc
+	if not nosave then
+		config.elements[configkey] = dropdownfunc
+	end
 	registerSearchItem(dropdownconfig.Title, dropdown, "Dropdown")
 	return dropdownfunc
 end

@@ -6,7 +6,12 @@ function items:AddToggle(toggleconfig)
 	local configkey = keyfor("Toggle_", toggleconfig)
 	local toggletween = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 	local hubdefault = toggleconfig.Default and true or false
+	local nosave = toggleconfig.NoSave == true
+
 	local function savedpref()
+		if nosave then
+			return hubdefault
+		end
 		local v = config.data[configkey]
 		if v ~= nil then
 			return v == true
@@ -100,7 +105,10 @@ function items:AddToggle(toggleconfig)
 		elevate()
 		togglefunc.Value = value
 		if save then
-			config.data[configkey] = value
+			if not nosave then
+				config.data[configkey] = value
+				autosave.touch()
+			end
 		end
 
 		render(value, instant)
@@ -182,6 +190,7 @@ function items:AddToggle(toggleconfig)
 		local function bindkey(key)
 			boundkey = key
 			config.data[keycfgkey] = key and key.Name or "None"
+			autosave.touch()
 			renderkey()
 		end
 
@@ -246,7 +255,9 @@ function items:AddToggle(toggleconfig)
 
 	countitem = countitem + 1
 	yieldbuild()
-	config.elements[configkey] = togglefunc
+	if not nosave then
+		config.elements[configkey] = togglefunc
+	end
 	registerSearchItem(toggleconfig.Title, toggle, "Toggle")
 	return togglefunc
 end

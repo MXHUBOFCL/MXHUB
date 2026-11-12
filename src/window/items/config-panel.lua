@@ -1,183 +1,190 @@
 function items:AddConfigPanel()
 	items:PromoteToFull()
-	local selectedconfigname = config.current or ""
-	local configdropdown
+	local selected = config.current or ""
+	local ready = false
+	task.defer(function()
+		ready = true
+	end)
 
-	local function setdropdownlist(dropdown, list)
-		if dropdown and dropdown.Refresh then
-			dropdown:Refresh(list)
-		elseif dropdown and dropdown.SetValues then
-			dropdown:SetValues(list, dropdown.Value)
+	local status = items:AddParagraph({ Title = "Config Manager", Content = "" })
+	local namebox, picker, loadonstart
+
+	local function describe()
+		local loaded = config:getautoload()
+		status:SetContent(
+			"Game: " .. tostring(config.game or "?")
+				.. "  |  Active: " .. (config.current or "None")
+				.. "  |  Load on start: " .. (loaded or "Off")
+		)
+		if loadonstart then
+			loadonstart:Set(loaded ~= nil)
 		end
 	end
 
-	local function refreshconfiglist()
-		setdropdownlist(configdropdown, config:getlist())
+	local function refreshlist()
+		if picker then
+			picker:Refresh(config:getlist(), false)
+		end
 	end
 
-	local saveparagraph = items:AddParagraph({
-		Title = "Config Manager",
-		Content = "Game: " .. tostring(config.game or "?") .. "  |  Profile: " .. (config.current or "None"),
-	})
-
-	local function updatestatus()
-		saveparagraph:SetContent("Game: " .. tostring(config.game or "?") .. "  |  Profile: " .. (config.current or "None"))
+	local function choose(name)
+		selected = name or ""
+		if selected ~= "" and namebox then
+			namebox:Set(selected)
+		end
 	end
 
-	local confignameinput = items:AddInput({
-		Title = "Config Name",
-		Placeholder = "Write config name here",
-	})
+	items:AddSubSection("Profile")
 
-	configdropdown = items:AddDropdown({
-		Title = "Select Config",
+	picker = items:AddDropdown({
+		Title = "Config",
 		Multi = false,
+		NoSave = true,
 		Options = config:getlist(),
 		Callback = function(value)
-			selectedconfigname = value or ""
-			if selectedconfigname ~= "" then
-				confignameinput:Set(selectedconfigname)
+			if ready then
+				choose(value)
 			end
 		end,
 	})
 
+	namebox = items:AddInput({
+		Title = "Name",
+		Placeholder = "New or existing config",
+		NoSave = true,
+		Default = selected,
+	})
+
 	items:AddButton({
-		Title = "Save Config",
-		SubTitle = "Load Config",
+		Title = "Save",
+		SubTitle = "Load",
 		Callback = function()
-			local input = config.elements["Input_Config Name"]
-			local name = input and input.Value or ""
-
-			if name == "" then
-				return
-			end
-
-			if config:save(name) then
-				selectedconfigname = name
-				refreshconfiglist()
-				updatestatus()
+			local name = namebox.Value or ""
+			if name ~= "" and config:save(name) then
+				selected = name
+				refreshlist()
+				describe()
 			end
 		end,
 		SubCallback = function()
-			if selectedconfigname == "" then
-				return
-			end
-
-			if config:load(selectedconfigname) then
-				updatestatus()
+			if selected ~= "" and config:load(selected) then
+				describe()
 			end
 		end,
 	})
 
 	items:AddButton({
-		Title = "Delete Config",
-		SubTitle = "Override Config",
+		Title = "Overwrite",
+		SubTitle = "Delete",
 		Callback = function()
-			if selectedconfigname == "" then
-				return
-			end
-
-			if config:delete(selectedconfigname) then
-				selectedconfigname = ""
-
-				if configdropdown then
-					configdropdown:Refresh(config:getlist(), false)
-				end
-				updatestatus()
+			if selected ~= "" and config:save(selected) then
+				refreshlist()
+				describe()
 			end
 		end,
 		SubCallback = function()
-			if selectedconfigname == "" then
-				return
-			end
-
-			if config:save(selectedconfigname) then
-				refreshconfiglist()
-				updatestatus()
+			if selected ~= "" and config:delete(selected) then
+				selected = ""
+				refreshlist()
+				describe()
 			end
 		end,
 	})
 
-	items:AddSubSection("Auto-Load Configuration")
+	items:AddSubSection("Automation")
 
-	local autostatus = items:AddParagraph({
-		Title = "Auto Load Status",
-		Content = "Auto Load: " .. (config:getautoload() or "None"),
+	items:AddToggle({
+		Title = "Auto Save",
+		Content = "Saves the active config shortly after any change",
+		NoSave = true,
+		Default = MXHUB.GetAutoSave(),
+		Callback = function(state)
+			if not ready then
+				return
+			end
+			MXHUB.SetAutoSave(state)
+			if state then
+				config:savecurrent()
+				refreshlist()
+				describe()
+			end
+		end,
+	})
+
+	loadonstart = items:AddToggle({
+		Title = "Load on Start",
+		Content = "Loads the selected config automatically next time",
+		NoSave = true,
+		Default = config:getautoload() ~= nil,
+		Callback = function(state)
+			if not ready then
+				return
+			end
+			local active = config:getautoload()
+			if state and active ~= nil and (selected == "" or active == selected) then
+				return
+			end
+			if not state and active == nil then
+				return
+			end
+			if state then
+				local name = selected ~= "" and selected or config.current or "default"
+				config:save(name)
+				config:setautoload(name)
+				selected = name
+				refreshlist()
+			else
+				config:clearautoload()
+			end
+			describe()
+		end,
+	})
+
+	items:AddSubSection("Share")
+
+	local jsonbox = items:AddInput({
+		Title = "Config JSON",
+		Placeholder = "Paste a copied config here",
+		NoSave = true,
 	})
 
 	items:AddButton({
-		Title = "Set Auto Load",
-		SubTitle = "Clear Auto Load",
-		Callback = function()
-			if selectedconfigname == "" then
-				return
-			end
-
-			if config:setautoload(selectedconfigname) then
-				autostatus:SetContent("Auto Load: " .. selectedconfigname)
-			end
-		end,
-		SubCallback = function()
-			if config:clearautoload() then
-				autostatus:SetContent("Auto Load: None")
-			end
-		end,
-	})
-
-	items:AddSubSection("Folder Management")
-
-	items:AddButton({
-		Title = "Export Config",
+		Title = "Copy",
+		SubTitle = "Import",
 		Callback = function()
 			config.data._version = config.version
-			local json = sv.http:JSONEncode(packconfig(config.data))
-
-			clipboardwrite(json)
+			clipboardwrite(sv.http:JSONEncode(packconfig(config.data)))
 		end,
-	})
-
-	items:AddInput({
-		Title = "External Config",
-		Placeholder = "Paste raw JSON config here",
-	})
-
-	items:AddButton({
-		Title = "Import Config",
-		Callback = function()
-			local input = config.elements["Input_External Config"]
-			local json = input and input.Value
-
-			if not json or json == "" then
+		SubCallback = function()
+			local json = jsonbox.Value or ""
+			if json == "" then
 				return
 			end
-
 			config:reset()
-
 			local ok, err = pcall(function()
 				config:loadexternal(json)
 			end)
-
 			if ok then
-				updatestatus()
+				describe()
 			else
 				warn(err)
 			end
 		end,
 	})
 
-	items:AddSubSection("Reset Configuration")
+	items:AddSubSection("Reset")
 
 	items:AddButton({
 		Title = "Reset All To Default",
 		Callback = function()
 			config:reset()
-			updatestatus()
+			describe()
 		end,
 	})
 
+	describe()
 	return {
-		UpdateStatus = updatestatus,
-		RefreshList = refreshconfiglist,
+		UpdateStatus = describe,
+		RefreshList = refreshlist,
 	}
 end
-

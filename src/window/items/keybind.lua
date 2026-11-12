@@ -128,6 +128,7 @@ function items:AddKeybind(keybindconfig)
 		keybindfunc.State = false
 		if save then
 			config.data[configkey] = key and key.Name or "None"
+			autosave.touch()
 		end
 		render(instant)
 		if notify then
