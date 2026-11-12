@@ -1,7 +1,8 @@
 do
 	local lighting = game:GetService("Lighting")
 	local uipath = "MX HUB/ui.json"
-	local uistate = { language = "English", scale = "Auto", menukey = "F3" }
+	local uistate = { language = "English", scale = "Auto", menukey = "F3", autosave = false }
+	autosave.enabled = false
 	local i18n = MXHUB.I18n
 
 	local staleblur = lighting:FindFirstChild("MXHUB_Blur")
@@ -21,6 +22,8 @@ do
 			end
 		end
 	end)
+
+	autosave.enabled = uistate.autosave == true
 
 	local function saveui()
 		pcall(function()
@@ -152,6 +155,16 @@ do
 	)
 
 	local refreshvalues
+	MXHUB.SetAutoSave = function(state)
+		autosave.enabled = state == true
+		uistate.autosave = autosave.enabled
+		saveui()
+	end
+
+	MXHUB.GetAutoSave = function()
+		return autosave.enabled
+	end
+
 	MXHUB.SetLanguage = function(name)
 		if not table.find(i18n.Languages, name) then
 			return false
@@ -347,18 +360,113 @@ do
 		PaddingRight = UDim.new(0, 4),
 	})
 
+	local scalesub
 	local subrow
-	local function showoptions(row, options, current, onpick)
+	local subitems = {}
+	local subwidth, subtop = 128, 0
+
+	local subheader = make("TextLabel", sub, {
+		Name = "Header",
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBold,
+		TextSize = 10,
+		TextColor3 = theme.Dim,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Position = UDim2.new(0, 12, 0, 8),
+		Size = UDim2.new(1, -24, 0, 12),
+		Visible = false,
+		ZIndex = 23,
+	})
+	local subsearch = make("Frame", sub, {
+		Name = "Search",
+		BackgroundColor3 = theme.Field,
+		BorderSizePixel = 0,
+		Size = UDim2.new(1, -12, 0, 26),
+		Visible = false,
+		ZIndex = 23,
+	})
+	make("UICorner", subsearch, { CornerRadius = UDim.new(0, 6) })
+	make("UIStroke", subsearch, { Color = theme.Stroke, Thickness = 1, Transparency = 0.4 })
+	local searchicon = make("ImageLabel", subsearch, {
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, 8, 0.5, 0),
+		Size = UDim2.new(0, 12, 0, 12),
+		ImageColor3 = theme.Dim,
+		ZIndex = 24,
+	})
+	applyicon(searchicon, "search", 48)
+	local searchbox = make("TextBox", subsearch, {
+		BackgroundTransparency = 1,
+		Position = UDim2.new(0, 26, 0, 0),
+		Size = UDim2.new(1, -32, 1, 0),
+		Font = Enum.Font.Gotham,
+		TextSize = 12,
+		TextColor3 = theme.Text,
+		PlaceholderText = "Search",
+		PlaceholderColor3 = theme.Dim,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false,
+		Text = "",
+		ZIndex = 24,
+	})
+
+	local function placepanel(panel, width, height)
+		local scale = fitscaleof(main)
+		local mainh = main.AbsoluteSize.Y / scale
+		local mainw = main.AbsoluteSize.X / scale
+		height = math.min(height, mainh - 16)
+		local rowy = (subrow.AbsolutePosition.Y - main.AbsolutePosition.Y) / scale
+		local y = math.clamp(rowy, 8, math.max(mainh - height - 8, 8))
+		local x = math.clamp(SUBX, 8, math.max(mainw - width - 8, 8))
+		panel.Position = UDim2.new(0, x, 0, y)
+		panel.Size = UDim2.new(0, width, 0, height)
+	end
+
+	local function relayout()
+		local shown = 0
+		for _, entry in ipairs(subitems) do
+			if entry.item.Visible then
+				shown += 1
+			end
+		end
+		placepanel(sub, subwidth, subtop + shown * (SUBROW + 1) + 10)
+		subscroll.Position = UDim2.new(0, 0, 0, subtop)
+		subscroll.Size = UDim2.new(1, 0, 1, -subtop)
+	end
+
+	searchbox:GetPropertyChangedSignal("Text"):Connect(function()
+		for _, entry in ipairs(subitems) do
+			entry.item.Visible = searchmatch(entry.label, searchbox.Text)
+		end
+		subscroll.CanvasPosition = Vector2.new(0, 0)
+		if sub.Visible then
+			relayout()
+		end
+	end)
+
+	local function showoptions(row, options, current, onpick, settings)
+		settings = settings or {}
 		if sub.Visible and subrow == row then
 			sub.Visible = false
 			return
 		end
+		scalesub.Visible = false
 		subrow = row
-		for _, child in ipairs(subscroll:GetChildren()) do
-			if child:IsA("TextButton") then
-				child:Destroy()
-			end
+		subwidth = settings.width or 128
+		local titleheight = settings.title and 24 or 0
+		subtop = titleheight + (settings.search and 34 or 0)
+		subheader.Text = settings.title or ""
+		subheader.Visible = settings.title ~= nil
+		subsearch.Position = UDim2.new(0, 6, 0, titleheight + 4)
+		subsearch.Visible = settings.search == true
+		searchbox.Text = ""
+
+		for _, entry in ipairs(subitems) do
+			entry.item:Destroy()
 		end
+		table.clear(subitems)
+
 		for index, option in ipairs(options) do
 			local selected = option.value == current
 			local item = make("TextButton", subscroll, {
@@ -400,15 +508,162 @@ do
 				sub.Visible = false
 				onpick(option.value)
 			end)
+			subitems[#subitems + 1] = { item = item, label = option.label }
 		end
-		local scale = fitscaleof(main)
-		local mainh = main.AbsoluteSize.Y / scale
-		local height = math.min(#options * (SUBROW + 1) + 10, mainh - 16)
-		local rowy = (row.AbsolutePosition.Y - main.AbsolutePosition.Y) / scale
-		local y = math.clamp(rowy, 8, math.max(mainh - height - 8, 8))
-		sub.Position = UDim2.new(0, SUBX, 0, y)
-		sub.Size = UDim2.new(0, 128, 0, height)
+		subscroll.CanvasPosition = Vector2.new(0, 0)
+		relayout()
 		sub.Visible = true
+	end
+
+	-- ------------------------------------------------ menu scale slider
+	local SCALE_MIN, SCALE_MAX, SCALE_STEP = 50, 150, 5
+	scalesub = make("Frame", main, {
+		Name = "ProfileScale",
+		BackgroundColor3 = theme.Card,
+		BorderSizePixel = 0,
+		Size = UDim2.new(0, 188, 0, 64),
+		Visible = false,
+		ZIndex = 22,
+	})
+	make("UICorner", scalesub, { CornerRadius = UDim.new(0, 8) })
+	make("UIStroke", scalesub, { Color = theme.Stroke, Thickness = 1, Transparency = 0.2 })
+	make("TextLabel", scalesub, {
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBold,
+		TextSize = 10,
+		TextColor3 = theme.Dim,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Text = "MENU SCALE",
+		Position = UDim2.new(0, 12, 0, 10),
+		Size = UDim2.new(0, 90, 0, 12),
+		ZIndex = 23,
+	})
+	local scalereadout = make("TextLabel", scalesub, {
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBold,
+		TextSize = 11,
+		TextColor3 = theme.Text,
+		TextXAlignment = Enum.TextXAlignment.Right,
+		Position = UDim2.new(1, -48, 0, 9),
+		Size = UDim2.new(0, 36, 0, 14),
+		ZIndex = 23,
+	})
+	local autochip = make("TextButton", scalesub, {
+		BackgroundTransparency = 1,
+		AutoButtonColor = false,
+		Font = Enum.Font.GothamBold,
+		TextSize = 10,
+		Text = "AUTO",
+		Position = UDim2.new(1, -92, 0, 9),
+		Size = UDim2.new(0, 40, 0, 14),
+		ZIndex = 23,
+	})
+	local scaletrack = make("Frame", scalesub, {
+		BackgroundColor3 = theme.Track,
+		BorderSizePixel = 0,
+		Position = UDim2.new(0, 14, 0, 42),
+		Size = UDim2.new(1, -28, 0, 4),
+		ZIndex = 23,
+	})
+	make("UICorner", scaletrack, { CornerRadius = UDim.new(1, 0) })
+	local scalefill = make("Frame", scaletrack, {
+		BackgroundColor3 = theme.Accent,
+		BorderSizePixel = 0,
+		Size = UDim2.new(0, 0, 1, 0),
+		ZIndex = 24,
+	})
+	make("UICorner", scalefill, { CornerRadius = UDim.new(1, 0) })
+	local scaleknob = make("Frame", scaletrack, {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BorderSizePixel = 0,
+		Size = UDim2.new(0, 12, 0, 12),
+		ZIndex = 25,
+	})
+	make("UICorner", scaleknob, { CornerRadius = UDim.new(1, 0) })
+	local scalehit = make("TextButton", scalesub, {
+		BackgroundTransparency = 1,
+		Text = "",
+		AutoButtonColor = false,
+		Position = UDim2.new(0, 8, 0, 30),
+		Size = UDim2.new(1, -16, 0, 28),
+		ZIndex = 26,
+	})
+
+	local previewpercent
+	local function currentpercent()
+		local factor = tonumber(uistate.scale)
+		return factor and math.clamp(math.floor(factor * 100 + 0.5), SCALE_MIN, SCALE_MAX) or 100
+	end
+	local function paintscale()
+		local percent = previewpercent or currentpercent()
+		local fraction = (percent - SCALE_MIN) / (SCALE_MAX - SCALE_MIN)
+		scalefill.Size = UDim2.new(fraction, 0, 1, 0)
+		scaleknob.Position = UDim2.new(fraction, 0, 0.5, 0)
+		scalereadout.Text = tostring(percent)
+		autochip.TextColor3 = tonumber(uistate.scale) and theme.Dim or theme.Accent
+	end
+
+	local draggingscale = false
+	local function previewfromx(x)
+		local width = scaletrack.AbsoluteSize.X
+		if width <= 0 then
+			return
+		end
+		local fraction = math.clamp((x - scaletrack.AbsolutePosition.X) / width, 0, 1)
+		previewpercent = stepfromfraction(fraction, SCALE_MIN, SCALE_MAX, SCALE_STEP)
+		paintscale()
+	end
+	local function commitscale()
+		if previewpercent then
+			uistate.scale = tostring(previewpercent / 100)
+			previewpercent = nil
+			saveui()
+			applyscale()
+			refreshvalues()
+			paintscale()
+		end
+	end
+	local function ispointer(input)
+		return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch
+	end
+	scalehit.InputBegan:Connect(function(input)
+		if ispointer(input) then
+			draggingscale = true
+			previewfromx(input.Position.X)
+		end
+	end)
+	trackConnection(sv.uis.InputChanged:Connect(function(input)
+		if draggingscale and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			previewfromx(input.Position.X)
+		end
+	end), "profile.scale.changed")
+	trackConnection(sv.uis.InputEnded:Connect(function(input)
+		if draggingscale and ispointer(input) then
+			draggingscale = false
+			commitscale()
+		end
+	end), "profile.scale.ended")
+	autochip.Activated:Connect(function()
+		uistate.scale = "Auto"
+		previewpercent = nil
+		saveui()
+		applyscale()
+		refreshvalues()
+		paintscale()
+	end)
+
+	local function showscale(row)
+		if scalesub.Visible and subrow == row then
+			scalesub.Visible = false
+			return
+		end
+		sub.Visible = false
+		subrow = row
+		previewpercent = nil
+		paintscale()
+		placepanel(scalesub, 188, 64)
+		scalesub.Visible = true
 	end
 
 	-- ------------------------------------------------ colour picker (floating, mouse + touch)
@@ -697,7 +952,7 @@ do
 	local langrow, langvalue = addrow(10, "globe", "Language")
 	local scalerow, scalevalue = addrow(11, "maximize-2", "Menu Scale")
 	local stylerow, stylevalue = addrow(12, "palette", "Style")
-	local themerow, themevalue = addrow(13, "sun", "Theme")
+	local themerow, themevalue = addrow(13, "layers", "Theme")
 	local keyrow, keyvalue = addrow(14, "keyboard", "Menu Key")
 	local unloadrow = addrow(15, "power", "Unload", true)
 
@@ -715,7 +970,7 @@ do
 		local factor = tonumber(uistate.scale)
 		scalevalue.Text = factor and (math.floor(factor * 100 + 0.5) .. "%") or "Auto"
 		stylevalue.Text = ""
-		themevalue.Text = theme.State.Mode
+		themevalue.Text = theme.State.Preset
 		keyvalue.Text = togglekey.Name
 		pname.Text = username.Text
 		prole.Text = handlelabel.Text
@@ -743,6 +998,7 @@ do
 		stopcapture()
 		closepicker()
 		sub.Visible = false
+		scalesub.Visible = false
 		catcher.Visible = false
 		if popup.Visible then
 			tw(popup, { Size = UDim2.new(0, PW, 0, 0) }, 0.15)
@@ -761,29 +1017,11 @@ do
 		end
 		showoptions(langrow, options, i18n.Current, function(value)
 			MXHUB.SetLanguage(value)
-		end)
+		end, { title = "LANGUAGE", search = true, width = 184 })
 	end)
 
 	scalerow.Activated:Connect(function()
-		local options = {
-			{ label = "Auto", value = "Auto" },
-			{ label = "75%", value = "0.75" },
-			{ label = "90%", value = "0.9" },
-			{ label = "100%", value = "1" },
-			{ label = "110%", value = "1.1" },
-			{ label = "125%", value = "1.25" },
-			{ label = "150%", value = "1.5" },
-		}
-		local current = uistate.scale
-		if tonumber(current) then
-			current = tostring(tonumber(current))
-		end
-		showoptions(scalerow, options, current, function(value)
-			uistate.scale = value
-			saveui()
-			applyscale()
-			refreshvalues()
-		end)
+		showscale(scalerow)
 	end)
 
 	stylerow.Activated:Connect(function()
@@ -806,19 +1044,18 @@ do
 				end
 			end
 			refreshvalues()
-		end)
+		end, { title = "STYLE", width = 140 })
 	end)
 
 	themerow.Activated:Connect(function()
-		showoptions(
-			themerow,
-			{ { label = "Dark", value = "Dark" }, { label = "Light", value = "Light" } },
-			theme.State.Mode,
-			function(value)
-				theme.Api.Set({ Mode = value })
-				refreshvalues()
-			end
-		)
+		local options = {}
+		for _, preset in ipairs(theme.Api.Presets()) do
+			options[#options + 1] = { label = preset[1], value = preset[1], color = preset[2] }
+		end
+		showoptions(themerow, options, theme.State.Preset, function(value)
+			theme.Api.Set({ Preset = value, Accent = false })
+			refreshvalues()
+		end, { title = "THEME", width = 150 })
 	end)
 
 	keyrow.Activated:Connect(function()
@@ -828,6 +1065,7 @@ do
 			return
 		end
 		sub.Visible = false
+		scalesub.Visible = false
 		keyvalue.Text = "Press a key..."
 		capturing = trackConnection(
 			sv.uis.InputBegan:Connect(function(input)
