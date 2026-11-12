@@ -7,8 +7,6 @@ do
 		end
 	end
 
-	local LIGHTBG = Color3.fromRGB(243, 244, 248)
-
 	local darktext, lighttext = Color3.fromRGB(14, 14, 17), Color3.fromRGB(255, 255, 253)
 
 	local function luminance(color)
@@ -30,86 +28,47 @@ do
 		out.SliderFill = accent
 	end
 
-	local function derive(bg, accent, light)
-		local out
-		if light then
-			local function dn(amount)
-				return bg:Lerp(black, amount)
-			end
-			local card = bg:Lerp(white, 0.6)
-			out = {
-				Backdrop = bg,
-				Sidebar = dn(0.03),
-				Card = card,
-				Row = bg:Lerp(white, 0.5),
-				Header = dn(0.045),
-				Element = dn(0.03),
-				Field = Color3.fromRGB(253, 253, 255),
-				Inner = dn(0.03),
-				Pill = card,
-				TabActive = dn(0.075),
-				Option = dn(0.02),
-				ElementHover = dn(0.07),
-				InnerHover = dn(0.07),
-				Track = dn(0.11),
-				Stroke = dn(0.1),
-				StrokeSoft = dn(0.06),
-				Bar = dn(0.2),
-				ChatBg = card,
-				Box = card,
-				Mine = dn(0.06),
-				Text = Color3.fromRGB(20, 22, 30),
-				SubText = Color3.fromRGB(92, 98, 115),
-				Dim = Color3.fromRGB(108, 114, 130),
-				ToggleOff = dn(0.11),
-				ToggleOffStroke = dn(0.2),
-				OffText = Color3.fromRGB(120, 126, 145),
-				KnobOff = Color3.fromRGB(255, 255, 251),
-				KnobOn = Color3.fromRGB(254, 255, 255),
-				SliderFill = Color3.fromRGB(40, 44, 58),
-			}
-		else
-			local function up(amount)
-				return bg:Lerp(white, amount)
-			end
-			out = {
-				Backdrop = bg,
-				Sidebar = bg:Lerp(black, 0.3),
-				Card = up(0.04),
-				Row = up(0.03),
-				Header = up(0.06),
-				Element = up(0.07),
-				Field = up(0.06),
-				Inner = up(0.07),
-				Pill = up(0.05),
-				TabActive = up(0.09),
-				Option = up(0.05),
-				ElementHover = up(0.11),
-				InnerHover = up(0.12),
-				Track = up(0.14),
-				Stroke = up(0.12),
-				StrokeSoft = up(0.07),
-				Bar = up(0.2),
-				ChatBg = up(0.03),
-				Box = up(0.03),
-				Mine = up(0.1),
-				Text = basetheme.Text,
-				SubText = basetheme.SubText,
-				Dim = basetheme.Dim,
-				ToggleOff = up(0.08),
-				ToggleOffStroke = up(0.17),
-				OffText = bg:Lerp(white, 0.45),
-				KnobOff = bg:Lerp(white, 0.5),
-				KnobOn = basetheme.KnobOn,
-				SliderFill = basetheme.SliderFill,
-			}
+	local function derive(bg, accent)
+		local function up(amount)
+			return bg:Lerp(white, amount)
 		end
+		local out = {
+			Backdrop = bg,
+			Sidebar = bg:Lerp(black, 0.3),
+			Card = up(0.04),
+			Row = up(0.03),
+			Header = up(0.06),
+			Element = up(0.07),
+			Field = up(0.06),
+			Inner = up(0.07),
+			Pill = up(0.05),
+			TabActive = up(0.09),
+			Option = up(0.05),
+			ElementHover = up(0.11),
+			InnerHover = up(0.12),
+			Track = up(0.14),
+			Stroke = up(0.12),
+			StrokeSoft = up(0.07),
+			Bar = up(0.2),
+			ChatBg = up(0.03),
+			Box = up(0.03),
+			Mine = up(0.1),
+			Text = basetheme.Text,
+			SubText = basetheme.SubText,
+			Dim = basetheme.Dim,
+			ToggleOff = up(0.08),
+			ToggleOffStroke = up(0.17),
+			OffText = bg:Lerp(white, 0.45),
+			KnobOff = bg:Lerp(white, 0.5),
+			KnobOn = basetheme.KnobOn,
+			SliderFill = basetheme.SliderFill,
+		}
 		paintaccent(out, accent)
 		return out
 	end
 
 	local themefile = "MX HUB/theme.json"
-	theme.State = { Preset = "MX HUB", Accent = nil, Mode = "Dark" }
+	theme.State = { Preset = "MX HUB", Accent = nil }
 
 	local function find(name)
 		local wanted = tostring(name or ""):lower()
@@ -144,9 +103,6 @@ do
 		local state = theme.State
 		local preset = find(state.Preset) or presets[1]
 		local accent = state.Accent or preset[3]
-		if state.Mode == "Light" then
-			return derive(LIGHTBG, accent, true)
-		end
 		if preset[4] then
 			local out = {}
 			for key, value in pairs(basetheme) do
@@ -155,7 +111,7 @@ do
 			paintaccent(out, accent)
 			return out
 		end
-		return derive(preset[2], accent, false)
+		return derive(preset[2], accent)
 	end
 
 	local function recolor(old)
@@ -222,7 +178,6 @@ do
 			writefile(themefile, sv.http:JSONEncode({
 				preset = state.Preset,
 				accent = state.Accent and hex6(state.Accent) or nil,
-				mode = state.Mode,
 			}))
 		end)
 	end
@@ -237,6 +192,14 @@ do
 		return names
 	end
 
+	function theme.Api.Presets()
+		local list = {}
+		for _, preset in ipairs(presets) do
+			list[#list + 1] = { preset[1], preset[3] }
+		end
+		return list
+	end
+
 	function theme.Api.Accents()
 		return accents
 	end
@@ -245,7 +208,7 @@ do
 		return parsehex(text)
 	end
 
-	-- patch: { Preset = "Emerald", Accent = Color3 | false (clear), Mode = "Dark" | "Light" }
+	-- patch: { Preset = "Emerald", Accent = Color3 | false (clear) }
 	function theme.Api.Set(patch, nosave)
 		patch = patch or {}
 		local state = theme.State
@@ -259,9 +222,6 @@ do
 			state.Accent = nil
 		elseif typeof(patch.Accent) == "Color3" then
 			state.Accent = patch.Accent
-		end
-		if patch.Mode == "Dark" or patch.Mode == "Light" then
-			state.Mode = patch.Mode
 		end
 
 		local old = {}
@@ -281,7 +241,7 @@ do
 		if not nosave then
 			persist()
 		end
-		return true, "Theme applied: " .. tostring(state.Preset) .. " / " .. tostring(state.Mode)
+		return true, "Theme applied: " .. tostring(state.Preset)
 	end
 
 	-- load the saved theme before any UI is built
@@ -296,7 +256,6 @@ do
 		theme.Api.Set({
 			Preset = type(data.preset) == "string" and find(data.preset) and data.preset or nil,
 			Accent = type(data.accent) == "string" and parsehex(data.accent) or nil,
-			Mode = data.mode,
 		}, true)
 	end)
 end
