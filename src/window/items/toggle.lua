@@ -115,10 +115,7 @@ function items:AddToggle(toggleconfig)
 		if fire and typeof(toggleconfig.Callback) == "function" then
 			task.spawn(function()
 				elevate()
-				local ok, err = pcall(toggleconfig.Callback, value)
-				if not ok then
-					warn("Toggle Callback error:", err)
-				end
+				firecallback(toggleconfig.Callback, toggleconfig.Title, value)
 			end)
 		end
 	end
@@ -191,8 +188,16 @@ function items:AddToggle(toggleconfig)
 			boundkey = key
 			config.data[keycfgkey] = key and key.Name or "None"
 			autosave.touch()
+			hotkeys.touch()
 			renderkey()
 		end
+
+		local hotkeyid = hotkeys.register(toggleconfig.Title, function()
+			return boundkey and keyname(boundkey), "Toggle"
+		end)
+		toggle.Destroying:Connect(function()
+			hotkeys.unregister(hotkeyid)
+		end)
 
 		local function setlistening(state)
 			if listening == state then

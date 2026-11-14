@@ -47,7 +47,7 @@ function items:AddColorPicker(colorconfig)
 	row.ClipsDescendants = true
 	row.LayoutOrder = countitem
 	row.Size = UDim2.new(1, 0, 0, basey)
-	roundbg(row, 4, theme.Row)
+	roundbg(row, design.Radius.Control, theme.Row)
 
 	local title = instance.textlabel(row)
 	title.Name = "ColorTitle"
@@ -238,10 +238,7 @@ function items:AddColorPicker(colorconfig)
 		render()
 		if notify then
 			elevate()
-			local ok, err = pcall(colorconfig.Callback, colorfunc.Value)
-			if not ok then
-				warn("ColorPicker Callback error:", err)
-			end
+			firecallback(colorconfig.Callback, colorconfig.Title, colorfunc.Value)
 		end
 	end
 

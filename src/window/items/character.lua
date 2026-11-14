@@ -7,7 +7,7 @@ function items:AddCharacter(characterconfig)
 	box.LayoutOrder = countitem
 	box.Size = UDim2.new(1, 0, 0, tonumber(characterconfig.Height) or 240)
 	box.ClipsDescendants = true
-	roundbg(box, 6, theme.Row)
+	roundbg(box, design.Radius.Control, theme.Row)
 	local boxstroke = instance.uistroke(box)
 	boxstroke.Color = theme.Stroke
 	boxstroke.Transparency = 0.5

@@ -19,7 +19,7 @@ function items:AddKeybind(keybindconfig)
 	row.BorderSizePixel = 0
 	row.LayoutOrder = countitem
 	row.Size = UDim2.new(1, 0, 0, 46)
-	roundbg(row, 4, theme.Row)
+	roundbg(row, design.Radius.Control, theme.Row)
 
 	local title = instance.textlabel(row)
 	title.Name = "KeybindTitle"
@@ -125,6 +125,7 @@ function items:AddKeybind(keybindconfig)
 
 	local function apply(key, instant, save, notify)
 		keybindfunc.Value = key
+		hotkeys.touch()
 		keybindfunc.State = false
 		if save then
 			config.data[configkey] = key and key.Name or "None"
@@ -141,11 +142,7 @@ function items:AddKeybind(keybindconfig)
 	end
 
 	local function fire(...)
-		elevate()
-		local ok, err = pcall(keybindconfig.Callback, ...)
-		if not ok then
-			warn("Keybind Callback error:", err)
-		end
+		firecallback(keybindconfig.Callback, keybindconfig.Title, ...)
 	end
 
 	local function savedpref()
@@ -266,6 +263,13 @@ function items:AddKeybind(keybindconfig)
 	countitem = countitem + 1
 	yieldbuild()
 	config.elements[configkey] = keybindfunc
+	local hotkeyid = hotkeys.register(keybindconfig.Title, function()
+		return keybindfunc.Value and keyname(keybindfunc.Value), keybindfunc.Mode
+	end)
+	row.Destroying:Connect(function()
+		hotkeys.unregister(hotkeyid)
+	end)
+
 	registerSearchItem(keybindconfig.Title, row, "Keybind")
 	return keybindfunc
 end

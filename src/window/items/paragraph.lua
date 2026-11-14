@@ -9,7 +9,7 @@ function items:AddParagraph(paragraphconfig)
 	paragraph.BorderSizePixel = 0
 	paragraph.LayoutOrder = countitem
 	paragraph.Size = UDim2.new(1, 0, 0, 46)
-	roundbg(paragraph, 4, theme.Row)
+	roundbg(paragraph, design.Radius.Control, theme.Row)
 
 	local iconoffset = hasimage(paragraphconfig.Icon) and 30 or 10
 
@@ -75,7 +75,7 @@ function items:AddParagraph(paragraphconfig)
 		paragraphbutton.TextColor3 = theme.Text
 		paragraphbutton.Text = paragraphconfig.ButtonText
 
-		hoverbg(paragraphbutton, roundbg(paragraphbutton, 6, theme.Inner), theme.Inner, theme.InnerHover)
+		hoverbg(paragraphbutton, roundbg(paragraphbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 		if paragraphconfig.ButtonCallback then
 			paragraphbutton.MouseButton1Click:Connect(paragraphconfig.ButtonCallback)

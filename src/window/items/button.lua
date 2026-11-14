@@ -5,21 +5,11 @@ function items:AddButton(buttonconfig)
 	buttonconfig.SubTitle = buttonconfig.SubTitle or nil
 	buttonconfig.SubCallback = buttonconfig.SubCallback or function() end
 
-	local function runcallback(fn, label)
-		elevate()
-		if typeof(fn) == "function" then
-			local ok, err = pcall(fn)
-			if not ok then
-				warn("Button Callback error (" .. tostring(label) .. "):", err)
-			end
-		end
-	end
-
 	local button = instance.frame(sectionadd)
 	button.BorderSizePixel = 0
 	button.Size = UDim2.new(1, 0, 0, isMobile and 46 or 40)
 	button.LayoutOrder = countitem
-	roundbg(button, 4, theme.Row)
+	roundbg(button, design.Radius.Control, theme.Row)
 
 	local padding = 3
 	local gap = 4
@@ -33,7 +23,7 @@ function items:AddButton(buttonconfig)
 	mainbutton.TextTransparency = 0.3
 	mainbutton.AutoButtonColor = false
 	mainbutton.ZIndex = 10
-	hoverbg(mainbutton, roundbg(mainbutton, 4, theme.Inner), theme.Inner, theme.InnerHover)
+	hoverbg(mainbutton, roundbg(mainbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 	if buttonconfig.SubTitle then
 		mainbutton.Size = UDim2.new(0.5, -padding - gap, 1, -10)
@@ -72,7 +62,7 @@ function items:AddButton(buttonconfig)
 	end)
 
 	mainbutton.MouseButton1Click:Connect(function()
-		runcallback(buttonconfig.Callback, buttonconfig.Title)
+		firecallback(buttonconfig.Callback, buttonconfig.Title)
 	end)
 
 	local buttons = { mainbutton }
@@ -89,14 +79,14 @@ function items:AddButton(buttonconfig)
 		subbutton.Position = UDim2.new(0.5, gap, 0, 5)
 		subbutton.AutoButtonColor = false
 		subbutton.ZIndex = 10
-		hoverbg(subbutton, roundbg(subbutton, 4, theme.Inner), theme.Inner, theme.InnerHover)
+		hoverbg(subbutton, roundbg(subbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 		subbutton.MouseButton1Down:Connect(function()
 			pcall(pesseffect, subbutton)
 		end)
 
 		subbutton.MouseButton1Click:Connect(function()
-			runcallback(buttonconfig.SubCallback, buttonconfig.SubTitle)
+			firecallback(buttonconfig.SubCallback, buttonconfig.SubTitle)
 		end)
 		buttons[#buttons + 1] = subbutton
 	end

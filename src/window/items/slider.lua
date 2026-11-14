@@ -9,41 +9,15 @@ function items:AddSlider(sliderconfig)
 
 	local configkey = keyfor("Slider_", sliderconfig)
 
-	local function getprecision(step)
-		local s = tostring(step)
-		if s:find("e") or s:find("E") then
-			s = string.format("%.12f", step):gsub("0+$", ""):gsub("%.$", "")
-		end
-
-		local dot = s:find("%.")
-		return dot and (#s - dot) or 0
-	end
-
-	local precision = tonumber(sliderconfig.Precision) or getprecision(sliderconfig.Increment)
+	local precision = tonumber(sliderconfig.Precision) or stepprecision(sliderconfig.Increment)
 	local suffix = tostring(sliderconfig.Suffix or "")
 
-	local function roundtoincrement(value)
-		local step = sliderconfig.Increment
-		return math.floor((value / step) + 0.5) * step
-	end
-
 	local function formatnumber(value)
-		value = tonumber(string.format("%." .. precision .. "f", value)) or 0
-
-		if precision > 0 then
-			return string.format("%." .. precision .. "f", value):gsub("0+$", ""):gsub("%.$", "")
-		end
-
-		return tostring(math.floor(value + 0.5))
+		return numbertext(value, precision)
 	end
 
 	local function clampvalue(value)
-		value = tonumber(value) or sliderconfig.Min
-		value = math.clamp(value, sliderconfig.Min, sliderconfig.Max)
-		value = roundtoincrement(value)
-		value = math.clamp(value, sliderconfig.Min, sliderconfig.Max)
-		value = tonumber(string.format("%." .. precision .. "f", value)) or sliderconfig.Min
-		return value
+		return snapnumber(value, sliderconfig.Min, sliderconfig.Max, sliderconfig.Increment, precision)
 	end
 
 	local hubdefault = clampvalue(sliderconfig.Default)
@@ -227,10 +201,7 @@ function items:AddSlider(sliderconfig)
 			lastcall = tick()
 			task.spawn(function()
 				elevate()
-				local ok, err = pcall(sliderconfig.Callback, value)
-				if not ok then
-					warn("Slider Callback error:", err)
-				end
+				firecallback(sliderconfig.Callback, sliderconfig.Title, value)
 			end)
 		end
 	end

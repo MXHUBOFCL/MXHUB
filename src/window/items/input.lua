@@ -27,7 +27,7 @@ function items:AddInput(inputconfig)
 	inputcontainer.BorderSizePixel = 0
 	inputcontainer.LayoutOrder = countitem
 	inputcontainer.Size = UDim2.new(1, 0, 0, 58)
-	roundbg(inputcontainer, 4, theme.Row)
+	roundbg(inputcontainer, design.Radius.Control, theme.Row)
 
 	local inputtitle = instance.textlabel(inputcontainer)
 	inputtitle.Font = Enum.Font.GothamMedium
@@ -96,10 +96,7 @@ function items:AddInput(inputconfig)
 		end
 		if fire and typeof(inputconfig.Callback) == "function" then
 			elevate()
-			local ok, err = pcall(inputconfig.Callback, value)
-			if not ok then
-				warn("Input Callback error:", err)
-			end
+			firecallback(inputconfig.Callback, inputconfig.Title, value)
 		end
 	end
 

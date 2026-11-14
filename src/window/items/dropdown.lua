@@ -98,8 +98,8 @@ function items:AddDropdown(dropdownconfig)
 	dropdown.Name = "Dropdown"
 	dropdown.BorderSizePixel = 0
 	dropdown.LayoutOrder = countitem
-	dropdown.Size = UDim2.new(1, 0, 0, 60)
-	roundbg(dropdown, 4, theme.Row)
+	dropdown.Size = UDim2.new(1, 0, 0, 66)
+	roundbg(dropdown, design.Radius.Control, theme.Row)
 
 	local dropdownbutton = instance.textbutton(dropdown)
 	dropdownbutton.Name = "ToggleButton"
@@ -112,21 +112,21 @@ function items:AddDropdown(dropdownconfig)
 	dropdowntitle.Font = Enum.Font.GothamMedium
 	dropdowntitle.Text = dropdownconfig.Title
 	dropdowntitle.TextColor3 = theme.Text
-	dropdowntitle.TextSize = 12
+	dropdowntitle.TextSize = design.Font.Label
 	dropdowntitle.TextXAlignment = Enum.TextXAlignment.Left
 	dropdowntitle.TextYAlignment = Enum.TextYAlignment.Top
 	dropdowntitle.TextTruncate = Enum.TextTruncate.AtEnd
 	dropdowntitle.BackgroundTransparency = 1
-	dropdowntitle.Position = UDim2.new(0, 10, 0, 8)
-	dropdowntitle.Size = UDim2.new(1, -20, 0, 13)
+	dropdowntitle.Position = UDim2.new(0, 10, 0, 9)
+	dropdowntitle.Size = UDim2.new(1, -20, 0, 16)
 
 	local selectoptionsframe = instance.frame(dropdown)
 	selectoptionsframe.Name = "SelectOptionsFrame"
 	selectoptionsframe.AnchorPoint = Vector2.new(0, 0)
-	selectoptionsframe.Position = UDim2.new(0, 10, 0, 26)
-	selectoptionsframe.Size = UDim2.new(1, -20, 0, 26)
+	selectoptionsframe.Position = UDim2.new(0, 10, 0, 29)
+	selectoptionsframe.Size = UDim2.new(1, -20, 0, 30)
 	selectoptionsframe.LayoutOrder = countdropdown
-	roundbg(selectoptionsframe, 5, Color3.fromRGB(15, 15, 18))
+	roundbg(selectoptionsframe, design.Radius.Control, theme.Field)
 
 	local optionselecting = instance.textlabel(selectoptionsframe)
 	optionselecting.Name = "OptionSelecting"
@@ -151,18 +151,18 @@ function items:AddDropdown(dropdownconfig)
 	optionimg.Rotation = 0
 	optionimg.Size = UDim2.new(0, 16, 0, 16)
 
-	local basey = 60
+	local basey = 66
 	local description = contenttext(dropdownconfig)
 	local ix = elementiconx(dropdownconfig)
 	iconapi(dropdownfunc, elementicon(dropdown, dropdownconfig.Icon, 16))
-	dropdowntitle.Position = UDim2.new(0, ix, 0, 8)
-	dropdowntitle.Size = UDim2.new(1, -(ix + 10), 0, 13)
+	dropdowntitle.Position = UDim2.new(0, ix, 0, 9)
+	dropdowntitle.Size = UDim2.new(1, -(ix + 10), 0, 16)
 	if description then
-		local _, measure = attachcontent(dropdown, description, ix, 25, 10)
+		local _, measure = attachcontent(dropdown, description, ix, 27, 10)
 		local function relayout()
-			local fieldy = 25 + measure() + 6
+			local fieldy = 27 + measure() + 6
 			selectoptionsframe.Position = UDim2.new(0, 10, 0, fieldy)
-			basey = fieldy + 26 + 8
+			basey = fieldy + 30 + 8
 			dropdown.Size = UDim2.new(1, 0, 0, basey)
 		end
 		relayout()
