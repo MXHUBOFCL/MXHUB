@@ -20,51 +20,58 @@ local assets = {
 	Slice = "rbxassetid://3570695787",
 	Discord = "rbxassetid://127606113874611",
 }
+local design = {
+	Radius = { Control = 8, Card = 10 },
+	Row = { Height = 40, Pad = 12 },
+	Section = { Header = 34 },
+	Font = { Label = 13, Caption = 11 },
+	Anim = { Fast = 0.12, Normal = 0.18, Slow = 0.28 },
+}
 local theme = {
 	Accent = Color3.fromRGB(245, 247, 252),
 	AccentText = Color3.fromRGB(14, 16, 22),
-	Backdrop = Color3.fromRGB(20, 22, 27),
-	Sidebar = Color3.fromRGB(14, 16, 21),
-	Card = Color3.fromRGB(25, 27, 33),
-	Element = Color3.fromRGB(27, 30, 38),
-	ElementHover = Color3.fromRGB(34, 37, 47),
-	Track = Color3.fromRGB(44, 48, 62),
-	Stroke = Color3.fromRGB(42, 45, 57),
-	StrokeSoft = Color3.fromRGB(31, 34, 43),
-	Text = Color3.fromRGB(232, 236, 244),
-	SubText = Color3.fromRGB(150, 156, 172),
-	Dim = Color3.fromRGB(112, 119, 138),
+	Backdrop = Color3.fromRGB(16, 19, 28),
+	Sidebar = Color3.fromRGB(11, 13, 20),
+	Card = Color3.fromRGB(22, 26, 38),
+	Element = Color3.fromRGB(29, 34, 50),
+	ElementHover = Color3.fromRGB(38, 44, 64),
+	Track = Color3.fromRGB(45, 51, 72),
+	Stroke = Color3.fromRGB(46, 53, 74),
+	StrokeSoft = Color3.fromRGB(33, 38, 54),
+	Text = Color3.fromRGB(240, 243, 250),
+	SubText = Color3.fromRGB(152, 160, 182),
+	Dim = Color3.fromRGB(115, 123, 146),
 	Good = Color3.fromRGB(72, 205, 141),
 	Bad = Color3.fromRGB(238, 92, 100),
 	Gold = Color3.fromRGB(240, 178, 78),
 	Blue = Color3.fromRGB(96, 165, 250),
-	Row = Color3.fromRGB(24, 26, 32),
-	Header = Color3.fromRGB(23, 25, 31),
-	Inner = Color3.fromRGB(27, 30, 38),
-	InnerHover = Color3.fromRGB(35, 38, 48),
-	Field = Color3.fromRGB(17, 19, 25),
-	Bar = Color3.fromRGB(56, 61, 80),
-	Pill = Color3.fromRGB(22, 24, 30),
-	TabActive = Color3.fromRGB(33, 36, 46),
-	Option = Color3.fromRGB(19, 21, 27),
-	ChatBg = Color3.fromRGB(15, 17, 23),
-	Mine = Color3.fromRGB(29, 32, 42),
+	Row = Color3.fromRGB(21, 25, 36),
+	Header = Color3.fromRGB(25, 30, 43),
+	Inner = Color3.fromRGB(29, 34, 50),
+	InnerHover = Color3.fromRGB(39, 45, 65),
+	Field = Color3.fromRGB(14, 17, 25),
+	Bar = Color3.fromRGB(58, 65, 88),
+	Pill = Color3.fromRGB(23, 27, 39),
+	TabActive = Color3.fromRGB(34, 40, 58),
+	Option = Color3.fromRGB(18, 21, 31),
+	ChatBg = Color3.fromRGB(12, 14, 21),
+	Mine = Color3.fromRGB(30, 35, 50),
 	Mention = Color3.fromRGB(38, 33, 22),
-	Box = Color3.fromRGB(15, 17, 23),
+	Box = Color3.fromRGB(12, 14, 21),
 	Radius = { window = 12, card = 10, control = 8, chip = 6, tile = 7 },
 	Gutter = 14,
 	ToggleOn = Color3.fromRGB(245, 247, 252),
-	ToggleOff = Color3.fromRGB(27, 30, 38),
-	ToggleOffStroke = Color3.fromRGB(50, 56, 74),
-	OffText = Color3.fromRGB(118, 125, 144),
-	KnobOff = Color3.fromRGB(136, 144, 166),
+	ToggleOff = Color3.fromRGB(29, 34, 50),
+	ToggleOffStroke = Color3.fromRGB(52, 59, 82),
+	OffText = Color3.fromRGB(121, 129, 152),
+	KnobOff = Color3.fromRGB(140, 149, 174),
 	SliderFill = Color3.fromRGB(245, 247, 252),
 	KnobOn = Color3.fromRGB(22, 24, 30),
 	Current = "MX HUB",
 }
 
 local presets = {
-	{ "MX HUB", Color3.fromRGB(20, 22, 27), Color3.fromRGB(245, 247, 252), true },
+	{ "MX HUB", Color3.fromRGB(16, 19, 28), Color3.fromRGB(245, 247, 252), true },
 	{ "Emerald", Color3.fromRGB(18, 18, 18), Color3.fromRGB(30, 215, 96) },
 	{ "Indigo", Color3.fromRGB(30, 31, 34), Color3.fromRGB(88, 101, 242) },
 	{ "Midnight Purple", Color3.fromRGB(12, 9, 22), Color3.fromRGB(139, 92, 246) },
@@ -358,15 +365,6 @@ local function elevate()
 	end
 end
 
-local function hexcolor(color)
-	return string.format(
-		"#%02X%02X%02X",
-		math.floor(color.R * 255 + 0.5),
-		math.floor(color.G * 255 + 0.5),
-		math.floor(color.B * 255 + 0.5)
-	)
-end
-
 local function textheight(text, size, font, width, maxheight)
 	local ok, bounds = pcall(function()
 		return sv.textservice:GetTextSize(tostring(text or ""), size, font, Vector2.new(math.max(20, width), 100000))
@@ -377,12 +375,14 @@ local function textheight(text, size, font, width, maxheight)
 	return size
 end
 
-local function escaperich(text)
-	return (tostring(text or ""):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
-end
-
 local function stepfromfraction(fraction, min, max, step)
 	return math.floor((min + math.clamp(fraction, 0, 1) * (max - min)) / step + 0.5) * step
+end
+
+local function formatcount(value)
+	local text = tostring(math.floor(tonumber(value) or 0))
+	local formatted = text:reverse():gsub("(%d%d%d)", "%1,"):reverse()
+	return (formatted:gsub("^,", ""))
 end
 
 local function searchmatch(text, query)
@@ -401,6 +401,44 @@ local function clipboardwrite(text)
 	return (pcall(fn, tostring(text)))
 end
 
+local function stepprecision(step)
+	local text = tostring(step)
+	if text:find("e") or text:find("E") then
+		text = string.format("%.12f", step):gsub("0+$", ""):gsub("%.$", "")
+	end
+	local dot = text:find("%.")
+	return dot and (#text - dot) or 0
+end
+
+local function snapnumber(value, min, max, step, precision)
+	value = math.clamp(tonumber(value) or min, min, max)
+	value = math.clamp(math.floor(value / step + 0.5) * step, min, max)
+	return tonumber(string.format("%." .. precision .. "f", value)) or min
+end
+
+local function numbertext(value, precision)
+	value = tonumber(string.format("%." .. precision .. "f", value)) or 0
+	if precision > 0 then
+		return (string.format("%." .. precision .. "f", value):gsub("0+$", ""):gsub("%.$", ""))
+	end
+	return tostring(math.floor(value + 0.5))
+end
+
+local function pickoption(choices, value, fallback)
+	for _, choice in ipairs(choices) do
+		if choice == value then
+			return choice
+		end
+	end
+	return fallback
+end
+local function httprequest()
+	return (type(request) == "function" and request)
+		or (type(http_request) == "function" and http_request)
+		or (type(syn) == "table" and type(syn.request) == "function" and syn.request)
+		or (type(http) == "table" and type(http.request) == "function" and http.request)
+		or nil
+end
 local iconaliases = {
 	main = { "home", "house" },
 	home = { "home", "house" },
@@ -4211,6 +4249,7 @@ if getgenv().MXHUB_Running then
 			"MXHUBUI",
 			"ToggleUIButton",
 			"PopupGui",
+			"HotkeysGui",
 		}) do
 			local old = sv.coregui:FindFirstChild(name)
 			if old then
@@ -5187,7 +5226,7 @@ local function makedraggable(topbar, object)
 end
 
 local MXHUB = {}
-MXHUB.Version = "4.4.0"
+MXHUB.Version = "5.0.0"
 MXHUB.Theme = theme.Api -- Names(), Accents(), ParseHex(text), Set({ Preset, Accent, Mode })
 
 local autosave = { enabled = false, delay = 1.5, ticket = 0 }
@@ -6042,6 +6081,506 @@ local function glassblur(frame)
 	end)
 	return controller
 end
+local hotkeys = { entries = {}, lastid = 0 }
+
+local HOTKEYS_NAME = "HotkeysGui"
+local ROW_HEIGHT = 24
+
+local overlay = { gui = nil, panel = nil, list = nil, connections = {} }
+
+local function hotkeyrows()
+	local rows = {}
+	for _, entry in pairs(hotkeys.entries) do
+		local key, mode = entry.describe()
+		if key and key ~= "" and key ~= "None" then
+			rows[#rows + 1] = { title = entry.title, key = key, mode = mode or "Press" }
+		end
+	end
+	table.sort(rows, function(a, b)
+		return a.title:lower() < b.title:lower()
+	end)
+	return rows
+end
+
+local function modelabel(mode)
+	local text = tostring(mode)
+	return text:sub(1, 1):upper() .. text:sub(2):lower()
+end
+
+local function rebuild()
+	if not overlay.list then
+		return
+	end
+	for _, child in ipairs(overlay.list:GetChildren()) do
+		if child:IsA("Frame") then
+			child:Destroy()
+		end
+	end
+	local rows = hotkeyrows()
+	overlay.panel.Visible = true
+	for index, entry in ipairs(rows) do
+		local row = instance.frame(overlay.list)
+		row.Name = "Hotkey"
+		row.LayoutOrder = index
+		row.BackgroundTransparency = 1
+		row.BorderSizePixel = 0
+		row.Size = UDim2.new(1, 0, 0, ROW_HEIGHT)
+		local function cell(text, x, width, align, color, font)
+			local label = instance.textlabel(row)
+			label.BackgroundTransparency = 1
+			label.Font = font or Enum.Font.GothamMedium
+			label.TextSize = 12
+			label.TextColor3 = color
+			label.TextXAlignment = align
+			label.TextTruncate = Enum.TextTruncate.AtEnd
+			label.Position = x
+			label.Size = width
+			label.Text = text
+		end
+		cell(entry.title, UDim2.new(0, 0, 0, 0), UDim2.new(0.5, -6, 1, 0), Enum.TextXAlignment.Left, theme.Text)
+		cell(entry.key, UDim2.new(0.5, 0, 0, 0), UDim2.new(0.25, 0, 1, 0), Enum.TextXAlignment.Center, theme.SubText)
+		cell(modelabel(entry.mode), UDim2.new(0.75, 0, 0, 0), UDim2.new(0.25, 0, 1, 0), Enum.TextXAlignment.Right, theme.Dim)
+	end
+	overlay.empty.Visible = #rows == 0
+end
+
+function hotkeys.register(title, describe)
+	hotkeys.lastid += 1
+	hotkeys.entries[hotkeys.lastid] = { title = tostring(title), describe = describe }
+	rebuild()
+	return hotkeys.lastid
+end
+
+function hotkeys.unregister(id)
+	hotkeys.entries[id] = nil
+	rebuild()
+end
+
+function hotkeys.touch()
+	rebuild()
+end
+
+local function closeoverlay()
+	for _, connection in ipairs(overlay.connections) do
+		connection:Disconnect()
+	end
+	table.clear(overlay.connections)
+	if overlay.gui then
+		overlay.gui:Destroy()
+	end
+	overlay.gui, overlay.panel, overlay.list, overlay.empty = nil, nil, nil, nil
+end
+
+function MXHUB.ShowHotkeys(state)
+	if state ~= true then
+		closeoverlay()
+		return
+	end
+	if overlay.gui then
+		return
+	end
+	elevate()
+
+	local gui = instance.screengui(sv.coregui)
+	gui.Name = HOTKEYS_NAME
+	gui.ResetOnSpawn = false
+	gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	gui.DisplayOrder = 50
+
+	local panel = instance.frame(gui)
+	panel.Name = "Panel"
+	panel.BackgroundColor3 = theme.Card
+	panel.BackgroundTransparency = 0.04
+	panel.BorderSizePixel = 0
+	panel.Position = UDim2.new(0, 24, 0.5, -90)
+	panel.Size = UDim2.new(0, 236, 0, 0)
+	panel.AutomaticSize = Enum.AutomaticSize.Y
+	instance.uicorner(panel).CornerRadius = UDim.new(0, design.Radius.Card)
+	local stroke = instance.uistroke(panel)
+	stroke.Color = theme.Stroke
+	stroke.Thickness = 1
+	stroke.Transparency = 0.3
+	local layout = instance.uilistlayout(panel)
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local header = instance.frame(panel)
+	header.Name = "Header"
+	header.LayoutOrder = 0
+	header.BackgroundTransparency = 1
+	header.Size = UDim2.new(1, 0, 0, 36)
+	local icon = instance.imagelabel(header)
+	icon.BackgroundTransparency = 1
+	icon.AnchorPoint = Vector2.new(0, 0.5)
+	icon.Position = UDim2.new(0, 12, 0.5, 0)
+	icon.Size = UDim2.new(0, 14, 0, 14)
+	icon.ImageColor3 = theme.Accent
+	applyicon(icon, "keyboard", 48)
+	local title = instance.textlabel(header)
+	title.BackgroundTransparency = 1
+	title.Font = Enum.Font.GothamBold
+	title.TextSize = 13
+	title.TextColor3 = theme.Text
+	title.TextXAlignment = Enum.TextXAlignment.Left
+	title.Position = UDim2.new(0, 34, 0, 0)
+	title.Size = UDim2.new(1, -46, 1, 0)
+	title.Text = "Hotkeys"
+
+	local columns = instance.frame(panel)
+	columns.Name = "Columns"
+	columns.LayoutOrder = 1
+	columns.BackgroundTransparency = 1
+	columns.Size = UDim2.new(1, 0, 0, 20)
+	local columnpad = instance.uipadding(columns)
+	columnpad.PaddingLeft = UDim.new(0, 12)
+	columnpad.PaddingRight = UDim.new(0, 12)
+	for _, spec in ipairs({
+		{ "Function", UDim2.new(0, 0, 0, 0), UDim2.new(0.5, 0, 1, 0), Enum.TextXAlignment.Left },
+		{ "Key", UDim2.new(0.5, 0, 0, 0), UDim2.new(0.25, 0, 1, 0), Enum.TextXAlignment.Center },
+		{ "Mode", UDim2.new(0.75, 0, 0, 0), UDim2.new(0.25, 0, 1, 0), Enum.TextXAlignment.Right },
+	}) do
+		local label = instance.textlabel(columns)
+		label.BackgroundTransparency = 1
+		label.Font = Enum.Font.GothamBold
+		label.TextSize = 10
+		label.TextColor3 = theme.Dim
+		label.TextXAlignment = spec[4]
+		label.Position = spec[2]
+		label.Size = spec[3]
+		label.Text = spec[1]:upper()
+	end
+
+	local list = instance.frame(panel)
+	list.Name = "List"
+	list.LayoutOrder = 2
+	list.BackgroundTransparency = 1
+	list.Size = UDim2.new(1, 0, 0, 0)
+	list.AutomaticSize = Enum.AutomaticSize.Y
+	local listpad = instance.uipadding(list)
+	listpad.PaddingLeft = UDim.new(0, 12)
+	listpad.PaddingRight = UDim.new(0, 12)
+	listpad.PaddingBottom = UDim.new(0, 10)
+	local listlayout = instance.uilistlayout(list)
+	listlayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local empty = instance.textlabel(panel)
+	empty.Name = "Empty"
+	empty.LayoutOrder = 3
+	empty.BackgroundTransparency = 1
+	empty.Font = Enum.Font.Gotham
+	empty.TextSize = 12
+	empty.TextColor3 = theme.Dim
+	empty.Size = UDim2.new(1, 0, 0, 28)
+	empty.Text = "No keys bound yet"
+
+	overlay.gui, overlay.panel, overlay.list, overlay.empty = gui, panel, list, empty
+
+	local dragging, startpoint, origin = false, nil, nil
+	local function pointer(input)
+		return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch
+	end
+	overlay.connections[#overlay.connections + 1] = header.InputBegan:Connect(function(input)
+		if pointer(input) then
+			dragging, startpoint, origin = true, input.Position, panel.Position
+		end
+	end)
+	overlay.connections[#overlay.connections + 1] = sv.uis.InputChanged:Connect(function(input)
+		if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			local delta = input.Position - startpoint
+			panel.Position = UDim2.new(origin.X.Scale, origin.X.Offset + delta.X, origin.Y.Scale, origin.Y.Offset + delta.Y)
+		end
+	end)
+	overlay.connections[#overlay.connections + 1] = sv.uis.InputEnded:Connect(function(input)
+		if dragging and pointer(input) then
+			dragging = false
+		end
+	end)
+	rebuild()
+end
+
+function MXHUB.IsHotkeysShown()
+	return overlay.gui ~= nil
+end
+MXHUB.Discord = {}
+
+do
+	local cache = {}
+	local TTL = 60
+
+	function MXHUB.Discord.ParseInvite(value)
+		if type(value) ~= "string" then
+			return nil
+		end
+		value = value:match("^%s*(.-)%s*$")
+		local code = value:match("^https?://discord%.gg/([%w%-]+)")
+			or value:match("^https?://discord%.com/invite/([%w%-]+)")
+			or value:match("^https?://discordapp%.com/invite/([%w%-]+)")
+			or value:match("^discord%.gg/([%w%-]+)")
+		if not code and value:match("^[%w%-]+$") then
+			code = value
+		end
+		if code and #code >= 2 and #code <= 32 then
+			return code
+		end
+		return nil
+	end
+
+	function MXHUB.Discord.Stats(invite, force)
+		local code = MXHUB.Discord.ParseInvite(invite)
+		if not code then
+			return nil, "Not a Discord invite"
+		end
+		local hit = cache[code]
+		if hit and not force and os.clock() - hit.at < TTL then
+			return hit.info
+		end
+		local request = httprequest()
+		if not request then
+			return nil, "No HTTP request function available in this executor"
+		end
+		local ok, response = pcall(request, {
+			Url = "https://discord.com/api/v10/invites/" .. code .. "?with_counts=true",
+			Method = "GET",
+		})
+		if not ok then
+			return nil, tostring(response)
+		end
+		local status = tonumber(response.StatusCode) or 0
+		if status == 404 then
+			return nil, "Invite not found"
+		elseif status == 429 then
+			return nil, "Rate limited, try again later"
+		elseif status ~= 200 then
+			return nil, "Discord answered " .. tostring(status)
+		end
+		local decoded, data = pcall(function()
+			return sv.http:JSONDecode(response.Body)
+		end)
+		if not decoded or type(data) ~= "table" then
+			return nil, "Unreadable response"
+		end
+		local info = {
+			Code = code,
+			Name = type(data.guild) == "table" and data.guild.name or nil,
+			Members = tonumber(data.approximate_member_count),
+			Online = tonumber(data.approximate_presence_count),
+		}
+		if not info.Members then
+			return nil, "Response has no member count"
+		end
+		cache[code] = { at = os.clock(), info = info }
+		return info
+	end
+end
+MXHUB.Webhook = {}
+
+do
+	local hosts = { ["discord.com"] = true, ["discordapp.com"] = true, ["ptb.discord.com"] = true, ["canary.discord.com"] = true }
+	local WINDOW, BURST = 2, 5
+	local LIMITS = { content = 2000, username = 80, title = 256, description = 4096, name = 256, value = 1024, footer = 2048, author = 256 }
+	local MAX_FIELDS, MAX_EMBEDS, MAX_EMBED_TOTAL = 25, 10, 6000
+
+	local function cut(text, limit)
+		text = tostring(text)
+		if #text > limit then
+			return text:sub(1, limit)
+		end
+		return text
+	end
+
+	local function colorvalue(color)
+		if typeof(color) == "Color3" then
+			return math.floor(color.R * 255 + 0.5) * 65536 + math.floor(color.G * 255 + 0.5) * 256 + math.floor(color.B * 255 + 0.5)
+		end
+		return tonumber(color)
+	end
+
+	local function httpsurl(value)
+		return type(value) == "string" and value:match("^https://[%w%.%-_/%%?&=:#~+@,;]+$") ~= nil
+	end
+
+	function MXHUB.Webhook.Validate(url)
+		if type(url) ~= "string" then
+			return false
+		end
+		local host, path = url:match("^https://([%w%.]+)(/api/.+)$")
+		if not host or not hosts[host] then
+			return false
+		end
+		return path:match("^/api/webhooks/%d+/[%w_%-]+$") ~= nil or path:match("^/api/v%d+/webhooks/%d+/[%w_%-]+$") ~= nil
+	end
+
+	local function buildembed(source)
+		if type(source) ~= "table" then
+			return nil, "Embed must be a table"
+		end
+		local embed, total = {}, 0
+		local function text(key, value, limit)
+			if value ~= nil and value ~= "" then
+				local clipped = cut(value, limit)
+				total += #clipped
+				embed[key] = clipped
+			end
+		end
+		text("title", source.title, LIMITS.title)
+		text("description", source.description, LIMITS.description)
+		if httpsurl(source.url) then
+			embed.url = source.url
+		end
+		local color = colorvalue(source.color)
+		if color then
+			embed.color = math.clamp(math.floor(color), 0, 16777215)
+		end
+		if source.timestamp == true then
+			embed.timestamp = DateTime.now():ToIsoDate()
+		elseif type(source.timestamp) == "string" then
+			embed.timestamp = source.timestamp
+		end
+		if type(source.footer) == "table" or type(source.footer) == "string" then
+			local footer = type(source.footer) == "table" and source.footer.text or source.footer
+			if footer and footer ~= "" then
+				local clipped = cut(footer, LIMITS.footer)
+				total += #clipped
+				embed.footer = { text = clipped }
+			end
+		end
+		if type(source.author) == "table" and source.author.name then
+			local clipped = cut(source.author.name, LIMITS.author)
+			total += #clipped
+			embed.author = { name = clipped }
+		end
+		if httpsurl(type(source.thumbnail) == "table" and source.thumbnail.url or source.thumbnail) then
+			embed.thumbnail = { url = type(source.thumbnail) == "table" and source.thumbnail.url or source.thumbnail }
+		end
+		if httpsurl(type(source.image) == "table" and source.image.url or source.image) then
+			embed.image = { url = type(source.image) == "table" and source.image.url or source.image }
+		end
+		if type(source.fields) == "table" then
+			embed.fields = {}
+			for _, field in ipairs(source.fields) do
+				if #embed.fields >= MAX_FIELDS then
+					break
+				end
+				if type(field) == "table" and field.name and field.value then
+					local name, value = cut(field.name, LIMITS.name), cut(field.value, LIMITS.value)
+					total += #name + #value
+					embed.fields[#embed.fields + 1] = { name = name, value = value, inline = field.inline == true }
+				end
+			end
+		end
+		if total > MAX_EMBED_TOTAL then
+			return nil, "Embed exceeds " .. MAX_EMBED_TOTAL .. " characters"
+		end
+		if next(embed) == nil then
+			return nil, "Embed is empty"
+		end
+		return embed, total
+	end
+
+	function MXHUB.Webhook.Build(payload)
+		if type(payload) == "string" then
+			payload = { content = payload }
+		end
+		if type(payload) ~= "table" then
+			return nil, "Payload must be a string or a table"
+		end
+		local body = {}
+		if payload.allowMentions ~= true then
+			body.allowed_mentions = { parse = {} }
+		end
+		if payload.content and payload.content ~= "" then
+			body.content = cut(payload.content, LIMITS.content)
+		end
+		if payload.username and payload.username ~= "" then
+			body.username = cut(payload.username, LIMITS.username)
+		end
+		if httpsurl(payload.avatar) then
+			body.avatar_url = payload.avatar
+		end
+		if type(payload.embeds) == "table" then
+			body.embeds = {}
+			local grand = 0
+			for _, source in ipairs(payload.embeds) do
+				if #body.embeds >= MAX_EMBEDS then
+					break
+				end
+				local embed, size = buildembed(source)
+				if not embed then
+					return nil, size
+				end
+				grand += size
+				body.embeds[#body.embeds + 1] = embed
+			end
+			if grand > MAX_EMBED_TOTAL then
+				return nil, "Embeds exceed " .. MAX_EMBED_TOTAL .. " characters together"
+			end
+		end
+		if body.content == nil and (body.embeds == nil or #body.embeds == 0) then
+			return nil, "Message needs content or an embed"
+		end
+		return body
+	end
+
+	function MXHUB.Webhook.New(url)
+		if not MXHUB.Webhook.Validate(url) then
+			return nil, "Invalid webhook URL (only discord.com webhooks are accepted)"
+		end
+		local hook = {}
+		local sent = {}
+
+		local function waitforslot()
+			while true do
+				local now = os.clock()
+				while sent[1] and now - sent[1] >= WINDOW do
+					table.remove(sent, 1)
+				end
+				if #sent < BURST then
+					sent[#sent + 1] = now
+					return
+				end
+				task.wait(WINDOW - (now - sent[1]) + 0.05)
+			end
+		end
+
+		function hook:Send(payload)
+			local body, problem = MXHUB.Webhook.Build(payload)
+			if not body then
+				return false, nil, problem
+			end
+			local request = httprequest()
+			if not request then
+				return false, nil, "No HTTP request function available in this executor"
+			end
+			local encoded = sv.http:JSONEncode(body)
+			for attempt = 1, 3 do
+				waitforslot()
+				local ok, response = pcall(request, {
+					Url = url,
+					Method = "POST",
+					Headers = { ["Content-Type"] = "application/json" },
+					Body = encoded,
+				})
+				if not ok then
+					return false, nil, tostring(response)
+				end
+				local status = tonumber(response.StatusCode) or 0
+				if status >= 200 and status < 300 then
+					return true, status
+				end
+				if status ~= 429 or attempt == 3 then
+					return false, status, tostring(response.Body)
+				end
+				local retry = 1
+				pcall(function()
+					retry = tonumber(sv.http:JSONDecode(response.Body).retry_after) or 1
+				end)
+				task.wait(math.clamp(retry, 0.25, 10))
+			end
+			return false, 429, "Rate limited"
+		end
+
+		return hook
+	end
+end
 local function buildhomepage(page, ctx)
 	local Players = game:GetService("Players")
 	local lp = Players.LocalPlayer
@@ -6737,8 +7276,27 @@ local function buildcommunitypage(page, ctx)
 		desc.Size = UDim2.new(1, 0, 0, 0)
 		desc.AutomaticSize = Enum.AutomaticSize.Y
 
+		if spec.invite and MXHUB.Discord.ParseInvite(spec.invite) then
+			local counts = label(card, "Checking members...", Enum.Font.GothamMedium, 12, theme.SubText)
+			counts.LayoutOrder = 3
+			counts.Size = UDim2.new(1, 0, 0, 16)
+			task.spawn(function()
+				local info, problem = MXHUB.Discord.Stats(spec.invite)
+				if not counts.Parent then
+					return
+				end
+				if info then
+					local online = info.Online and (formatcount(info.Online) .. " online  |  ") or ""
+					counts.Text = online .. formatcount(info.Members) .. " members"
+					counts.TextColor3 = theme.Text
+				else
+					counts.Text = "Member count unavailable: " .. tostring(problem)
+				end
+			end)
+		end
+
 		local field = instance.frame(card)
-		field.LayoutOrder = 3
+		field.LayoutOrder = 4
 		field.BorderSizePixel = 0
 		field.BackgroundColor3 = theme.Field
 		field.Size = UDim2.new(1, 0, 0, rowheight - 4)
@@ -6757,7 +7315,7 @@ local function buildcommunitypage(page, ctx)
 		urllabel.Size = UDim2.new(1, -42, 1, 0)
 
 		local button = instance.textbutton(card)
-		button.LayoutOrder = 4
+		button.LayoutOrder = 5
 		button.AutoButtonColor = false
 		button.BorderSizePixel = 0
 		button.BackgroundColor3 = spec.accent
@@ -6798,6 +7356,7 @@ local function buildcommunitypage(page, ctx)
 		tag = "Community & support",
 		description = "Join to ask questions, get help, talk about scripts, and hear about the latest updates first.",
 		url = ctx.Discord,
+		invite = ctx.DiscordStats ~= false and ctx.Discord or nil,
 		button = "Copy Discord Invite",
 		accent = Color3.fromRGB(88, 101, 242),
 		accentText = Color3.fromRGB(255, 255, 255),
@@ -7440,12 +7999,12 @@ function MXHUB:Window(guiconfig)
 					button.BackgroundColor3 = theme.TabActive
 					button.BackgroundTransparency = 1
 					button.Font = Enum.Font.GothamMedium
-					button.TextSize = 12
+					button.TextSize = 13
 					button.Text = tostring(name)
 					button.TextColor3 = theme.SubText
 					button.AutomaticSize = Enum.AutomaticSize.X
 					button.Size = UDim2.new(0, 0, 1, -4)
-					instance.uicorner(button).CornerRadius = UDim.new(0, 4)
+					instance.uicorner(button).CornerRadius = UDim.new(0, design.Radius.Control - 2)
 					local padding = instance.uipadding(button)
 					padding.PaddingLeft = UDim.new(0, 12)
 					padding.PaddingRight = UDim.new(0, 12)
@@ -7672,6 +8231,7 @@ function MXHUB:Window(guiconfig)
 				pcall(callback)
 			end
 		end)
+		pcall(MXHUB.ShowHotkeys, false)
 		pcall(MXHUB.FpsBoost, false)
 		pcall(MXHUB.AntiAfk, false)
 		MXHUB.Unloaded = true
@@ -9351,19 +9911,19 @@ function MXHUB:Window(guiconfig)
 		local t = instance.frame(nil)
 		t.Name = "Toggle"
 		t.BorderSizePixel = 0
-		t.Size = UDim2.new(1, 0, 0, isMobile and 44 or 38)
-		roundbg(t, 4, theme.Row)
+		t.Size = UDim2.new(1, 0, 0, isMobile and 46 or design.Row.Height)
+		roundbg(t, design.Radius.Control, theme.Row)
 
 		local ttitle = instance.textlabel(t)
 		ttitle.Name = "ToggleTitle"
 		ttitle.Font = Enum.Font.GothamMedium
-		ttitle.TextSize = 12
+		ttitle.TextSize = design.Font.Label
 		ttitle.TextColor3 = theme.Text
 		ttitle.TextXAlignment = Enum.TextXAlignment.Left
 		ttitle.TextYAlignment = Enum.TextYAlignment.Top
 		ttitle.BackgroundTransparency = 1
-		ttitle.Position = UDim2.new(0, 10, 0, 13)
-		ttitle.Size = UDim2.new(1, -100, 0, 13)
+		ttitle.Position = UDim2.new(0, 10, 0, 12)
+		ttitle.Size = UDim2.new(1, -100, 0, 16)
 		ttitle.TextTruncate = Enum.TextTruncate.AtEnd
 
 		local tbutton = instance.textbutton(t)
@@ -9380,7 +9940,7 @@ function MXHUB:Window(guiconfig)
 		tfeature.BackgroundTransparency = 0
 		tfeature.BorderSizePixel = 0
 		tfeature.Position = UDim2.new(1, -12, 0.5, 0)
-		tfeature.Size = isMobile and UDim2.new(0, 40, 0, 22) or UDim2.new(0, 32, 0, 16)
+		tfeature.Size = isMobile and UDim2.new(0, 44, 0, 24) or UDim2.new(0, 36, 0, 20)
 		instance.uicorner(tfeature)
 
 		local tstroke = instance.uistroke(tfeature)
@@ -9392,8 +9952,8 @@ function MXHUB:Window(guiconfig)
 		tcircle.Name = "ToggleCircle"
 		tcircle.BackgroundColor3 = theme.Text
 		tcircle.BorderSizePixel = 0
-		tcircle.Position = isMobile and UDim2.new(0, 3, 0, 3) or UDim2.new(0, 2, 0, 2)
-		tcircle.Size = isMobile and UDim2.new(0, 16, 0, 16) or UDim2.new(0, 12, 0, 12)
+		tcircle.Position = UDim2.new(0, 3, 0, 3)
+		tcircle.Size = isMobile and UDim2.new(0, 18, 0, 18) or UDim2.new(0, 14, 0, 14)
 		instance.uicorner(tcircle).CornerRadius = UDim.new(0, 12)
 
 		templates.Toggle = t
@@ -9403,14 +9963,14 @@ function MXHUB:Window(guiconfig)
 		local s = instance.frame(nil)
 		s.Name = "Slider"
 		s.BorderSizePixel = 0
-		s.Size = UDim2.new(1, 0, 0, 58)
-		roundbg(s, 4, theme.Row)
+		s.Size = UDim2.new(1, 0, 0, 60)
+		roundbg(s, design.Radius.Control, theme.Row)
 
 		local stitle = instance.textlabel(s)
 		stitle.Name = "SliderTitle"
 		stitle.Font = Enum.Font.GothamMedium
 		stitle.TextColor3 = theme.Text
-		stitle.TextSize = 12
+		stitle.TextSize = design.Font.Label
 		stitle.TextXAlignment = Enum.TextXAlignment.Left
 		stitle.TextYAlignment = Enum.TextYAlignment.Center
 		stitle.BackgroundTransparency = 1
@@ -9422,8 +9982,8 @@ function MXHUB:Window(guiconfig)
 		sholder.Name = "SliderInputHolder"
 		sholder.AnchorPoint = Vector2.new(1, 0)
 		sholder.Position = UDim2.new(1, -10, 0, 7)
-		sholder.Size = UDim2.new(0, 32, 0, 20)
-		roundbg(sholder, 4, theme.Field)
+		sholder.Size = UDim2.new(0, 40, 0, 22)
+		roundbg(sholder, design.Radius.Control, theme.Field)
 
 		local sinput = instance.textbox(sholder)
 		sinput.Name = "SliderInput"
@@ -9447,8 +10007,8 @@ function MXHUB:Window(guiconfig)
 		sbar.Name = "SliderBar"
 		sbar.BackgroundColor3 = theme.Bar
 		sbar.BackgroundTransparency = 0
-		sbar.Position = UDim2.new(0, 10, 0, 39)
-		sbar.Size = UDim2.new(1, -20, 0, 5)
+		sbar.Position = UDim2.new(0, 10, 0, 42)
+		sbar.Size = UDim2.new(1, -20, 0, 6)
 		sbar.Active = true
 		instance.uicorner(sbar).CornerRadius = UDim.new(1, 0)
 
@@ -9464,7 +10024,7 @@ function MXHUB:Window(guiconfig)
 		scircle.AnchorPoint = Vector2.new(0.5, 0.5)
 		scircle.BackgroundColor3 = theme.SliderFill
 		scircle.Position = UDim2.new(0, 0, 0.5, 0)
-		scircle.Size = UDim2.new(0, 12, 0, 12)
+		scircle.Size = UDim2.new(0, 14, 0, 14)
 		scircle.Active = true
 		scircle.ZIndex = 4
 		instance.uicorner(scircle).CornerRadius = UDim.new(1, 0)
@@ -9508,8 +10068,8 @@ function MXHUB:Window(guiconfig)
 	do
 		local o = instance.frame(nil)
 		o.Name = "Option"
-		o.Size = UDim2.new(1, 0, 0, 30)
-		roundbg(o, 3, theme.Option).ImageTransparency = 1
+		o.Size = UDim2.new(1, 0, 0, 32)
+		roundbg(o, design.Radius.Control, theme.Option).ImageTransparency = 1
 
 		local obutton = instance.textbutton(o)
 		obutton.Name = "OptionButton"
@@ -9870,6 +10430,16 @@ function MXHUB:Window(guiconfig)
 		return label, measure
 	end
 
+	local function firecallback(callback, label, ...)
+		elevate()
+		if typeof(callback) == "function" then
+			local ok, err = pcall(callback, ...)
+			if not ok then
+				warn("Callback error (" .. tostring(label) .. "):", err)
+			end
+		end
+	end
+
 	local ICONSLOT = 22
 
 	local function elementiconx(cfg)
@@ -10094,8 +10664,8 @@ function MXHUB:Window(guiconfig)
 		entry.Name = "TabLink"
 		entry.BorderSizePixel = 0
 		entry.LayoutOrder = counttab * 2
-		entry.Size = UDim2.new(1, -6, 0, rail and 32 or 26)
-		local entrybg = roundbg(entry, 4, theme.TabActive)
+		entry.Size = UDim2.new(1, -6, 0, 32)
+		local entrybg = roundbg(entry, design.Radius.Control, theme.TabActive)
 		entrybg.ImageTransparency = 1
 
 		local entrybutton = instance.textbutton(entry)
@@ -10373,8 +10943,8 @@ function MXHUB:Window(guiconfig)
 		tab.Name = "Tab"
 		tab.BorderSizePixel = 0
 		tab.LayoutOrder = layoutOrder
-		tab.Size = UDim2.new(1, -6, 0, 26)
-		local tabbg = roundbg(tab, 4, theme.TabActive)
+		tab.Size = UDim2.new(1, -6, 0, 32)
+		local tabbg = roundbg(tab, design.Radius.Control, theme.TabActive)
 		tabbg.ImageTransparency = isFirstTab and 0 or 1
 
 		local tabbutton = instance.textbutton(tab)
@@ -10407,7 +10977,7 @@ function MXHUB:Window(guiconfig)
 
 		local tabname = instance.textlabel(tab)
 		tabname.Name = "TabName"
-		tabname.Font = Enum.Font.GothamBold
+		tabname.Font = Enum.Font.GothamMedium
 		tabname.Text = tostring(tabconfig.Name)
 		tabname.TextColor3 = Color3.fromRGB(255, 255, 255)
 		tabname.TextSize = 13
@@ -10425,8 +10995,8 @@ function MXHUB:Window(guiconfig)
 				tabicon = instance.imagelabel(tab)
 				tabicon.Name = "TabIcon"
 				tabicon.AnchorPoint = Vector2.new(0, 0.5)
-				tabicon.Position = UDim2.new(0, 8, 0.5, 0)
-				tabicon.Size = UDim2.new(0, 14, 0, 14)
+				tabicon.Position = UDim2.new(0, 10, 0.5, 0)
+				tabicon.Size = UDim2.new(0, 16, 0, 16)
 				tabicon.BackgroundTransparency = 1
 				tabicon.ImageColor3 = isFirstTab and theme.Accent or theme.SubText
 			end
@@ -10436,8 +11006,8 @@ function MXHUB:Window(guiconfig)
 					applyicon(tabicon, value, 48)
 				end
 			end
-			tabname.Size = UDim2.new(1, -(has and 28 or 10), 1, 0)
-			tabname.Position = UDim2.new(0, has and 26 or 8, 0, 0)
+			tabname.Size = UDim2.new(1, -(has and 36 or 14), 1, 0)
+			tabname.Position = UDim2.new(0, has and 34 or 12, 0, 0)
 		end
 
 		tabname.TextColor3 = isFirstTab and theme.Text or theme.SubText
@@ -10675,7 +11245,7 @@ function MXHUB:Window(guiconfig)
 			local rec = {
 				Force = forcefull,
 				Estimate = function()
-					return 30
+					return design.Section.Header
 				end,
 			}
 			local sectiontween = TweenInfo.new(0.38, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
@@ -10687,8 +11257,8 @@ function MXHUB:Window(guiconfig)
 			section.BackgroundTransparency = rowalpha
 			section.BorderSizePixel = 0
 			section.ClipsDescendants = true
-			section.Size = UDim2.new(1, 0, 0, 30)
-			instance.uicorner(section).CornerRadius = UDim.new(0, 6)
+			section.Size = UDim2.new(1, 0, 0, design.Section.Header)
+			instance.uicorner(section).CornerRadius = UDim.new(0, design.Radius.Card)
 			do
 				local sectionstroke = instance.uistroke(section)
 				sectionstroke.Color = theme.Stroke
@@ -10707,10 +11277,10 @@ function MXHUB:Window(guiconfig)
 			sectionreal.BackgroundTransparency = bgAsset and 0.05 or rowalpha
 			sectionreal.BorderSizePixel = 0
 			sectionreal.Position = UDim2.new(0.5, 0, 0, 0)
-			sectionreal.Size = UDim2.new(1, 0, 0, 30)
+			sectionreal.Size = UDim2.new(1, 0, 0, design.Section.Header)
 
 			local uicorner = instance.uicorner(sectionreal)
-			uicorner.CornerRadius = UDim.new(0, 6)
+			uicorner.CornerRadius = UDim.new(0, design.Radius.Card)
 
 			local sectionbutton = instance.textbutton(sectionreal)
 			sectionbutton.Font = Enum.Font.SourceSans
@@ -10774,7 +11344,7 @@ function MXHUB:Window(guiconfig)
 			sectionadd.BackgroundTransparency = 1
 			sectionadd.BorderSizePixel = 0
 			sectionadd.ClipsDescendants = true
-			sectionadd.Position = UDim2.new(0.5, 0, 0, 30)
+			sectionadd.Position = UDim2.new(0.5, 0, 0, design.Section.Header)
 			sectionadd.Size = UDim2.new(1, 0, 0, 0)
 
 			local uicorner8 = instance.uicorner(sectionadd)
@@ -10805,7 +11375,7 @@ function MXHUB:Window(guiconfig)
 				if contentHeight > 0 then
 					contentHeight = contentHeight + 12
 				end
-				local sectionsizey = 30 + contentHeight
+				local sectionsizey = design.Section.Header + contentHeight
 				sectiontitle.TextColor3 = color_open
 
 				if animate and featureframe.Parent then
@@ -10846,12 +11416,12 @@ function MXHUB:Window(guiconfig)
 				if animate then
 					sv.ts:Create(featureframe, arrowtween, { Rotation = 0 }):Play()
 					sv.ts:Create(featureimg, arrowtween, { ImageColor3 = theme.SubText }):Play()
-					sv.ts:Create(section, sectiontween, { Size = UDim2.new(1, 0, 0, 30) }):Play()
+					sv.ts:Create(section, sectiontween, { Size = UDim2.new(1, 0, 0, design.Section.Header) }):Play()
 					sv.ts:Create(sectionadd, sectiontween, { Size = UDim2.new(1, 0, 0, 0) }):Play()
 				else
 					featureframe.Rotation = 0
 					featureimg.ImageColor3 = theme.SubText
-					section.Size = UDim2.new(1, 0, 0, 30)
+					section.Size = UDim2.new(1, 0, 0, design.Section.Header)
 					sectionadd.Size = UDim2.new(1, 0, 0, 0)
 				end
 			end
@@ -10880,9 +11450,9 @@ function MXHUB:Window(guiconfig)
 
 			rec.Estimate = function()
 				if opensection then
-					return 30 + countitem * 49
+					return design.Section.Header + countitem * 49
 				end
-				return 30
+				return design.Section.Header
 			end
 
 			function items:PromoteToFull()
@@ -10948,7 +11518,7 @@ function MXHUB:Window(guiconfig)
 				paragraph.BorderSizePixel = 0
 				paragraph.LayoutOrder = countitem
 				paragraph.Size = UDim2.new(1, 0, 0, 46)
-				roundbg(paragraph, 4, theme.Row)
+				roundbg(paragraph, design.Radius.Control, theme.Row)
 
 				local iconoffset = hasimage(paragraphconfig.Icon) and 30 or 10
 
@@ -11014,7 +11584,7 @@ function MXHUB:Window(guiconfig)
 					paragraphbutton.TextColor3 = theme.Text
 					paragraphbutton.Text = paragraphconfig.ButtonText
 
-					hoverbg(paragraphbutton, roundbg(paragraphbutton, 6, theme.Inner), theme.Inner, theme.InnerHover)
+					hoverbg(paragraphbutton, roundbg(paragraphbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 					if paragraphconfig.ButtonCallback then
 						paragraphbutton.MouseButton1Click:Connect(paragraphconfig.ButtonCallback)
@@ -11170,7 +11740,7 @@ function MXHUB:Window(guiconfig)
 				box.LayoutOrder = countitem
 				box.Size = UDim2.new(1, 0, 0, tonumber(characterconfig.Height) or 240)
 				box.ClipsDescendants = true
-				roundbg(box, 6, theme.Row)
+				roundbg(box, design.Radius.Control, theme.Row)
 				local boxstroke = instance.uistroke(box)
 				boxstroke.Color = theme.Stroke
 				boxstroke.Transparency = 0.5
@@ -11225,21 +11795,11 @@ function MXHUB:Window(guiconfig)
 				buttonconfig.SubTitle = buttonconfig.SubTitle or nil
 				buttonconfig.SubCallback = buttonconfig.SubCallback or function() end
 
-				local function runcallback(fn, label)
-					elevate()
-					if typeof(fn) == "function" then
-						local ok, err = pcall(fn)
-						if not ok then
-							warn("Button Callback error (" .. tostring(label) .. "):", err)
-						end
-					end
-				end
-
 				local button = instance.frame(sectionadd)
 				button.BorderSizePixel = 0
 				button.Size = UDim2.new(1, 0, 0, isMobile and 46 or 40)
 				button.LayoutOrder = countitem
-				roundbg(button, 4, theme.Row)
+				roundbg(button, design.Radius.Control, theme.Row)
 
 				local padding = 3
 				local gap = 4
@@ -11253,7 +11813,7 @@ function MXHUB:Window(guiconfig)
 				mainbutton.TextTransparency = 0.3
 				mainbutton.AutoButtonColor = false
 				mainbutton.ZIndex = 10
-				hoverbg(mainbutton, roundbg(mainbutton, 4, theme.Inner), theme.Inner, theme.InnerHover)
+				hoverbg(mainbutton, roundbg(mainbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 				if buttonconfig.SubTitle then
 					mainbutton.Size = UDim2.new(0.5, -padding - gap, 1, -10)
@@ -11292,7 +11852,7 @@ function MXHUB:Window(guiconfig)
 				end)
 
 				mainbutton.MouseButton1Click:Connect(function()
-					runcallback(buttonconfig.Callback, buttonconfig.Title)
+					firecallback(buttonconfig.Callback, buttonconfig.Title)
 				end)
 
 				local buttons = { mainbutton }
@@ -11309,14 +11869,14 @@ function MXHUB:Window(guiconfig)
 					subbutton.Position = UDim2.new(0.5, gap, 0, 5)
 					subbutton.AutoButtonColor = false
 					subbutton.ZIndex = 10
-					hoverbg(subbutton, roundbg(subbutton, 4, theme.Inner), theme.Inner, theme.InnerHover)
+					hoverbg(subbutton, roundbg(subbutton, design.Radius.Control, theme.Inner), theme.Inner, theme.InnerHover)
 
 					subbutton.MouseButton1Down:Connect(function()
 						pcall(pesseffect, subbutton)
 					end)
 
 					subbutton.MouseButton1Click:Connect(function()
-						runcallback(buttonconfig.SubCallback, buttonconfig.SubTitle)
+						firecallback(buttonconfig.SubCallback, buttonconfig.SubTitle)
 					end)
 					buttons[#buttons + 1] = subbutton
 				end
@@ -11393,7 +11953,7 @@ function MXHUB:Window(guiconfig)
 				row.ClipsDescendants = true
 				row.LayoutOrder = countitem
 				row.Size = UDim2.new(1, 0, 0, basey)
-				roundbg(row, 4, theme.Row)
+				roundbg(row, design.Radius.Control, theme.Row)
 
 				local title = instance.textlabel(row)
 				title.Name = "ColorTitle"
@@ -11584,10 +12144,7 @@ function MXHUB:Window(guiconfig)
 					render()
 					if notify then
 						elevate()
-						local ok, err = pcall(colorconfig.Callback, colorfunc.Value)
-						if not ok then
-							warn("ColorPicker Callback error:", err)
-						end
+						firecallback(colorconfig.Callback, colorconfig.Title, colorfunc.Value)
 					end
 				end
 
@@ -11752,7 +12309,7 @@ function MXHUB:Window(guiconfig)
 				row.BorderSizePixel = 0
 				row.LayoutOrder = countitem
 				row.Size = UDim2.new(1, 0, 0, 46)
-				roundbg(row, 4, theme.Row)
+				roundbg(row, design.Radius.Control, theme.Row)
 
 				local title = instance.textlabel(row)
 				title.Name = "KeybindTitle"
@@ -11858,6 +12415,7 @@ function MXHUB:Window(guiconfig)
 
 				local function apply(key, instant, save, notify)
 					keybindfunc.Value = key
+					hotkeys.touch()
 					keybindfunc.State = false
 					if save then
 						config.data[configkey] = key and key.Name or "None"
@@ -11874,11 +12432,7 @@ function MXHUB:Window(guiconfig)
 				end
 
 				local function fire(...)
-					elevate()
-					local ok, err = pcall(keybindconfig.Callback, ...)
-					if not ok then
-						warn("Keybind Callback error:", err)
-					end
+					firecallback(keybindconfig.Callback, keybindconfig.Title, ...)
 				end
 
 				local function savedpref()
@@ -11999,6 +12553,13 @@ function MXHUB:Window(guiconfig)
 				countitem = countitem + 1
 				yieldbuild()
 				config.elements[configkey] = keybindfunc
+				local hotkeyid = hotkeys.register(keybindconfig.Title, function()
+					return keybindfunc.Value and keyname(keybindfunc.Value), keybindfunc.Mode
+				end)
+				row.Destroying:Connect(function()
+					hotkeys.unregister(hotkeyid)
+				end)
+
 				registerSearchItem(keybindconfig.Title, row, "Keybind")
 				return keybindfunc
 			end
@@ -12123,10 +12684,7 @@ function MXHUB:Window(guiconfig)
 					if fire and typeof(toggleconfig.Callback) == "function" then
 						task.spawn(function()
 							elevate()
-							local ok, err = pcall(toggleconfig.Callback, value)
-							if not ok then
-								warn("Toggle Callback error:", err)
-							end
+							firecallback(toggleconfig.Callback, toggleconfig.Title, value)
 						end)
 					end
 				end
@@ -12199,8 +12757,16 @@ function MXHUB:Window(guiconfig)
 						boundkey = key
 						config.data[keycfgkey] = key and key.Name or "None"
 						autosave.touch()
+						hotkeys.touch()
 						renderkey()
 					end
+
+					local hotkeyid = hotkeys.register(toggleconfig.Title, function()
+						return boundkey and keyname(boundkey), "Toggle"
+					end)
+					toggle.Destroying:Connect(function()
+						hotkeys.unregister(hotkeyid)
+					end)
 
 					local function setlistening(state)
 						if listening == state then
@@ -12281,41 +12847,15 @@ function MXHUB:Window(guiconfig)
 
 				local configkey = keyfor("Slider_", sliderconfig)
 
-				local function getprecision(step)
-					local s = tostring(step)
-					if s:find("e") or s:find("E") then
-						s = string.format("%.12f", step):gsub("0+$", ""):gsub("%.$", "")
-					end
-
-					local dot = s:find("%.")
-					return dot and (#s - dot) or 0
-				end
-
-				local precision = tonumber(sliderconfig.Precision) or getprecision(sliderconfig.Increment)
+				local precision = tonumber(sliderconfig.Precision) or stepprecision(sliderconfig.Increment)
 				local suffix = tostring(sliderconfig.Suffix or "")
 
-				local function roundtoincrement(value)
-					local step = sliderconfig.Increment
-					return math.floor((value / step) + 0.5) * step
-				end
-
 				local function formatnumber(value)
-					value = tonumber(string.format("%." .. precision .. "f", value)) or 0
-
-					if precision > 0 then
-						return string.format("%." .. precision .. "f", value):gsub("0+$", ""):gsub("%.$", "")
-					end
-
-					return tostring(math.floor(value + 0.5))
+					return numbertext(value, precision)
 				end
 
 				local function clampvalue(value)
-					value = tonumber(value) or sliderconfig.Min
-					value = math.clamp(value, sliderconfig.Min, sliderconfig.Max)
-					value = roundtoincrement(value)
-					value = math.clamp(value, sliderconfig.Min, sliderconfig.Max)
-					value = tonumber(string.format("%." .. precision .. "f", value)) or sliderconfig.Min
-					return value
+					return snapnumber(value, sliderconfig.Min, sliderconfig.Max, sliderconfig.Increment, precision)
 				end
 
 				local hubdefault = clampvalue(sliderconfig.Default)
@@ -12499,10 +13039,7 @@ function MXHUB:Window(guiconfig)
 						lastcall = tick()
 						task.spawn(function()
 							elevate()
-							local ok, err = pcall(sliderconfig.Callback, value)
-							if not ok then
-								warn("Slider Callback error:", err)
-							end
+							firecallback(sliderconfig.Callback, sliderconfig.Title, value)
 						end)
 					end
 				end
@@ -12590,6 +13127,457 @@ function MXHUB:Window(guiconfig)
 				return sliderfunc
 			end
 
+			function items:AddStepper(stepperconfig)
+				stepperconfig = stepperconfig or {}
+				stepperconfig.Title = stepperconfig.Title or stepperconfig.Name or "Stepper"
+				stepperconfig.Callback = stepperconfig.Callback or function() end
+				local step = math.max(tonumber(stepperconfig.Increment) or 1, 1e-9)
+				local min = tonumber(stepperconfig.Min) or 0
+				local max = math.max(tonumber(stepperconfig.Max) or 100, min)
+				local precision = tonumber(stepperconfig.Precision) or stepprecision(step)
+				local configkey = keyfor("Stepper_", stepperconfig)
+				local nosave = stepperconfig.NoSave == true
+
+				local function snap(value)
+					return snapnumber(value, min, max, step, precision)
+				end
+
+				local hubdefault = snap(stepperconfig.Default)
+				local function savedpref()
+					if nosave then
+						return hubdefault
+					end
+					local stored = tonumber(config.data[configkey])
+					return stored and snap(stored) or hubdefault
+				end
+
+				local stepperfunc = { Value = savedpref(), DefaultValue = hubdefault }
+
+				local row = instance.frame(sectionadd)
+				row.Name = "Stepper"
+				row.BorderSizePixel = 0
+				row.LayoutOrder = countitem
+				row.Size = UDim2.new(1, 0, 0, design.Row.Height)
+				roundbg(row, design.Radius.Control, theme.Row)
+
+				local description = contenttext(stepperconfig)
+				local ix = elementiconx(stepperconfig)
+				iconapi(stepperfunc, elementicon(row, stepperconfig.Icon, 20))
+
+				local title = instance.textlabel(row)
+				title.Name = "Title"
+				title.BackgroundTransparency = 1
+				title.Font = Enum.Font.GothamMedium
+				title.TextSize = design.Font.Label
+				title.TextColor3 = theme.Text
+				title.TextXAlignment = Enum.TextXAlignment.Left
+				title.TextTruncate = Enum.TextTruncate.AtEnd
+				title.Position = UDim2.new(0, ix, 0, 12)
+				title.Size = UDim2.new(1, -(ix + 128), 0, 16)
+				title.Text = stepperconfig.Title
+
+				local controls = instance.frame(row)
+				controls.Name = "Controls"
+				controls.BorderSizePixel = 0
+				controls.BackgroundColor3 = theme.Field
+				controls.AnchorPoint = Vector2.new(1, 0)
+				controls.Position = UDim2.new(1, -design.Row.Pad, 0, 7)
+				controls.Size = UDim2.new(0, 108, 0, 26)
+				instance.uicorner(controls).CornerRadius = UDim.new(0, design.Radius.Control)
+				local controlsstroke = instance.uistroke(controls)
+				controlsstroke.Color = theme.Stroke
+				controlsstroke.Thickness = 1
+				controlsstroke.Transparency = 0.55
+
+				local function stepbutton(text, side)
+					local button = instance.textbutton(controls)
+					button.Name = text == "+" and "Increase" or "Decrease"
+					button.AutoButtonColor = false
+					button.BackgroundTransparency = 1
+					button.Font = Enum.Font.GothamBold
+					button.TextSize = 15
+					button.TextColor3 = theme.SubText
+					button.Text = text
+					button.Size = UDim2.new(0, 28, 1, 0)
+					button.Position = side == "left" and UDim2.new(0, 0, 0, 0) or UDim2.new(1, -28, 0, 0)
+					button.MouseEnter:Connect(function()
+						tw(button, { TextColor3 = theme.Text }, design.Anim.Fast)
+					end)
+					button.MouseLeave:Connect(function()
+						tw(button, { TextColor3 = theme.SubText }, design.Anim.Fast)
+					end)
+					return button
+				end
+				local minus, plus = stepbutton("-", "left"), stepbutton("+", "right")
+
+				local box = instance.textbox(controls)
+				box.BackgroundTransparency = 1
+				box.ClearTextOnFocus = false
+				box.Font = Enum.Font.GothamMedium
+				box.TextSize = 12
+				box.TextColor3 = theme.Text
+				box.Position = UDim2.new(0, 28, 0, 0)
+				box.Size = UDim2.new(1, -56, 1, 0)
+
+				local function apply(value, notify)
+					value = snap(value)
+					local changed = value ~= stepperfunc.Value
+					stepperfunc.Value = value
+					box.Text = numbertext(value, precision)
+					if not nosave and (changed or notify) then
+						config.data[configkey] = value
+						autosave.touch()
+					end
+					if notify and changed then
+						firecallback(stepperconfig.Callback, stepperconfig.Title, value)
+					end
+				end
+
+				local holding = 0
+				local function hold(direction)
+					holding += 1
+					local ticket = holding
+					apply(stepperfunc.Value + direction * step, true)
+					task.delay(0.4, function()
+						while ticket == holding and row.Parent do
+							apply(stepperfunc.Value + direction * step, true)
+							task.wait(0.07)
+						end
+					end)
+				end
+				local function release()
+					holding += 1
+				end
+
+				for button, direction in pairs({ [minus] = -1, [plus] = 1 }) do
+					button.MouseButton1Down:Connect(function()
+						hold(direction)
+					end)
+					button.MouseButton1Up:Connect(release)
+					button.MouseLeave:Connect(release)
+				end
+				box.FocusLost:Connect(function()
+					local typed = tonumber(box.Text)
+					apply(typed or stepperfunc.Value, true)
+				end)
+
+				if description then
+					local _, measure = attachcontent(row, description, ix, 29, design.Row.Pad)
+					local function relayout()
+						row.Size = UDim2.new(1, 0, 0, math.max(29 + measure() + 10, design.Row.Height))
+					end
+					relayout()
+					watchwidth(row, relayout)
+				end
+
+				apply(stepperfunc.Value, false)
+
+				function stepperfunc:Set(value)
+					apply(value, true)
+				end
+
+				function stepperfunc:Get()
+					return stepperfunc.Value
+				end
+
+				registerSearchItem(stepperconfig.Title, row, "Stepper")
+				countitem = countitem + 1
+				yieldbuild()
+				if not nosave then
+					config.elements[configkey] = stepperfunc
+				end
+				return stepperfunc
+			end
+			function items:AddSegmented(segmentedconfig)
+				segmentedconfig = segmentedconfig or {}
+				segmentedconfig.Title = segmentedconfig.Title or segmentedconfig.Name or "Segmented"
+				segmentedconfig.Callback = segmentedconfig.Callback or function() end
+
+				local choices = {}
+				for _, option in ipairs(segmentedconfig.Options or {}) do
+					choices[#choices + 1] = tostring(option)
+				end
+				local configkey = keyfor("Segmented_", segmentedconfig)
+				local nosave = segmentedconfig.NoSave == true
+				local fallback = pickoption(choices, segmentedconfig.Default and tostring(segmentedconfig.Default), choices[1])
+
+				local function savedpref()
+					if nosave then
+						return fallback
+					end
+					return pickoption(choices, config.data[configkey], fallback)
+				end
+
+				local segmentedfunc = { Value = savedpref(), DefaultValue = fallback }
+
+				local row = instance.frame(sectionadd)
+				row.Name = "Segmented"
+				row.BorderSizePixel = 0
+				row.LayoutOrder = countitem
+				roundbg(row, design.Radius.Control, theme.Row)
+
+				local description = contenttext(segmentedconfig)
+				local ix = elementiconx(segmentedconfig)
+				iconapi(segmentedfunc, elementicon(row, segmentedconfig.Icon, 18))
+
+				local title = instance.textlabel(row)
+				title.Name = "Title"
+				title.BackgroundTransparency = 1
+				title.Font = Enum.Font.GothamMedium
+				title.TextSize = design.Font.Label
+				title.TextColor3 = theme.Text
+				title.TextXAlignment = Enum.TextXAlignment.Left
+				title.TextTruncate = Enum.TextTruncate.AtEnd
+				title.Position = UDim2.new(0, ix, 0, 10)
+				title.Size = UDim2.new(1, -(ix + design.Row.Pad), 0, 16)
+				title.Text = segmentedconfig.Title
+
+				local track = instance.frame(row)
+				track.Name = "Track"
+				track.BorderSizePixel = 0
+				track.BackgroundColor3 = theme.Field
+				track.Position = UDim2.new(0, design.Row.Pad, 0, 34)
+				track.Size = UDim2.new(1, -design.Row.Pad * 2, 0, 28)
+				instance.uicorner(track).CornerRadius = UDim.new(0, design.Radius.Control)
+				local trackstroke = instance.uistroke(track)
+				trackstroke.Color = theme.Stroke
+				trackstroke.Thickness = 1
+				trackstroke.Transparency = 0.55
+
+				local pill = instance.frame(track)
+				pill.Name = "Selected"
+				pill.BorderSizePixel = 0
+				pill.BackgroundColor3 = theme.Accent
+				instance.uicorner(pill).CornerRadius = UDim.new(0, design.Radius.Control - 2)
+
+				local buttons = {}
+				local count = math.max(#choices, 1)
+
+				local function place(index, instant)
+					local position = UDim2.new((index - 1) / count, 2, 0, 2)
+					local size = UDim2.new(1 / count, -4, 1, -4)
+					if instant then
+						pill.Position, pill.Size = position, size
+					else
+						tw(pill, { Position = position, Size = size }, design.Anim.Normal)
+					end
+				end
+
+				local function paint(selected, instant)
+					for index, button in ipairs(buttons) do
+						local on = choices[index] == selected
+						local color = on and theme.AccentText or theme.SubText
+						if instant then
+							button.TextColor3 = color
+						else
+							tw(button, { TextColor3 = color }, design.Anim.Fast)
+						end
+						if on then
+							place(index, instant)
+						end
+					end
+				end
+
+				local function apply(value, instant, notify)
+					value = pickoption(choices, value, segmentedfunc.Value)
+					if value == nil then
+						return
+					end
+					local changed = value ~= segmentedfunc.Value
+					segmentedfunc.Value = value
+					paint(value, instant)
+					if not nosave and (changed or notify) then
+						config.data[configkey] = value
+						autosave.touch()
+					end
+					if notify then
+						firecallback(segmentedconfig.Callback, segmentedconfig.Title, value)
+					end
+				end
+
+				local function build()
+					for _, button in ipairs(buttons) do
+						button:Destroy()
+					end
+					table.clear(buttons)
+					count = math.max(#choices, 1)
+					for index, choice in ipairs(choices) do
+						local button = instance.textbutton(track)
+						button.Name = "Option"
+						button.BackgroundTransparency = 1
+						button.AutoButtonColor = false
+						button.ZIndex = 2
+						button.Font = Enum.Font.GothamMedium
+						button.TextSize = 12
+						button.TextTruncate = Enum.TextTruncate.AtEnd
+						button.Text = choice
+						button.Position = UDim2.new((index - 1) / count, 0, 0, 0)
+						button.Size = UDim2.new(1 / count, 0, 1, 0)
+						button.MouseEnter:Connect(function()
+							if choices[index] ~= segmentedfunc.Value then
+								tw(button, { TextColor3 = theme.Text }, design.Anim.Fast)
+							end
+						end)
+						button.MouseLeave:Connect(function()
+							if choices[index] ~= segmentedfunc.Value then
+								tw(button, { TextColor3 = theme.SubText }, design.Anim.Fast)
+							end
+						end)
+						button.Activated:Connect(function()
+							apply(choice, false, true)
+						end)
+						buttons[#buttons + 1] = button
+					end
+					pill.Visible = #choices > 0
+					paint(segmentedfunc.Value, true)
+				end
+
+				if description then
+					local _, measure = attachcontent(row, description, ix, 29, design.Row.Pad)
+					local function relayout()
+						local y = 29 + measure() + 8
+						track.Position = UDim2.new(0, design.Row.Pad, 0, y)
+						row.Size = UDim2.new(1, 0, 0, y + 36)
+					end
+					relayout()
+					watchwidth(row, relayout)
+				else
+					row.Size = UDim2.new(1, 0, 0, 70)
+				end
+
+				build()
+
+				function segmentedfunc:Set(value, instant)
+					apply(value, instant == true, true)
+				end
+
+				function segmentedfunc:Get()
+					return segmentedfunc.Value
+				end
+
+				function segmentedfunc:Refresh(options, keep)
+					choices = {}
+					for _, option in ipairs(options or {}) do
+						choices[#choices + 1] = tostring(option)
+					end
+					segmentedfunc.Value = pickoption(choices, keep ~= false and segmentedfunc.Value or nil, choices[1])
+					build()
+				end
+
+				registerSearchItem(segmentedconfig.Title, row, "Segmented")
+				countitem = countitem + 1
+				yieldbuild()
+				if not nosave then
+					config.elements[configkey] = segmentedfunc
+				end
+				return segmentedfunc
+			end
+			function items:AddProgress(progressconfig)
+				progressconfig = progressconfig or {}
+				progressconfig.Title = progressconfig.Title or progressconfig.Name or "Progress"
+				local min = tonumber(progressconfig.Min) or 0
+				local max = math.max(tonumber(progressconfig.Max) or 100, min + 1e-9)
+				local format = type(progressconfig.Format) == "function" and progressconfig.Format or nil
+
+				local progressfunc = { Value = math.clamp(tonumber(progressconfig.Default) or min, min, max) }
+
+				local row = instance.frame(sectionadd)
+				row.Name = "Progress"
+				row.BorderSizePixel = 0
+				row.LayoutOrder = countitem
+				row.Size = UDim2.new(1, 0, 0, 46)
+				roundbg(row, design.Radius.Control, theme.Row)
+
+				local description = contenttext(progressconfig)
+				local ix = elementiconx(progressconfig)
+				iconapi(progressfunc, elementicon(row, progressconfig.Icon, 17))
+
+				local title = instance.textlabel(row)
+				title.Name = "Title"
+				title.BackgroundTransparency = 1
+				title.Font = Enum.Font.GothamMedium
+				title.TextSize = design.Font.Label
+				title.TextColor3 = theme.Text
+				title.TextXAlignment = Enum.TextXAlignment.Left
+				title.TextTruncate = Enum.TextTruncate.AtEnd
+				title.Position = UDim2.new(0, ix, 0, 9)
+				title.Size = UDim2.new(1, -(ix + 84), 0, 16)
+				title.Text = progressconfig.Title
+
+				local readout = instance.textlabel(row)
+				readout.Name = "Value"
+				readout.BackgroundTransparency = 1
+				readout.Font = Enum.Font.GothamBold
+				readout.TextSize = 12
+				readout.TextColor3 = theme.SubText
+				readout.TextXAlignment = Enum.TextXAlignment.Right
+				readout.AnchorPoint = Vector2.new(1, 0)
+				readout.Position = UDim2.new(1, -design.Row.Pad, 0, 9)
+				readout.Size = UDim2.new(0, 76, 0, 16)
+
+				local track = instance.frame(row)
+				track.Name = "Track"
+				track.BorderSizePixel = 0
+				track.BackgroundColor3 = theme.Track
+				track.Position = UDim2.new(0, design.Row.Pad, 0, 32)
+				track.Size = UDim2.new(1, -design.Row.Pad * 2, 0, 6)
+				instance.uicorner(track).CornerRadius = UDim.new(1, 0)
+
+				local fill = instance.frame(track)
+				fill.Name = "Fill"
+				fill.BorderSizePixel = 0
+				fill.BackgroundColor3 = typeof(progressconfig.Color) == "Color3" and progressconfig.Color or theme.Accent
+				fill.Size = UDim2.new(0, 0, 1, 0)
+				instance.uicorner(fill).CornerRadius = UDim.new(1, 0)
+
+				local function fractionof(value)
+					return (value - min) / (max - min)
+				end
+
+				local function show(value, instant)
+					local fraction = fractionof(value)
+					readout.Text = format and tostring(format(value, fraction)) or string.format("%d%%", math.floor(fraction * 100 + 0.5))
+					local size = UDim2.new(fraction, 0, 1, 0)
+					if instant then
+						fill.Size = size
+					else
+						tw(fill, { Size = size }, design.Anim.Slow)
+					end
+				end
+
+				if description then
+					local _, measure = attachcontent(row, description, ix, 27, design.Row.Pad)
+					local function relayout()
+						local y = 27 + measure() + 8
+						track.Position = UDim2.new(0, design.Row.Pad, 0, y)
+						row.Size = UDim2.new(1, 0, 0, y + 6 + 12)
+					end
+					relayout()
+					watchwidth(row, relayout)
+				end
+
+				show(progressfunc.Value, true)
+
+				function progressfunc:Set(value, instant)
+					progressfunc.Value = math.clamp(tonumber(value) or progressfunc.Value, min, max)
+					show(progressfunc.Value, instant == true)
+				end
+
+				function progressfunc:Get()
+					return progressfunc.Value
+				end
+
+				function progressfunc:SetColor(color)
+					if typeof(color) == "Color3" then
+						fill.BackgroundColor3 = color
+					end
+				end
+
+				registerSearchItem(progressconfig.Title, row, "Progress")
+				countitem = countitem + 1
+				yieldbuild()
+				return progressfunc
+			end
 			function items:AddInput(inputconfig)
 				inputconfig = inputconfig or {}
 				inputconfig.Title = inputconfig.Title or "Title"
@@ -12619,7 +13607,7 @@ function MXHUB:Window(guiconfig)
 				inputcontainer.BorderSizePixel = 0
 				inputcontainer.LayoutOrder = countitem
 				inputcontainer.Size = UDim2.new(1, 0, 0, 58)
-				roundbg(inputcontainer, 4, theme.Row)
+				roundbg(inputcontainer, design.Radius.Control, theme.Row)
 
 				local inputtitle = instance.textlabel(inputcontainer)
 				inputtitle.Font = Enum.Font.GothamMedium
@@ -12688,10 +13676,7 @@ function MXHUB:Window(guiconfig)
 					end
 					if fire and typeof(inputconfig.Callback) == "function" then
 						elevate()
-						local ok, err = pcall(inputconfig.Callback, value)
-						if not ok then
-							warn("Input Callback error:", err)
-						end
+						firecallback(inputconfig.Callback, inputconfig.Title, value)
 					end
 				end
 
@@ -12833,8 +13818,8 @@ function MXHUB:Window(guiconfig)
 				dropdown.Name = "Dropdown"
 				dropdown.BorderSizePixel = 0
 				dropdown.LayoutOrder = countitem
-				dropdown.Size = UDim2.new(1, 0, 0, 60)
-				roundbg(dropdown, 4, theme.Row)
+				dropdown.Size = UDim2.new(1, 0, 0, 66)
+				roundbg(dropdown, design.Radius.Control, theme.Row)
 
 				local dropdownbutton = instance.textbutton(dropdown)
 				dropdownbutton.Name = "ToggleButton"
@@ -12847,21 +13832,21 @@ function MXHUB:Window(guiconfig)
 				dropdowntitle.Font = Enum.Font.GothamMedium
 				dropdowntitle.Text = dropdownconfig.Title
 				dropdowntitle.TextColor3 = theme.Text
-				dropdowntitle.TextSize = 12
+				dropdowntitle.TextSize = design.Font.Label
 				dropdowntitle.TextXAlignment = Enum.TextXAlignment.Left
 				dropdowntitle.TextYAlignment = Enum.TextYAlignment.Top
 				dropdowntitle.TextTruncate = Enum.TextTruncate.AtEnd
 				dropdowntitle.BackgroundTransparency = 1
-				dropdowntitle.Position = UDim2.new(0, 10, 0, 8)
-				dropdowntitle.Size = UDim2.new(1, -20, 0, 13)
+				dropdowntitle.Position = UDim2.new(0, 10, 0, 9)
+				dropdowntitle.Size = UDim2.new(1, -20, 0, 16)
 
 				local selectoptionsframe = instance.frame(dropdown)
 				selectoptionsframe.Name = "SelectOptionsFrame"
 				selectoptionsframe.AnchorPoint = Vector2.new(0, 0)
-				selectoptionsframe.Position = UDim2.new(0, 10, 0, 26)
-				selectoptionsframe.Size = UDim2.new(1, -20, 0, 26)
+				selectoptionsframe.Position = UDim2.new(0, 10, 0, 29)
+				selectoptionsframe.Size = UDim2.new(1, -20, 0, 30)
 				selectoptionsframe.LayoutOrder = countdropdown
-				roundbg(selectoptionsframe, 5, Color3.fromRGB(15, 15, 18))
+				roundbg(selectoptionsframe, design.Radius.Control, theme.Field)
 
 				local optionselecting = instance.textlabel(selectoptionsframe)
 				optionselecting.Name = "OptionSelecting"
@@ -12886,18 +13871,18 @@ function MXHUB:Window(guiconfig)
 				optionimg.Rotation = 0
 				optionimg.Size = UDim2.new(0, 16, 0, 16)
 
-				local basey = 60
+				local basey = 66
 				local description = contenttext(dropdownconfig)
 				local ix = elementiconx(dropdownconfig)
 				iconapi(dropdownfunc, elementicon(dropdown, dropdownconfig.Icon, 16))
-				dropdowntitle.Position = UDim2.new(0, ix, 0, 8)
-				dropdowntitle.Size = UDim2.new(1, -(ix + 10), 0, 13)
+				dropdowntitle.Position = UDim2.new(0, ix, 0, 9)
+				dropdowntitle.Size = UDim2.new(1, -(ix + 10), 0, 16)
 				if description then
-					local _, measure = attachcontent(dropdown, description, ix, 25, 10)
+					local _, measure = attachcontent(dropdown, description, ix, 27, 10)
 					local function relayout()
-						local fieldy = 25 + measure() + 6
+						local fieldy = 27 + measure() + 6
 						selectoptionsframe.Position = UDim2.new(0, 10, 0, fieldy)
-						basey = fieldy + 26 + 8
+						basey = fieldy + 30 + 8
 						dropdown.Size = UDim2.new(1, 0, 0, basey)
 					end
 					relayout()
@@ -13258,37 +14243,42 @@ function MXHUB:Window(guiconfig)
 			end
 
 			function items:AddSubSection(sectiontext)
-				sectiontext = sectiontext or "Sub Section"
+				sectiontext = tostring(sectiontext or "Sub Section")
 
 				local subsection = instance.frame(sectionadd)
 				subsection.Name = "SubSection"
 				subsection.BackgroundTransparency = 1
-				subsection.Size = UDim2.new(1, 0, 0, 22)
+				subsection.Size = UDim2.new(1, 0, 0, 28)
 				subsection.LayoutOrder = countitem
 
-				local background = instance.frame(subsection)
-				background.Size = UDim2.new(1, 0, 1, 0)
-				background.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				background.BackgroundTransparency = 1
-				background.BorderSizePixel = 0
-				instance.uicorner(background).CornerRadius = UDim.new(0, 6)
-
+				local caption = sectiontext:upper()
 				local label = instance.textlabel(subsection)
 				label.AnchorPoint = Vector2.new(0, 0.5)
-				label.Position = UDim2.new(0, 10, 0.5, 0)
-				label.Size = UDim2.new(1, -20, 1, 0)
+				label.Position = UDim2.new(0, 10, 0.5, 2)
+				label.Size = UDim2.new(0, 200, 0, 14)
 				label.BackgroundTransparency = 1
 				label.Font = Enum.Font.GothamBold
-				label.Text = tostring(sectiontext)
+				label.Text = caption
 				label.TextColor3 = theme.SubText
-				label.TextSize = 13
+				label.TextSize = design.Font.Caption
 				label.TextXAlignment = Enum.TextXAlignment.Left
 
+				local labelwidth = math.ceil(sv.textservice:GetTextSize(caption, design.Font.Caption, Enum.Font.GothamBold, Vector2.new(1000, 14)).X)
+				label.Size = UDim2.new(0, labelwidth + 2, 0, 14)
+
+				local rule = instance.frame(subsection)
+				rule.Name = "Rule"
+				rule.AnchorPoint = Vector2.new(0, 0.5)
+				rule.BackgroundColor3 = theme.Stroke
+				rule.BackgroundTransparency = 0.55
+				rule.BorderSizePixel = 0
+				rule.Position = UDim2.new(0, labelwidth + 20, 0.5, 2)
+				rule.Size = UDim2.new(1, -(labelwidth + 30), 0, 1)
+
 				countitem = countitem + 1
-				currentSubSection = tostring(sectiontext)
+				currentSubSection = sectiontext
 				return subsection
 			end
-
 			function items:AddConfigPanel()
 				items:PromoteToFull()
 				local selected = config.current or ""
@@ -13575,6 +14565,16 @@ function MXHUB:Window(guiconfig)
 				end,
 			})
 
+			InterfaceSection:AddToggle({
+				Title = "Hotkeys List",
+				Content = "Floating list of every bound key",
+				NoSave = true,
+				Default = MXHUB.IsHotkeysShown(),
+				Callback = function(state)
+					MXHUB.ShowHotkeys(state == true)
+				end,
+			})
+
 			local ToolsSection = ConfigTab:AddSection("Tools", true, "Left", "wrench")
 			ToolsSection:AddToggle({
 				Title = "Anti AFK",
@@ -13769,6 +14769,7 @@ function apitab:CreateToggle(opts)
 		Title = titleof(opts, "Toggle"),
 		Flag = opts.flag,
 		Default = opts.value == true,
+		NoSave = opts.save == false,
 		Callback = opts.callback,
 		Keybind = opts.keybind,
 		Icon = opts.icon,
@@ -13808,6 +14809,7 @@ function apitab:CreateDropdown(opts)
 		Options = opts.options or {},
 		Default = value,
 		Multi = multi,
+		NoSave = opts.save == false,
 		Icon = opts.icon,
 		Callback = opts.callback,
 		Content = opts.description,
@@ -13926,6 +14928,52 @@ function apitab:SetSectionIcon(value)
 	return self
 end
 
+function apitab:CreateSegmented(opts)
+	opts = options(opts)
+	return remember(self, opts.flag, self:_target():AddSegmented({
+		Title = titleof(opts, "Segmented"),
+		Flag = opts.flag,
+		Options = opts.options or {},
+		Default = opts.value,
+		Callback = opts.callback,
+		Icon = opts.icon,
+		Content = opts.description,
+		NoSave = opts.save == false,
+	}))
+end
+
+function apitab:CreateStepper(opts)
+	opts = options(opts)
+	local range = type(opts.range) == "table" and opts.range or { 0, 100 }
+	return remember(self, opts.flag, self:_target():AddStepper({
+		Title = titleof(opts, "Stepper"),
+		Flag = opts.flag,
+		Min = range[1],
+		Max = range[2],
+		Increment = opts.increment or 1,
+		Default = opts.value or range[1],
+		Callback = opts.callback,
+		Icon = opts.icon,
+		Content = opts.description,
+		NoSave = opts.save == false,
+	}))
+end
+
+function apitab:CreateProgress(opts)
+	opts = options(opts)
+	local range = type(opts.range) == "table" and opts.range or { 0, 100 }
+	return self:_target():AddProgress({
+		Title = titleof(opts, "Progress"),
+		Min = range[1],
+		Max = range[2],
+		Default = opts.value or range[1],
+		Format = opts.format,
+		Color = opts.color,
+		Icon = opts.icon,
+		Content = opts.description,
+	})
+end
+
 function apitab:CreateParagraph(opts)
 	opts = options(opts)
 	return self:_target():AddParagraph({
@@ -14004,6 +15052,16 @@ function apiwindow:GetFlag(flag)
 	return element and element.Value
 end
 
+function apiwindow:ShowHotkeys(state)
+	MXHUB.ShowHotkeys(state ~= false)
+	return self
+end
+
+function apiwindow:OnUnload(callback)
+	MXHUB:OnUnload(callback)
+	return self
+end
+
 function apiwindow:Destroy()
 	self._engine.Destroy()
 end
@@ -14040,6 +15098,7 @@ function MXHUB:CreateWindow(opts)
 		Home = opts.home,
 		Settings = opts.settings,
 		Discord = opts.discord,
+		DiscordStats = opts.discordStats,
 		Donate = opts.donate,
 		Watermark = opts.watermark,
 		Width = opts.width,

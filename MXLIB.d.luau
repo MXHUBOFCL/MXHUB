@@ -10,6 +10,7 @@ export type WindowConfig = {
 	home: boolean?,
 	settings: boolean?,
 	discord: string?,
+	discordStats: boolean?,
 	donate: string?,
 	icon: Icon?,
 	image: Icon?,
@@ -27,6 +28,19 @@ export type Element = {
 	Set: (self: Element, value: any) -> (),
 	SetIcon: (self: Element, value: Icon?) -> (),
 	SetIconColor: (self: Element, color: Color3) -> (),
+}
+
+export type SegmentedConfig = { name: string, options: { string }, value: string?, flag: string?, icon: Icon?, description: string?, save: boolean?, callback: ((string) -> ())? }
+export type StepperConfig = { name: string, range: { number }?, increment: number?, value: number?, flag: string?, icon: Icon?, description: string?, save: boolean?, callback: ((number) -> ())? }
+export type ProgressConfig = { name: string, range: { number }?, value: number?, format: ((number, number) -> string)?, color: Color3?, icon: Icon?, description: string? }
+export type ProgressElement = { Value: number, Set: (self: ProgressElement, value: number, instant: boolean?) -> (), Get: (self: ProgressElement) -> number, SetColor: (self: ProgressElement, color: Color3) -> () }
+
+export type WebhookPayload = {
+	content: string?,
+	username: string?,
+	avatar: string?,
+	allowMentions: boolean?,
+	embeds: { { title: string?, description: string?, url: string?, color: (Color3 | number)?, timestamp: (boolean | string)?, footer: (string | { text: string })?, author: { name: string }?, thumbnail: string?, image: string?, fields: { { name: string, value: string, inline: boolean? } }? } }?,
 }
 
 export type ImageConfig = {
@@ -75,6 +89,9 @@ export type Tab = {
 	CreateLabel: (self: Tab, config: { name: string } | string) -> any,
 	CreateDivider: (self: Tab) -> any,
 	CreateImage: (self: Tab, config: ImageConfig) -> ImageElement,
+	CreateSegmented: (self: Tab, config: SegmentedConfig) -> Element,
+	CreateStepper: (self: Tab, config: StepperConfig) -> Element,
+	CreateProgress: (self: Tab, config: ProgressConfig) -> ProgressElement,
 	CreateCharacter: (self: Tab, config: { side: string?, height: number?, target: (Player | number | string)?, label: string?, name: string? }) -> { SetTarget: (self: any, target: any) -> (), Refresh: (self: any) -> () },
 	SetIcon: (self: Tab, value: Icon?) -> Tab,
 	SetSectionIcon: (self: Tab, value: Icon?) -> Tab,
@@ -96,12 +113,22 @@ export type Window = {
 	Popup: (self: Window, config: PopupConfig) -> { Close: () -> () },
 	ChangeTheme: (self: Window, name: string, accent: (Color3 | string)?) -> (boolean, string),
 	SetLanguage: (self: Window, name: string) -> (),
+	ShowHotkeys: (self: Window, state: boolean?) -> Window,
+	OnUnload: (self: Window, callback: () -> ()) -> Window,
 	GetFlag: (self: Window, flag: string) -> any,
 	Destroy: (self: Window) -> (),
 }
 
 export type MXHUB = {
 	Version: string,
+	Discord: {
+		ParseInvite: (value: string) -> string?,
+		Stats: (invite: string, force: boolean?) -> ({ Code: string, Name: string?, Members: number, Online: number? }?, string?),
+	},
+	Webhook: {
+		Validate: (url: string) -> boolean,
+		New: (url: string) -> ({ Send: (self: any, payload: (string | WebhookPayload)) -> (boolean, number?, string?) }?, string?),
+	},
 	Image: { Normalize: (value: Icon?) -> string?, Thumbnail: (kind: string?, id: number, width: number?, height: number?) -> string },
 	Theme: { Names: () -> { string }, Set: (patch: { Preset: string?, Accent: (Color3 | boolean)? }) -> (boolean, string) },
 	CreateWindow: (self: MXHUB, config: WindowConfig) -> Window,

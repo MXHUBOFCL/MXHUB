@@ -1,6 +1,6 @@
 # MXLIB
 
-Library UI Roblox satu file (MX HUB). Tidak ada backend, tidak ada panggilan jaringan, tidak ada `loadstring` di dalam lib.
+Library UI Roblox satu file (MX HUB). Tidak ada backend dan tidak ada `loadstring` di dalam lib. Panggilan jaringan hanya terjadi untuk fitur Discord dan Webhook yang Anda pakai (lihat Keamanan).
 
 ```lua
 local MXLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/MXHUBOFCL/MXHUB/refs/heads/main/MXLIB.lua"))()
@@ -143,7 +143,7 @@ tab:CreateCharacter({ side = "right", height = 260 })
 
 ## Elemen
 
-`CreateButton` `CreateToggle` `CreateSlider` `CreateDropdown` `CreateInput` `CreateKeybind` `CreateColorPicker` `CreateParagraph` `CreateLabel` `CreateDivider` `CreateImage` `CreateCharacter`
+`CreateButton` `CreateToggle` `CreateSlider` `CreateDropdown` `CreateInput` `CreateKeybind` `CreateColorPicker` `CreateSegmented` `CreateStepper` `CreateProgress` `CreateParagraph` `CreateLabel` `CreateDivider` `CreateImage` `CreateCharacter`
 
 Opsi umum: `name`, `flag` (disimpan di config), `value`, `callback`, `description`, `icon`. Elemen dengan `flag` bisa dibaca lewat `window:GetFlag("Nama")` atau `window.flags.Nama`.
 
@@ -164,9 +164,42 @@ Tema dan aksen di tab Settings langsung berlaku saat dipilih, tanpa tombol Apply
 
 Style tombol popup: `primary`, `danger`, atau kosong. Tema bawaan: lihat `MXLIB.Theme.Names()`. Tema baru = satu file di `src/themes/presets/` ditambah ke `manifest.json`.
 
+## Elemen tambahan
+
+```lua
+tab:CreateSegmented({ name = "Difficulty", options = { "Easy", "Normal", "Hard" }, value = "Normal", callback = print })
+tab:CreateStepper({ name = "Players", range = { 1, 32 }, increment = 1, value = 8, callback = print })
+local quest = tab:CreateProgress({ name = "Quest", range = { 0, 10 }, value = 3, format = function(v) return v .. " / 10" end })
+quest:Set(7)
+```
+
+`CreateStepper` mendukung tombol tahan untuk mengulang dan mengetik angka langsung. Nilai Segmented dan Stepper ikut tersimpan di config kecuali `save = false`.
+
+## Hotkeys
+
+`window:ShowHotkeys(true)` menampilkan kotak melayang berisi semua keybind dan toggle yang punya tombol (fungsi, tombol, mode). Kotak bisa digeser dan diperbarui langsung saat tombol diubah. Tersedia juga sebagai toggle "Hotkeys List" di Settings.
+
+## Discord dan Webhook
+
+```lua
+local info, problem = MXLIB.Discord.Stats("https://discord.gg/kode")
+if info then print(info.Name, info.Online, info.Members) else print(problem) end
+
+local hook = MXLIB.Webhook.New("https://discord.com/api/webhooks/123456789012345678/token")
+local ok, status, problem = hook:Send({
+	username = "MXLIB",
+	embeds = { { title = "Loaded", description = "Script started.", color = Color3.fromRGB(96, 205, 255), timestamp = true } },
+})
+```
+
+- `Discord.Stats` membaca jumlah anggota dan online dari API publik discord.com, di-cache 60 detik, dan melaporkan kesalahan apa adanya (invite tidak ditemukan, rate limit, tanpa fungsi request).
+- Kartu Discord di tab Community memakai fungsi yang sama untuk menampilkan jumlah anggota. Matikan dengan `discordStats = false` di `CreateWindow`.
+- `Webhook.New` hanya menerima alamat webhook discord.com, mematikan mention secara default (`allowMentions = true` untuk membolehkan), memotong teks sesuai batas Discord, membatasi 5 pesan per 2 detik, dan mencoba ulang saat rate limit.
+- Lib tidak pernah mengirim apa pun secara otomatis. Jangan menaruh alamat webhook asli di repo publik.
+
 ## Keamanan
 
-Lib tidak membuat permintaan HTTP dan tidak mengeksekusi kode dari luar. Yang ditulis ke disk hanya konfigurasi lokal di folder `MX HUB/` (config, `ui.json`, `theme.json`).
+Lib tidak mengeksekusi kode dari luar dan tidak memakai `loadstring`. Permintaan HTTP hanya ke `discord.com` dan hanya untuk `Discord.Stats`, kartu Discord di Community, dan `Webhook`. Yang ditulis ke disk hanya konfigurasi lokal di folder `MX HUB/` (config, `ui.json`, `theme.json`).
 
 ## Lisensi
 

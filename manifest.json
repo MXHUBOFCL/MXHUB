@@ -9,6 +9,10 @@
    "bind": "assets"
   },
   {
+   "path": "src/core/design.lua",
+   "bind": "design"
+  },
+  {
    "path": "src/themes/base.lua",
    "bind": "theme"
   },
@@ -38,6 +42,14 @@
   },
   {
    "path": "src/utility/helpers.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/utility/numeric.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/utility/http.lua",
    "indent": 0
   },
   {
@@ -134,6 +146,18 @@
   },
   {
    "path": "src/components/glass.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/hotkeys.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/discord.lua",
+   "indent": 0
+  },
+  {
+   "path": "src/components/webhook.lua",
    "indent": 0
   },
   {
@@ -286,6 +310,18 @@
   },
   {
    "path": "src/window/items/slider.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/stepper.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/segmented.lua",
+   "indent": 3
+  },
+  {
+   "path": "src/window/items/progress.lua",
    "indent": 3
   },
   {

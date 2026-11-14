@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.0.0
+
+Tampilan
+- Token desain di `src/core/design.lua` (radius 8 dan 10, tinggi baris 40, header grup 34); semua baris elemen memakai radius yang sama
+- Palet MX HUB navy-gray dengan aksen putih (kontras 11 preset diukur ulang)
+- Tab sidebar 32px dengan ikon 16px; chip subtab, subgrup (label kapital dengan garis), saklar 36x20, slider dengan bar 6px, dan dropdown dengan kolom 30px dipoles; warna dropdown yang di-hardcode diganti warna tema
+
+Elemen baru
+- `CreateSegmented`, `CreateStepper` (tombol tahan, ketik angka), `CreateProgress`
+- Daftar Hotkeys melayang (`window:ShowHotkeys`) dengan toggle di Settings
+
+Modul baru
+- `MXLIB.Discord.Stats` (jumlah anggota dan online) dan jumlahnya di kartu Discord Community (`discordStats = false` untuk mematikan)
+- `MXLIB.Webhook` khusus discord.com: validasi alamat, mention dimatikan, batas panjang, antrean 5 pesan per 2 detik, retry saat rate limit
+- `window:OnUnload`
+
+Kode
+- Satu pembantu `firecallback` menggantikan lima salinan pemanggil callback; slider memakai pembantu angka bersama dengan Stepper
+- `window:CreateToggle` dan `CreateDropdown` meneruskan `save = false`
+
 ## 4.4.0
 
 Breaking
