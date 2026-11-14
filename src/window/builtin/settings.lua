@@ -29,6 +29,16 @@ if guiconfig.Settings then
 			end,
 		})
 
+		InterfaceSection:AddToggle({
+			Title = "Hotkeys List",
+			Content = "Floating list of every bound key",
+			NoSave = true,
+			Default = MXHUB.IsHotkeysShown(),
+			Callback = function(state)
+				MXHUB.ShowHotkeys(state == true)
+			end,
+		})
+
 		local ToolsSection = ConfigTab:AddSection("Tools", true, "Left", "wrench")
 		ToolsSection:AddToggle({
 			Title = "Anti AFK",
