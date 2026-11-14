@@ -4,8 +4,8 @@ end
 tab.Name = "Tab"
 tab.BorderSizePixel = 0
 tab.LayoutOrder = layoutOrder
-tab.Size = UDim2.new(1, -6, 0, 26)
-local tabbg = roundbg(tab, 4, theme.TabActive)
+tab.Size = UDim2.new(1, -6, 0, 32)
+local tabbg = roundbg(tab, design.Radius.Control, theme.TabActive)
 tabbg.ImageTransparency = isFirstTab and 0 or 1
 
 local tabbutton = instance.textbutton(tab)
@@ -38,7 +38,7 @@ end
 
 local tabname = instance.textlabel(tab)
 tabname.Name = "TabName"
-tabname.Font = Enum.Font.GothamBold
+tabname.Font = Enum.Font.GothamMedium
 tabname.Text = tostring(tabconfig.Name)
 tabname.TextColor3 = Color3.fromRGB(255, 255, 255)
 tabname.TextSize = 13
@@ -56,8 +56,8 @@ local function settabicon(value)
 		tabicon = instance.imagelabel(tab)
 		tabicon.Name = "TabIcon"
 		tabicon.AnchorPoint = Vector2.new(0, 0.5)
-		tabicon.Position = UDim2.new(0, 8, 0.5, 0)
-		tabicon.Size = UDim2.new(0, 14, 0, 14)
+		tabicon.Position = UDim2.new(0, 10, 0.5, 0)
+		tabicon.Size = UDim2.new(0, 16, 0, 16)
 		tabicon.BackgroundTransparency = 1
 		tabicon.ImageColor3 = isFirstTab and theme.Accent or theme.SubText
 	end
@@ -67,8 +67,8 @@ local function settabicon(value)
 			applyicon(tabicon, value, 48)
 		end
 	end
-	tabname.Size = UDim2.new(1, -(has and 28 or 10), 1, 0)
-	tabname.Position = UDim2.new(0, has and 26 or 8, 0, 0)
+	tabname.Size = UDim2.new(1, -(has and 36 or 14), 1, 0)
+	tabname.Position = UDim2.new(0, has and 34 or 12, 0, 0)
 end
 
 tabname.TextColor3 = isFirstTab and theme.Text or theme.SubText

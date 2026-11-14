@@ -15,7 +15,7 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 	local rec = {
 		Force = forcefull,
 		Estimate = function()
-			return 30
+			return design.Section.Header
 		end,
 	}
 	local sectiontween = TweenInfo.new(0.38, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
@@ -27,8 +27,8 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 	section.BackgroundTransparency = rowalpha
 	section.BorderSizePixel = 0
 	section.ClipsDescendants = true
-	section.Size = UDim2.new(1, 0, 0, 30)
-	instance.uicorner(section).CornerRadius = UDim.new(0, 6)
+	section.Size = UDim2.new(1, 0, 0, design.Section.Header)
+	instance.uicorner(section).CornerRadius = UDim.new(0, design.Radius.Card)
 	do
 		local sectionstroke = instance.uistroke(section)
 		sectionstroke.Color = theme.Stroke
@@ -47,10 +47,10 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 	sectionreal.BackgroundTransparency = bgAsset and 0.05 or rowalpha
 	sectionreal.BorderSizePixel = 0
 	sectionreal.Position = UDim2.new(0.5, 0, 0, 0)
-	sectionreal.Size = UDim2.new(1, 0, 0, 30)
+	sectionreal.Size = UDim2.new(1, 0, 0, design.Section.Header)
 
 	local uicorner = instance.uicorner(sectionreal)
-	uicorner.CornerRadius = UDim.new(0, 6)
+	uicorner.CornerRadius = UDim.new(0, design.Radius.Card)
 
 	local sectionbutton = instance.textbutton(sectionreal)
 	sectionbutton.Font = Enum.Font.SourceSans
@@ -114,7 +114,7 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 	sectionadd.BackgroundTransparency = 1
 	sectionadd.BorderSizePixel = 0
 	sectionadd.ClipsDescendants = true
-	sectionadd.Position = UDim2.new(0.5, 0, 0, 30)
+	sectionadd.Position = UDim2.new(0.5, 0, 0, design.Section.Header)
 	sectionadd.Size = UDim2.new(1, 0, 0, 0)
 
 	local uicorner8 = instance.uicorner(sectionadd)
@@ -145,7 +145,7 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 		if contentHeight > 0 then
 			contentHeight = contentHeight + 12
 		end
-		local sectionsizey = 30 + contentHeight
+		local sectionsizey = design.Section.Header + contentHeight
 		sectiontitle.TextColor3 = color_open
 
 		if animate and featureframe.Parent then
@@ -186,12 +186,12 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 		if animate then
 			sv.ts:Create(featureframe, arrowtween, { Rotation = 0 }):Play()
 			sv.ts:Create(featureimg, arrowtween, { ImageColor3 = theme.SubText }):Play()
-			sv.ts:Create(section, sectiontween, { Size = UDim2.new(1, 0, 0, 30) }):Play()
+			sv.ts:Create(section, sectiontween, { Size = UDim2.new(1, 0, 0, design.Section.Header) }):Play()
 			sv.ts:Create(sectionadd, sectiontween, { Size = UDim2.new(1, 0, 0, 0) }):Play()
 		else
 			featureframe.Rotation = 0
 			featureimg.ImageColor3 = theme.SubText
-			section.Size = UDim2.new(1, 0, 0, 30)
+			section.Size = UDim2.new(1, 0, 0, design.Section.Header)
 			sectionadd.Size = UDim2.new(1, 0, 0, 0)
 		end
 	end
@@ -220,9 +220,9 @@ function sections:AddSection(sectiontitletext, alwaysopen, side, sectionicon)
 
 	rec.Estimate = function()
 		if opensection then
-			return 30 + countitem * 49
+			return design.Section.Header + countitem * 49
 		end
-		return 30
+		return design.Section.Header
 	end
 
 	function items:PromoteToFull()
