@@ -10,15 +10,6 @@ local function elevate()
 	end
 end
 
-local function hexcolor(color)
-	return string.format(
-		"#%02X%02X%02X",
-		math.floor(color.R * 255 + 0.5),
-		math.floor(color.G * 255 + 0.5),
-		math.floor(color.B * 255 + 0.5)
-	)
-end
-
 local function textheight(text, size, font, width, maxheight)
 	local ok, bounds = pcall(function()
 		return sv.textservice:GetTextSize(tostring(text or ""), size, font, Vector2.new(math.max(20, width), 100000))
@@ -29,12 +20,14 @@ local function textheight(text, size, font, width, maxheight)
 	return size
 end
 
-local function escaperich(text)
-	return (tostring(text or ""):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
-end
-
 local function stepfromfraction(fraction, min, max, step)
 	return math.floor((min + math.clamp(fraction, 0, 1) * (max - min)) / step + 0.5) * step
+end
+
+local function formatcount(value)
+	local text = tostring(math.floor(tonumber(value) or 0))
+	local formatted = text:reverse():gsub("(%d%d%d)", "%1,"):reverse()
+	return (formatted:gsub("^,", ""))
 end
 
 local function searchmatch(text, query)
