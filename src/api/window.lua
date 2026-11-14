@@ -55,6 +55,16 @@ function apiwindow:GetFlag(flag)
 	return element and element.Value
 end
 
+function apiwindow:ShowHotkeys(state)
+	MXHUB.ShowHotkeys(state ~= false)
+	return self
+end
+
+function apiwindow:OnUnload(callback)
+	MXHUB:OnUnload(callback)
+	return self
+end
+
 function apiwindow:Destroy()
 	self._engine.Destroy()
 end
@@ -91,6 +101,7 @@ function MXHUB:CreateWindow(opts)
 		Home = opts.home,
 		Settings = opts.settings,
 		Discord = opts.discord,
+		DiscordStats = opts.discordStats,
 		Donate = opts.donate,
 		Watermark = opts.watermark,
 		Width = opts.width,

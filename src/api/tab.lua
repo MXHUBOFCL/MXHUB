@@ -63,6 +63,7 @@ function apitab:CreateToggle(opts)
 		Title = titleof(opts, "Toggle"),
 		Flag = opts.flag,
 		Default = opts.value == true,
+		NoSave = opts.save == false,
 		Callback = opts.callback,
 		Keybind = opts.keybind,
 		Icon = opts.icon,
@@ -102,6 +103,7 @@ function apitab:CreateDropdown(opts)
 		Options = opts.options or {},
 		Default = value,
 		Multi = multi,
+		NoSave = opts.save == false,
 		Icon = opts.icon,
 		Callback = opts.callback,
 		Content = opts.description,
@@ -218,6 +220,52 @@ function apitab:SetSectionIcon(value)
 		self._section:SetIcon(value)
 	end
 	return self
+end
+
+function apitab:CreateSegmented(opts)
+	opts = options(opts)
+	return remember(self, opts.flag, self:_target():AddSegmented({
+		Title = titleof(opts, "Segmented"),
+		Flag = opts.flag,
+		Options = opts.options or {},
+		Default = opts.value,
+		Callback = opts.callback,
+		Icon = opts.icon,
+		Content = opts.description,
+		NoSave = opts.save == false,
+	}))
+end
+
+function apitab:CreateStepper(opts)
+	opts = options(opts)
+	local range = type(opts.range) == "table" and opts.range or { 0, 100 }
+	return remember(self, opts.flag, self:_target():AddStepper({
+		Title = titleof(opts, "Stepper"),
+		Flag = opts.flag,
+		Min = range[1],
+		Max = range[2],
+		Increment = opts.increment or 1,
+		Default = opts.value or range[1],
+		Callback = opts.callback,
+		Icon = opts.icon,
+		Content = opts.description,
+		NoSave = opts.save == false,
+	}))
+end
+
+function apitab:CreateProgress(opts)
+	opts = options(opts)
+	local range = type(opts.range) == "table" and opts.range or { 0, 100 }
+	return self:_target():AddProgress({
+		Title = titleof(opts, "Progress"),
+		Min = range[1],
+		Max = range[2],
+		Default = opts.value or range[1],
+		Format = opts.format,
+		Color = opts.color,
+		Icon = opts.icon,
+		Content = opts.description,
+	})
 end
 
 function apitab:CreateParagraph(opts)
