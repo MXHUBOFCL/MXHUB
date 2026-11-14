@@ -120,8 +120,27 @@ local function buildcommunitypage(page, ctx)
 		desc.Size = UDim2.new(1, 0, 0, 0)
 		desc.AutomaticSize = Enum.AutomaticSize.Y
 
+		if spec.invite and MXHUB.Discord.ParseInvite(spec.invite) then
+			local counts = label(card, "Checking members...", Enum.Font.GothamMedium, 12, theme.SubText)
+			counts.LayoutOrder = 3
+			counts.Size = UDim2.new(1, 0, 0, 16)
+			task.spawn(function()
+				local info, problem = MXHUB.Discord.Stats(spec.invite)
+				if not counts.Parent then
+					return
+				end
+				if info then
+					local online = info.Online and (formatcount(info.Online) .. " online  |  ") or ""
+					counts.Text = online .. formatcount(info.Members) .. " members"
+					counts.TextColor3 = theme.Text
+				else
+					counts.Text = "Member count unavailable: " .. tostring(problem)
+				end
+			end)
+		end
+
 		local field = instance.frame(card)
-		field.LayoutOrder = 3
+		field.LayoutOrder = 4
 		field.BorderSizePixel = 0
 		field.BackgroundColor3 = theme.Field
 		field.Size = UDim2.new(1, 0, 0, rowheight - 4)
@@ -140,7 +159,7 @@ local function buildcommunitypage(page, ctx)
 		urllabel.Size = UDim2.new(1, -42, 1, 0)
 
 		local button = instance.textbutton(card)
-		button.LayoutOrder = 4
+		button.LayoutOrder = 5
 		button.AutoButtonColor = false
 		button.BorderSizePixel = 0
 		button.BackgroundColor3 = spec.accent
@@ -181,6 +200,7 @@ local function buildcommunitypage(page, ctx)
 		tag = "Community & support",
 		description = "Join to ask questions, get help, talk about scripts, and hear about the latest updates first.",
 		url = ctx.Discord,
+		invite = ctx.DiscordStats ~= false and ctx.Discord or nil,
 		button = "Copy Discord Invite",
 		accent = Color3.fromRGB(88, 101, 242),
 		accentText = Color3.fromRGB(255, 255, 255),
