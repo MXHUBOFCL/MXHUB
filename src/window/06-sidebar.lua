@@ -180,12 +180,12 @@ do
 				button.BackgroundColor3 = theme.TabActive
 				button.BackgroundTransparency = 1
 				button.Font = Enum.Font.GothamMedium
-				button.TextSize = 12
+				button.TextSize = 13
 				button.Text = tostring(name)
 				button.TextColor3 = theme.SubText
 				button.AutomaticSize = Enum.AutomaticSize.X
 				button.Size = UDim2.new(0, 0, 1, -4)
-				instance.uicorner(button).CornerRadius = UDim.new(0, 4)
+				instance.uicorner(button).CornerRadius = UDim.new(0, design.Radius.Control - 2)
 				local padding = instance.uipadding(button)
 				padding.PaddingLeft = UDim.new(0, 12)
 				padding.PaddingRight = UDim.new(0, 12)

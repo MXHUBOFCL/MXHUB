@@ -53,6 +53,16 @@ local function attachcontent(row, text, x, y, rightinset)
 	return label, measure
 end
 
+local function firecallback(callback, label, ...)
+	elevate()
+	if typeof(callback) == "function" then
+		local ok, err = pcall(callback, ...)
+		if not ok then
+			warn("Callback error (" .. tostring(label) .. "):", err)
+		end
+	end
+end
+
 local ICONSLOT = 22
 
 local function elementiconx(cfg)

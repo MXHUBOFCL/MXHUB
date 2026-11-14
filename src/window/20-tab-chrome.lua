@@ -143,8 +143,8 @@ function tabs:AddTabLink(linkconfig)
 	entry.Name = "TabLink"
 	entry.BorderSizePixel = 0
 	entry.LayoutOrder = counttab * 2
-	entry.Size = UDim2.new(1, -6, 0, rail and 32 or 26)
-	local entrybg = roundbg(entry, 4, theme.TabActive)
+	entry.Size = UDim2.new(1, -6, 0, 32)
+	local entrybg = roundbg(entry, design.Radius.Control, theme.TabActive)
 	entrybg.ImageTransparency = 1
 
 	local entrybutton = instance.textbutton(entry)

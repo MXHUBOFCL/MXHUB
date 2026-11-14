@@ -32,6 +32,7 @@ function guifunc:DestroyGui()
 			pcall(callback)
 		end
 	end)
+	pcall(MXHUB.ShowHotkeys, false)
 	pcall(MXHUB.FpsBoost, false)
 	pcall(MXHUB.AntiAfk, false)
 	MXHUB.Unloaded = true
